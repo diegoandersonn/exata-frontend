@@ -23,6 +23,11 @@ image {
   color: #94a3b8;
 }
 
+input:valid:not(:focus) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 ::-ms-reveal {
   display: none;
 }

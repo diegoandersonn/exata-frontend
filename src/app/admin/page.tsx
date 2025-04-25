@@ -46,10 +46,6 @@ export default function LoginPage() {
     }
   }, [formState.dirtyFields.password, trigger]);
 
-  const handleRegisterClick = () => {
-    router.push("/admin/register");
-  };
-
   const handleForgotPasswordClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const email = form.getValues("email");
@@ -104,11 +100,11 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="flex-grow min-h-[calc(100vh-88px)] max-w-[1440px] xxlg:mx-auto flex justify-between">
-        <aside className="relative w-[60%] sl:w-[43%] flex-shrink-0 flex items-center rounded-4xl overflow-hidden">
+      <main className="flex-grow min-h-[calc(100vh-88px)] w-[100%] xxlg:mx-auto flex justify-between">
+        <aside className="relative w-[50%] flex-shrink-0 flex items-center rounded-4xl overflow-hidden">
           <Image
             id="image"
-            src="/ChatGPT Image 23 de abr. de 2025, 19_37_24.png"
+            src="/orla-de-santos-vemelha.png"
             alt="Imagem da orla de santos com filtro vermelho"
             fill
             className="w-full h-full rounded-r-[6.25rem]"
@@ -121,7 +117,7 @@ export default function LoginPage() {
         </aside>
 
         <section className="flex-1">
-          <div className="min-w-96 max-w-96 min-h-full mx-[5.781rem] flex items-center">
+          <div className="w-[54%] min-h-full mx-auto flex items-center">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -146,11 +142,14 @@ export default function LoginPage() {
                     type="text"
                     placeholder="exemplo@mail.com"
                     {...form.register("email")}
-                    className={`p-2 w-full text-[#00253F] mt-[0.313rem] placeholder-custom ${
-                      form.formState.errors.email ? "border-[#C80018]" : ""
+                    className={`w-full p-2 mt-[0.313rem] ${
+                      form.formState.errors.email
+                        ? "border-[#C80018]"
+                        : "mb-[0.375rem]"
                     }`}
                     aria-labelledby="label-email"
                   />
+
                   {form.formState.errors.email && (
                     <FormMessage id="message-error">
                       {form.formState.errors.email.message}
@@ -171,16 +170,14 @@ export default function LoginPage() {
                       type={showPassword ? "text" : "password"}
                       placeholder="Digite aqui"
                       {...form.register("password")}
-                      className={`w-full p-2 mt-[0.313rem] ${
-                        form.formState.errors.password ? "border-[#C80018]" : "mb-[0.375rem]"
-                      }`}
+                      className={`w-full p-2 mt-[0.313rem]`}
                       aria-labelledby="label-password"
                     />
                     <button
                       id="show-password-btn"
                       type="button"
                       className={
-                        "absolute bg-transparent border-none ml-[92.5%] top-1/2 -translate-y-1/2"
+                        "absolute bg-transparent border-none ml-[90%] top-[57%] -translate-y-1/2"
                       }
                       onClick={() => setShowPassword((prev) => !prev)}
                       aria-label={
@@ -195,11 +192,6 @@ export default function LoginPage() {
                     </button>
                   </div>
 
-                  {form.formState.errors.password && (
-                    <FormMessage id="message-error-1" className="mb-[0.188rem]">
-                      {form.formState.errors.password.message}
-                    </FormMessage>
-                  )}
                   <Link
                     id="forgot-password-link"
                     href="/auth/forgot-password"
@@ -214,8 +206,12 @@ export default function LoginPage() {
                 <Button
                   id="enter-btn"
                   type="submit"
-                  disabled={!form.formState.isValid || isLoading}
-                  className={`w-full h-[2.5rem] text-[#FFFFFF] ${!form.formState.isValid || isLoading ? "bg-[#213f57]" : "bg-[#C80018] hover:bg-[] border-[#C80018]"} mb-[0.75rem] hover:cursor-pointer rounded-[0.375rem]`}
+                  disabled={!form.formState.isReady || isLoading}
+                  className={`w-full h-[2.5rem] text-[#FFFFFF] ${
+                    !form.formState.isReady || isLoading
+                      ? "bg-[#213f57]"
+                      : "bg-[#C80018] hover:bg-[] border-[#C80018]"
+                  } mb-[0.75rem] hover:cursor-pointer rounded-[0.375rem]`}
                 >
                   {isLoading ? (
                     <FontAwesomeIcon
@@ -226,17 +222,6 @@ export default function LoginPage() {
                     "Entrar"
                   )}
                 </Button>
-
-                <div className="flex items-center justify-start">
-                  <Button
-                    id="register-btn"
-                    type="button"
-                    onClick={handleRegisterClick}
-                    className="bg-transparent h-[2.5rem] text-[#00253F] hover:text-[#00225C] hover:cursor-pointer mx-auto border-none rounded-[0.375rem]"
-                  >
-                    Cadastre-se
-                  </Button>
-                </div>
               </form>
             </Form>
           </div>

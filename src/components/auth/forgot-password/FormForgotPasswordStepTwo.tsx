@@ -151,7 +151,8 @@ export function FormForgotPasswordStepTwo({
             </div>
             {form.formState.errors.otp && (
               <p
-                className="text-sm text-red-500 mt-2 text-center"
+                className="text-sm text-red-500 text-center"
+                style={{ marginTop: "0.375rem"}}
                 id="otp-error"
                 role="alert"
                 aria-live="assertive"

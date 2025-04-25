@@ -40,7 +40,7 @@ export function FormForgotPasswordStepOne({ onSubmit }: StepOneProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="min-w-96 lg:max-w-96 mx-[5.781rem] my-auto"
+        className="min-w-96 lg:max-w-96 my-auto"
         aria-labelledby="title"
         noValidate
       >
@@ -50,7 +50,7 @@ export function FormForgotPasswordStepOne({ onSubmit }: StepOneProps) {
         >
           Esqueceu sua senha?
         </h1>
-        <p id="title-2" className="text-sm text-center mb-8">
+        <p id="title-2" className="text-sm font-normal text-center mb-8">
           Digite abaixo um e-mail cadastrado para receber as instruções.
         </p>
 
@@ -67,6 +67,7 @@ export function FormForgotPasswordStepOne({ onSubmit }: StepOneProps) {
             type="email"
             placeholder="exemplo@mail.com"
             className="p-2 w-full text-[#00253F] placeholder-custom"
+            style={{ marginTop: "0.125rem" }}
             disabled={isLoading}
             aria-required="true"
             aria-invalid={!!form.formState.errors.email}
@@ -82,7 +83,11 @@ export function FormForgotPasswordStepOne({ onSubmit }: StepOneProps) {
           id="enter-btn"
           type="submit"
           disabled={!form.formState.isValid || isLoading}
-          className="w-full bg-[#00253F] mb-3 hover:bg-[#00225C]"
+          className={`w-full h-[2.5rem] text-[#FFFFFF] ${
+            !form.formState.isValid || isLoading
+              ? "bg-[#213f57]"
+              : "bg-[#C80018] hover:bg-[] border-[#C80018]"
+          } mb-[0.75rem] hover:cursor-pointer rounded-[0.375rem]`}
           aria-busy={isLoading}
         >
           {isLoading ? (
@@ -99,8 +104,8 @@ export function FormForgotPasswordStepOne({ onSubmit }: StepOneProps) {
         <p className="text-[#00253F] text-center mx-auto font-medium mb-8">
           <Link
             id="back-link"
-            href="/"
-            className="text-[#00253F] font-medium text-sm hover:text-[#8295b4]"
+            href="/admin"
+            className="text-[#00253F] font-medium text-sm hover:underline"
             aria-label="Voltar para o login"
           >
             Voltar

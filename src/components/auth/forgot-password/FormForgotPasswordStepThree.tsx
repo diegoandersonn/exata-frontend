@@ -91,9 +91,7 @@ export function FormForgotPasswordStepThree({ onSubmit }: StepThreeProps) {
               aria-required="true"
               aria-describedby="password-error"
               {...form.register("password")}
-              className={`w-full pr-10 ${
-                form.formState.errors.password ? "border-red-500" : ""
-              }`}
+              className={`w-full pr-10`}
             />
             <button
               type="button"
@@ -108,69 +106,59 @@ export function FormForgotPasswordStepThree({ onSubmit }: StepThreeProps) {
               />
             </button>
           </div>
-          {form.formState.errors.password && (
-            <FormMessage
-              className="max-w-96"
-              id="password-error"
-              role="alert"
-              aria-live="assertive"
-            >
-              {form.formState.errors.password.message}
-            </FormMessage>
-          )}
         </FormItem>
 
         <div className="ml-2 mb-6">
           <ul className="text-[#64748B]">
-            <li>
+            <li className={`${rules.length ? "text-[#357838]" : ""}`}>
               {rules.length ? (
                 <FontAwesomeIcon
                   icon={faCircleCheck}
-                  className="text-xs mr-2 text-[#357838]"
+                  className="text-xs mr-2"
                 />
               ) : (
                 <FontAwesomeIcon icon={faCircle} className="mr-2 text-[8px]" />
               )}
               No mínimo 8 caracteres
             </li>
-            <li>
+            <li className={`${rules.uppercase ? "text-[#357838]" : ""}`}>
               {rules.uppercase ? (
                 <FontAwesomeIcon
                   icon={faCircleCheck}
-                  className="text-xs mr-2 text-[#357838]"
+                  className="text-xs mr-2 "
                 />
               ) : (
                 <FontAwesomeIcon icon={faCircle} className="mr-2 text-[8px]" />
               )}
               1 letra maiúscula
             </li>
-            <li>
+            <li className={`${rules.lowercase ? "text-[#357838]" : ""}`}>
               {rules.lowercase ? (
                 <FontAwesomeIcon
                   icon={faCircleCheck}
-                  className="text-xs mr-2 text-[#357838]"
+                  className="text-xs mr-2 "
                 />
               ) : (
                 <FontAwesomeIcon icon={faCircle} className="mr-2 text-[8px]" />
               )}
               1 letra minúscula
             </li>
-            <li>
+            <li className={`${rules.number ? "text-[#357838]" : ""}`}>
               {rules.number ? (
                 <FontAwesomeIcon
                   icon={faCircleCheck}
-                  className="text-xs mr-2 text-[#357838]"
+                  className="text-xs mr-2 "
                 />
               ) : (
                 <FontAwesomeIcon icon={faCircle} className="mr-2 text-[8px]" />
               )}
               1 número
             </li>
-            <li>
+            <li className={`${rules.special ? "text-[#357838]" : ""}`}>
               {rules.special ? (
                 <FontAwesomeIcon
                   icon={faCircleCheck}
-                  className="text-xs mr-2 text-[#357838]"
+                  className="text-xs mr-2 "
                 />
               ) : (
                 <FontAwesomeIcon icon={faCircle} className="mr-2 text-[8px]" />

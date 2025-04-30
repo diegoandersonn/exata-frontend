@@ -170,7 +170,7 @@ export function FormForgotPasswordStepTwo({
                 id="resend"
                 type="button"
                 disabled
-                className="bg-transparent font-normal text-[#1E293B] text-sm mb-2 mx-auto cursor-not-allowed"
+                className="w-full h-[2.5rem] text-[#00253F] font-medium text-sm bg-transparent mb-[0.75rem] border-none"
                 aria-disabled="true"
               >
                 Reenviar código
@@ -187,7 +187,7 @@ export function FormForgotPasswordStepTwo({
               type="button"
               onClick={handleResendCode}
               disabled={isSubmitting}
-              className="w-full h-[2.5rem] text-[#FFFFFF] bg-[#00253F] mb-[0.75rem] hover:bg-[#00225C] hover:cursor-pointer"
+              className="w-full h-[2.5rem] text-[#0055E7] font-medium text-sm bg-transparent mb-[0.75rem] border-none hover:cursor-pointer hover:underline"
               aria-disabled={isSubmitting}
               aria-label="Reenviar código"
             >
@@ -202,7 +202,7 @@ export function FormForgotPasswordStepTwo({
             type="button"
             onClick={onBack}
             disabled={isSubmitting}
-            className="w-full h-[2.5rem] text-[#FFFFFF] bg-[#00253F] mb-[0.75rem] hover:bg-[#00225C] hover:cursor-pointer"
+            className="w-full h-[2.5rem] text-[#00253F] font-medium text-sm bg-transparent mb-[0.75rem] border-none hover:cursor-pointer hover:underline"
             aria-disabled={isSubmitting}
             aria-label="Voltar"
           >

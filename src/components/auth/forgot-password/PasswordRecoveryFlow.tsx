@@ -170,7 +170,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
   const handleBackStepThree = () => setCurrentStep(currentStep - 1);
 
   const renderStep = () => {
-    switch (3) {
+    switch (currentStep) {
       case 1:
         return <FormForgotPasswordStepOne onSubmit={handleEmailSubmit} />;
       case 2:

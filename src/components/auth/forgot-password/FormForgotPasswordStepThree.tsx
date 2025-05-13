@@ -220,7 +220,11 @@ export function FormForgotPasswordStepThree({ onSubmit }: StepThreeProps) {
             id="confirm"
             type="submit"
             disabled={!form.formState.isValid}
-            className="w-full bg-[#00253F] mb-3 hover:bg-[#00225C]"
+            className={`w-full ${
+              !form.formState.isValid
+                ? "bg-[#213f57]"
+                : "bg-[#C80018] hover:bg-[#A00014] border-[#C80018]"
+            } mb-3`}
             aria-disabled={!form.formState.isValid}
             aria-label="Confirmar"
           >

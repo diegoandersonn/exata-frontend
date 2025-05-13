@@ -86,7 +86,7 @@ export function FormForgotPasswordStepOne({ onSubmit }: StepOneProps) {
           className={`w-full h-[2.5rem] text-[#FFFFFF] ${
             !form.formState.isValid || isLoading
               ? "bg-[#213f57]"
-              : "bg-[#C80018] hover:bg-[] border-[#C80018]"
+              : "bg-[#C80018] hover:bg-[#A00014] border-[#C80018]"
           } mb-[0.75rem] hover:cursor-pointer rounded-[0.375rem]`}
           aria-busy={isLoading}
         >

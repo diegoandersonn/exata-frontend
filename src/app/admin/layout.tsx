@@ -18,7 +18,6 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <RegisterProvider>
-        <FcmTokenHandler />
         <Toaster />
         {children}
         <ToastContainer

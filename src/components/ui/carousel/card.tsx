@@ -1,7 +1,9 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  image: StaticImageData;
+  id: string;
+  image: string;
   title: string;
   description: string;
   price: string;
@@ -12,6 +14,7 @@ type Props = {
 };
 
 export default function Card({
+  id,
   image,
   title,
   description,
@@ -21,8 +24,15 @@ export default function Card({
   rooms,
   parkingSpaces,
 }: Props) {
+    const router = useRouter();
+  function handleNavigation(): void {
+    const url = `/imoveis/${id}`;
+    router.push(url);
+  }
+
   return (
-    <div className="flex flex-col justify-between gap-2 sm:w-[180px] sm:h-[260px] md:w-[220px] md:h-[320px] lg:w-[260px] lg:h-[380px] xl:w-[320px] xl:h-[440px] rounded-lg shadow-lg border border-gray-300 hover:scale-105 transition-transform duration-300 cursor-pointer group bg-white">
+    <div className="flex flex-col justify-between gap-2 sm:w-[180px] sm:h-[260px] md:w-[220px] md:h-[320px] lg:w-[260px] lg:h-[380px] xl:w-[320px] xl:h-[440px] rounded-lg shadow-lg border border-gray-300 hover:scale-105 transition-transform duration-300 cursor-pointer group bg-white"
+    onClick={handleNavigation}>
       <div>
         <div className="w-full h-[100px] sm:h-[120px] md:h-[160px] lg:h-[250px] relative">
           <Image

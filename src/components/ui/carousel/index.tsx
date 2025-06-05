@@ -2,12 +2,23 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Card from "./card";
 import { useState, useEffect } from "react";
-import santosFoto from "../../../../public/santos-foto.jpg";
-import orlaDeSantos from "../../../../public/orla-de-santos.jpeg";
+
+type CardType = {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  price: string;
+  code: string;
+  area: string;
+  rooms: string;
+  parkingSpaces: string;
+};
 
 export default function Carousel() {
   const [maxVisible, setMaxVisible] = useState(4);
   const [position, setPosition] = useState<number[]>([0, 4]);
+  const [cards, setCards] = useState<CardType[]>([]);
 
   useEffect(() => {
     function handleResize() {
@@ -30,59 +41,40 @@ export default function Carousel() {
     setPosition(() => [0, maxVisible]);
   }, [maxVisible]);
 
-  const cards = [
-    {
-      image: santosFoto,
-      title: "Centro | São Vicente",
-      description: "Sala comercial à venda no Centro",
-      price: "318.000,00",
-      code: "21382",
-      area: "450",
-      rooms: "4",
-      parkingSpaces: "4",
-    },
-    // Adicione mais cards aqui:
-    {
-      image: santosFoto,
-      title: "Boqueirão | Santos",
-      description: "Apartamento de frente para o mar",
-      price: "890.000,00",
-      code: "45691",
-      area: "120",
-      rooms: "3",
-      parkingSpaces: "2",
-    },
-    {
-      image: orlaDeSantos,
-      title: "Gonzaga | Santos",
-      description: "Cobertura com vista panorâmica",
-      price: "1.200.000,00",
-      code: "76543",
-      area: "200",
-      rooms: "4",
-      parkingSpaces: "3",
-    },
-    {
-      image: orlaDeSantos,
-      title: "Vila Mathias | Santos",
-      description: "Sala moderna pronta para uso",
-      price: "410.000,00",
-      code: "55555",
-      area: "80",
-      rooms: "1",
-      parkingSpaces: "1",
-    },
-    {
-      image: santosFoto,
-      title: "Embaré | Santos",
-      description: "Apartamento mobiliado com varanda",
-      price: "750.000,00",
-      code: "88888",
-      area: "100",
-      rooms: "3",
-      parkingSpaces: "2",
-    },
-  ];
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:5000/imoveis", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Erro ao buscar dados dos imóveis");
+        }
+        const responseData = await response.json();
+        console.log("Dados recebidos:", responseData);
+        const formattedCards: CardType[] = responseData.map(
+          (item: CardType) => ({
+            id: item.id,
+            image: item.image,
+            title: item.title,
+            description: item.description,
+            price: item.price,
+            code: item.code,
+            area: item.area,
+            rooms: item.rooms,
+            parkingSpaces: item.parkingSpaces,
+          })
+        );
+        setCards(formattedCards);
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   function switchCards(direction: "add" | "minus") {
     setPosition(([start, end]) => {
@@ -98,9 +90,10 @@ export default function Carousel() {
   return (
     <div className="flex flex-col items-center justify-between w-full p-4 transition-transform duration-500 ease-in-out">
       <div className="flex gap-4">
-        {cards.slice(position[0], position[1]).map((card, index) => (
+        {cards.slice(position[0], position[1]).map((card) => (
           <Card
-            key={index}
+            key={card.id}
+            id={card.id}
             image={card.image}
             title={card.title}
             description={card.description}

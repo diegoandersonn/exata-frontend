@@ -38,7 +38,7 @@ export default function Profile({ active, profile }: ProfileProps) {
   return (
     <div
       id="profile-modal"
-      className="fixed top-[7.75rem] -right-[8.8rem] transform -translate-x-1/2 -translate-y-1/2 z-60"
+      className="fixed top-[8.15rem] -right-[8.8rem] transform -translate-x-1/2 -translate-y-1/2 z-60"
     >
       <Card className="w-[22.5rem] rounded-lg rounded-tr-none flex flex-col justify-center items-center gap-4 profile-modal">
         <CardHeader className="flex flex-row gap-3 items-center w-full">
@@ -46,7 +46,9 @@ export default function Profile({ active, profile }: ProfileProps) {
             className="w-9 h-9 bg-[#475569] flex items-center justify-center text-white rounded-lg"
             id="profile-image"
           >
-            {initialsGenerator(profile.name) !== "" ? initialsGenerator(profile.name) : initialsGenerator('Financeiro')}  
+            {initialsGenerator(profile.name) !== ""
+              ? initialsGenerator(profile.name)
+              : initialsGenerator("Financeiro")}
           </div>
           <div className="flex flex-col justify-center h-full -mt-10">
             <CardTitle
@@ -67,7 +69,7 @@ export default function Profile({ active, profile }: ProfileProps) {
           <button
             className="text-red-600 text-sm"
             onClick={() => {
-              push("/") 
+              push("/");
               deleteCookies();
             }}
             id="logout"
@@ -76,7 +78,7 @@ export default function Profile({ active, profile }: ProfileProps) {
           </button>
           <button
             onClick={() => {
-              push("/")
+              push("/");
               deleteCookies();
             }}
             id="logout-door"

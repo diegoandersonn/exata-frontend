@@ -21,8 +21,8 @@ import { useRouter } from "next/navigation";
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "/admin/home",
+    title: "Imóveis",
+    url: "/admin/properties",
     icon: "Home",
   },
   // {

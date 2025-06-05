@@ -268,7 +268,10 @@ const SidebarTrigger = React.forwardRef<
       id="Trigger"
       data-sidebar="trigger"
       ref={ref}
-      className={cn(` flex items-center justify-center w-full `, className)}
+      className={cn(
+        ` flex items-center justify-center w-full text-white`,
+        className
+      )}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
@@ -405,7 +408,7 @@ const SidebarContent = React.forwardRef<
       ref={ref}
       data-sidebar="content"
       className={cn(
-        "flex min-h-0 flex-1 flex-col bg-[#C80018] gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "flex min-h-0 flex-1 flex-col bg-red-800 gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
         className
       )}
       {...props}

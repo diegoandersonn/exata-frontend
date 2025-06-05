@@ -1,5 +1,5 @@
 "use client";
- 
+
 import {
   Sidebar,
   SidebarContent,
@@ -17,26 +17,26 @@ import Link from "./Link";
 import { IconType } from "./icons";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
- 
+
 // Menu items.
 const items = [
   {
-    title: "Carteira",
-    url: "/wallet",
-    icon: "Wallet",
+    title: "Home",
+    url: "/admin/home",
+    icon: "Home",
   },
-  {
-    title: "Investimentos",
-    url: "/investment",
-    icon: "Investments",
-  },
-  {
-    title: "Pagamentos",
-    url: "/payment",
-    icon: "Payments",
-  },
+  // {
+  //   title: "Investimentos",
+  //   url: "/investment",
+  //   icon: "Investments",
+  // },
+  // {
+  //   title: "Pagamentos",
+  //   url: "/payment",
+  //   icon: "Payments",
+  // },
 ];
- 
+
 export function AcademySidebar() {
   const { push } = useRouter();
   const { toggleSidebar, state } = useSidebar();
@@ -81,8 +81,8 @@ export function AcademySidebar() {
                 <SidebarMenuItem
                   key={item.title}
                   className={`${
-                    pathname === item.url ? "bg-[#FFFFFF1A] text-white" : ""
-                  } hover:bg-[rgba(255,255,255,0.1)] hover:text-white rounded-sm flex items-center justify-center`}
+                    pathname === item.url ? "bg-[#FFFFFF1A]" : ""
+                  } hover:bg-[rgba(255,255,255,0.1)] text-white hover:text-white rounded-sm flex items-center justify-center`}
                 >
                   <Link
                     title={item.title}

@@ -1,19 +1,25 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const forceBackground = pathname.includes("/property");
+  const showBackground = scrolled || forceBackground;
   return (
     <header
-      className={`fixed top-0 w-full z-50 px-6 py-3 lg:px-12 lg:py-6 flex justify-between items-center transition-all duration-300 ${
-        scrolled ? "bg-red-800 shadow-md" : "bg-transparent"
+      className={`fixed top-0 w-full z-50 px-6 py-1 lg:px-10 lg:py-2 flex justify-between items-center transition-all duration-300 ${
+        showBackground ? "bg-red-800 shadow-md" : "bg-transparent"
       }`}
     >
       <Image

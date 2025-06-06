@@ -1,0 +1,152 @@
+"use client";
+import Header from "@/components/ui/header";
+import useGetProperty from "@/hooks/use-getProperty";
+import {
+  Bath,
+  BedSingle,
+  CarFront,
+  Ellipsis,
+  Heart,
+  Share2,
+} from "lucide-react";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+
+export default function PropertyPage() {
+  const { id } = useParams();
+  const { property, isLoading, isError } = useGetProperty(id as string);
+  if (!property) {
+    return <div>Imóvel não encontrado</div>;
+  }
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
+  if (isError) {
+    return <div>Erro</div>;
+  }
+  console.log("Imóvel:", property);
+  return (
+    <div className="flex flex-col gap-6">
+      <Header />
+      <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1">
+        <div className="overflow-hidden col-span-1 row-span-1 lg:col-span-2 lg:row-span-2">
+          <Image
+            src={property.image}
+            alt={property.title}
+            width={0}
+            height={0}
+            className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
+          />
+        </div>
+        <div className="hidden lg:block overflow-hidden">
+          <Image
+            src={property.image}
+            alt={property.title}
+            width={0}
+            height={0}
+            className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
+          />
+        </div>
+        <div className="hidden lg:block overflow-hidden">
+          <Image
+            src={property.image}
+            alt={property.title}
+            width={0}
+            height={0}
+            className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
+          />
+        </div>
+        <div className="hidden lg:block overflow-hidden">
+          <Image
+            src={property.image}
+            alt={property.title}
+            width={0}
+            height={0}
+            className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
+          />
+        </div>
+        <div className="hidden lg:block overflow-hidden relative">
+          <Image
+            src={property.image}
+            alt={property.title}
+            width={0}
+            height={0}
+            className="object-cover w-full h-full brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
+          />
+          <button className="absolute inset-0 flex items-center justify-center border border-white text-white rounded transition-transform duration-300 hover:scale-110">
+            Ver mais fotos
+          </button>
+        </div>
+      </div>
+      <div className="relative w-screen flex flex-col xl:flex-row gap-10 px-2 lg:px-44">
+        <div className="flex flex-col gap-8">
+          <div className="flex items-start justify-between">
+            <h1 className="font-bold text-base lg:text-2xl w-[70%]">
+              Apartamento à venda em {property.title} com {property.area} m²,{" "}
+              {property.rooms} quartos e {property.parkingSpaces} vagas
+            </h1>
+            <div className="flex gap-2">
+              <button className="p-1 rounded-lg hover:bg-zinc-200 transition-colors duration-300">
+                <Heart className="w-4 h-4 lg:w-6 lg:h-6" />
+              </button>
+              <button className="p-1 rounded-lg hover:bg-zinc-200 transition-colors duration-300">
+                <Share2 className="w-4 h-4 lg:w-6 lg:h-6" />
+              </button>
+              <button className="p-1 rounded-lg hover:bg-zinc-200 transition-colors duration-300">
+                <Ellipsis className="w-4 h-4 lg:w-6 lg:h-6" />
+              </button>
+            </div>
+          </div>
+          <div className="flex gap-4 justify-between lg:gap-8">
+            <div className="flex gap-1 lg:gap-3 items-center">
+              <CarFront className="w-4 h-4 lg:w-6 lg:h-6" />
+              <h3 className="text-xs lg:text-base font-semibold">
+                {property.parkingSpaces} vagas
+              </h3>
+            </div>
+            <div className="flex gap-1 lg:gap-3 items-center">
+              <BedSingle className="w-4 h-4 lg:w-6 lg:h-6" />
+              <h3 className="text-xs lg:text-base font-semibold">
+                {property.rooms} quartos
+              </h3>
+            </div>
+            <div className="flex gap-1 lg:gap-3 items-center">
+              <Bath className="w-4 h-4 lg:w-6 lg:h-6" />
+              <h3 className="text-xs lg:text-base font-semibold">
+                {property.rooms} banheiros
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div className="xl:absolute right-[300px] -top-[70px] min-w[50px] lg:min-w-[350px] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">
+          <h3 className="font-medium">Valor à vista</h3>
+          <h1 className="font-bold text-lg lg:text-3xl">R$ {property.price}</h1>
+          <h3 className="text-emerald-600 underline cursor-pointer">
+            Entenda este valor
+          </h3>
+          <div className="flex flex-col gap-4 text-zinc-500">
+            <div className="flex justify-between items-center">
+              <h2 className="text-sm lg:text-base">Parcelas a partir de</h2>
+              <p className="text-sm lg:text-base text-emerald-600">
+                R$ 19.534/mês
+              </p>
+            </div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-sm lg:text-base">Condomínio</h2>
+              <p className="text-sm lg:text-base text-black">R$ 1.680/mês</p>
+            </div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-sm lg:text-base">IPTU</h2>
+              <p className="text-sm lg:text-base text-black">R$ 3.100/ano</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

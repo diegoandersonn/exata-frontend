@@ -4,6 +4,7 @@ import santosFoto from "../../public/orla-de-santos-vemelha.png";
 import Carousel from "@/components/ui/carousel";
 import { useState } from "react";
 import CarouselTypeSelector from "@/components/ui/caurosel-type-selector";
+import Header from "@/components/ui/header";
 
 export default function Home() {
   const [carouselType, setCarouselType] = useState<
@@ -11,6 +12,7 @@ export default function Home() {
   >("super-destaque");
   return (
     <div className="flex flex-col">
+      <Header />
       <div className="w-screen h-screen flex">
         <div className="z-10 text-white ml-10 md:ml-16 lg:ml-24 flex flex-col items-start justify-center gap-6 lg:gap-12">
           <div className="flex flex-col lg:gap-5">

@@ -26,7 +26,7 @@ export default function Card({
 }: Props) {
     const router = useRouter();
   function handleNavigation(): void {
-    const url = `/imoveis/${id}`;
+    const url = `/property/${id}`;
     router.push(url);
   }
 

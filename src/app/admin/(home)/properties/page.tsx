@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const [index, setIndex] = useState<number>(1);
+  const [index, setIndex] = useState<number>(0);
+  const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
   const listHeader = [
     "Imagem principal",
@@ -14,7 +15,7 @@ export default function Home() {
     "Ações",
   ];
 
-  const properties = [
+  const [properties, setProperties] = useState([
     {
       mainImage: "",
       propertyType: "Apartamento",
@@ -22,6 +23,7 @@ export default function Home() {
       bathrooms: 1,
       rentWithTax: 2000.0,
       actions: "Ver detalhes",
+      isItActive: true,
     },
     {
       mainImage: "",
@@ -30,6 +32,7 @@ export default function Home() {
       bathrooms: 2,
       rentWithTax: 3500.0,
       actions: "Ver detalhes",
+      isItActive: true,
     },
     {
       mainImage: "",
@@ -38,6 +41,7 @@ export default function Home() {
       bathrooms: 1,
       rentWithTax: 1200.0,
       actions: "Ver detalhes",
+      isItActive: true,
     },
     {
       mainImage: "",
@@ -46,6 +50,7 @@ export default function Home() {
       bathrooms: 1,
       rentWithTax: 950.0,
       actions: "Ver detalhes",
+      isItActive: true,
     },
     {
       mainImage: "",
@@ -54,8 +59,38 @@ export default function Home() {
       bathrooms: 3,
       rentWithTax: 4200.0,
       actions: "Ver detalhes",
+      isItActive: true,
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    const handleClick = () => setActiveMenu(null);
+    if (activeMenu !== null) {
+      window.addEventListener("click", handleClick);
+      return () => window.removeEventListener("click", handleClick);
+    }
+  }, [activeMenu]);
+
+  // Filtra os imóveis conforme o tab selecionado
+  const filteredProperties = properties.filter((property) =>
+    index === 0 ? property.isItActive : !property.isItActive
+  );
+
+  // Função para inativar imóvel
+  const handleInactivate = (idx: number) => {
+    setProperties((prev) =>
+      prev.map((item, i) => (i === idx ? { ...item, isItActive: false } : item))
+    );
+    setActiveMenu(null);
+  };
+
+  // Função para ativar imóvel
+  const handleActivate = (idx: number) => {
+    setProperties((prev) =>
+      prev.map((item, i) => (i === idx ? { ...item, isItActive: true } : item))
+    );
+    setActiveMenu(null);
+  };
 
   return (
     <main className="mt-[0.5rem]">
@@ -74,27 +109,27 @@ export default function Home() {
       >
         <h3
           className={`${
+            index === 0
+              ? "font-semibold text-[#393B3C] border-b-[0.125rem] border-red-500"
+              : "font-normal text-[#5C6164] border-b-[0.125rem] border-white"
+          } text-sm mt-auto hover:cursor-pointer pb-[0.625rem]`}
+          onClick={() => setIndex(0)}
+        >
+          Cadastrados
+        </h3>
+        <h3
+          className={`${
             index === 1
               ? "font-semibold text-[#393B3C] border-b-[0.125rem] border-red-500"
               : "font-normal text-[#5C6164] border-b-[0.125rem] border-white"
           } text-sm mt-auto hover:cursor-pointer pb-[0.625rem]`}
           onClick={() => setIndex(1)}
         >
-          Cadastrados
-        </h3>
-        <h3
-          className={`${
-            index === 2
-              ? "font-semibold text-[#393B3C] border-b-[0.125rem] border-red-500"
-              : "font-normal text-[#5C6164] border-b-[0.125rem] border-white"
-          } text-sm mt-auto hover:cursor-pointer pb-[0.625rem]`}
-          onClick={() => setIndex(2)}
-        >
           Inativados
         </h3>
       </div>
 
-      <div className="bg-white rounded-lg">
+      <div className="bg-white rounded-lg min-h-[26rem]">
         {/* Cabeçalho */}
         <div className="grid grid-cols-6 gap-[1.5rem] pt-[1.125rem] px-2">
           {listHeader.map((title, idx) => (
@@ -106,12 +141,10 @@ export default function Home() {
             </h3>
           ))}
         </div>
-
-        {/* Linhas de propriedades */}
-        {properties.map((property, idx) => (
+        {filteredProperties.map((property, idx) => (
           <div
             key={idx}
-            className="grid grid-cols-6 gap-[1.5rem] items-center border-t border-gray-100 py-3 px-2 hover:bg-gray-50 transition"
+            className="grid grid-cols-6 gap-[1.5rem] items-center border-t border-gray-100 py-3 px-2 hover:bg-gray-50 transition relative"
           >
             <div className="text-center font-normal h-14 text-sm text-[#393B3C]">
               <span className="inline-block w-10 h-14 bg-gray-200 rounded" />
@@ -131,8 +164,14 @@ export default function Home() {
                 minimumFractionDigits: 2,
               })}
             </div>
-            <div className="text-center font-normal text-sm">
-              <button className="pl-2 w-[2.25rem] rounded-lg h-[2.25rem] bg-gray-50">
+            <div className="text-center font-normal text-sm relative flex justify-center">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveMenu(activeMenu === idx ? null : idx);
+                }}
+                className="w-[2.25rem] h-[2.25rem] bg-transparent flex items-center justify-center rounded-lg"
+              >
                 <Image
                   src="/three-dots.svg"
                   alt="Ver detalhes"
@@ -140,6 +179,36 @@ export default function Home() {
                   height={20}
                 />
               </button>
+              {activeMenu === idx && (
+                <div className="absolute right-4 top-[2.75rem] w-fit bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col text-left">
+                  <button className="px-4 py-2 hover:bg-gray-100 text-sm text-[#393B3C] text-left">
+                    Editar
+                  </button>
+                  {index === 0 ? (
+                    <button
+                      className="px-4 py-2 hover:bg-gray-100 text-sm text-[#393B3C] text-left"
+                      onClick={() =>
+                        handleInactivate(
+                          properties.findIndex((p) => p === property)
+                        )
+                      }
+                    >
+                      Inativar
+                    </button>
+                  ) : (
+                    <button
+                      className="px-4 py-2 hover:bg-gray-100 text-sm text-[#393B3C] text-left"
+                      onClick={() =>
+                        handleActivate(
+                          properties.findIndex((p) => p === property)
+                        )
+                      }
+                    >
+                      Ativar
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ))}

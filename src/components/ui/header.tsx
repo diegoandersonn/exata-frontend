@@ -14,7 +14,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const forceBackground = pathname.includes("/property");
+  const forceBackground = pathname.includes("/property") || pathname.includes("/properties");
   const showBackground = scrolled || forceBackground;
   return (
     <header

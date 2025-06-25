@@ -47,17 +47,17 @@ export default function Home() {
           title="Logo da Exata"
           width={60}
           height={60}
-          className="w-[400px] h-[400px] rounded-full bg-black hover:scale-110 transition-transform duration-300 hidden sm:block mx-auto"
+          className="w-[400px] h-[400px] rounded-full bg-black hover:scale-110 transition-transform duration-300 hidden sm:block mx-auto select-none"
         />
         <div className="flex flex-col items-center sm:items-start justify-center gap-6 flex-1 relative text-center sm:text-left">
           <h1 className="text-4xl font-bold">SOBRE NÓS!</h1>
           <div className="flex flex-col gap-3">
-            <h3 className="text-2xl font-bold">Uma gráfica feita para você</h3>
+            <h3 className="text-2xl font-bold">Uma exata feita para você</h3>
             <p className="text-xs">
-              A Gráfica 4K Impressos, desde 2014, se destaca em Santos-SP pela
+              A Exata, desde 2014, se destaca em Santos-SP pela
               excelência e compromisso em oferecer produtos de impressão e
               comunicação visual de alta qualidade a preços justos. Atendendo
-              desde pequenas a grandes empresas, a gráfica oferece uma ampla
+              desde pequenas a grandes empresas, a exata oferece uma ampla
               gama de produtos, como papelaria personalizada e materiais de
               comunicação visual, sempre com rigoroso controle de qualidade. A
               missão da empresa é satisfazer as necessidades específicas de cada

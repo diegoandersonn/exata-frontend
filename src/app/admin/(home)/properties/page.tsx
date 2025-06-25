@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function Properties() {
   const [index, setIndex] = useState<number>(0);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
+  const router = useRouter();
 
   const listHeader = [
     "Imagem principal",
@@ -52,15 +54,6 @@ export default function Home() {
       actions: "Ver detalhes",
       isItActive: true,
     },
-    {
-      mainImage: "",
-      propertyType: "Sobrado",
-      bedrooms: 4,
-      bathrooms: 3,
-      rentWithTax: 4200.0,
-      actions: "Ver detalhes",
-      isItActive: true,
-    },
   ]);
 
   useEffect(() => {
@@ -98,7 +91,10 @@ export default function Home() {
         <h1 id="title" className="font-bold text-[#393B3C] text-lg">
           Imóveis
         </h1>
-        <button className="w-[4.25rem] h-[2.5rem] rounded-lg text-white font-semibold text-sm bg-red-500">
+        <button
+          onClick={() => router.push("/admin/properties/propertie")}
+          className="w-[4.25rem] h-[2.5rem] rounded-lg text-white font-semibold text-sm bg-red-600 hover:bg-red-700"
+        >
           Novo
         </button>
       </div>

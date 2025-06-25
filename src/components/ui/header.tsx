@@ -14,7 +14,8 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const forceBackground = pathname.includes("/property") || pathname.includes("/properties");
+  const forceBackground =
+    pathname.includes("/property") || pathname.includes("/properties");
   const showBackground = scrolled || forceBackground;
   return (
     <header
@@ -23,12 +24,13 @@ export default function Header() {
       }`}
     >
       <Image
-        id="exata-logo-v2"
-        src="/exata-logo-v2.png"
+        id="exata-logo"
+        src="/exata-logo.svg"
         alt="Logo da Exata administradora de bens, um E vermelho representando a inicial da empresa, com um fundo branco."
         title="Logo da Exata"
         width={60}
         height={60}
+        className="invert"
       />
       <nav className="flex gap-3 lg:gap-6 text-xs lg:text-sm font-semibold">
         <Link href="#" className="text-white hover:text-red-500 transition">

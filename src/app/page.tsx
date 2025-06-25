@@ -54,15 +54,15 @@ export default function Home() {
           <div className="flex flex-col gap-3">
             <h3 className="text-2xl font-bold">Uma exata feita para você</h3>
             <p className="text-xs">
-              A Exata, desde 2014, se destaca em Santos-SP pela
-              excelência e compromisso em oferecer produtos de impressão e
-              comunicação visual de alta qualidade a preços justos. Atendendo
-              desde pequenas a grandes empresas, a exata oferece uma ampla
-              gama de produtos, como papelaria personalizada e materiais de
-              comunicação visual, sempre com rigoroso controle de qualidade. A
-              missão da empresa é satisfazer as necessidades específicas de cada
-              cliente, fornecendo soluções personalizadas que reforçam a
-              identidade visual e comunicação dos parceiros.
+              A Exata, desde 2014, se destaca em Santos-SP pela excelência e
+              compromisso em oferecer produtos de impressão e comunicação visual
+              de alta qualidade a preços justos. Atendendo desde pequenas a
+              grandes empresas, a exata oferece uma ampla gama de produtos, como
+              papelaria personalizada e materiais de comunicação visual, sempre
+              com rigoroso controle de qualidade. A missão da empresa é
+              satisfazer as necessidades específicas de cada cliente, fornecendo
+              soluções personalizadas que reforçam a identidade visual e
+              comunicação dos parceiros.
             </p>
           </div>
           <button className="lg:absolute bottom-0 right-0 bg-black text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">

@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { RegisterProvider } from "@/contexts/RegisterContext";
 import { ToastContainer } from "react-toastify";
-import FcmTokenHandler from "@/components/FcmTokenHandler";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "Academy Wallet",
+  title: "Exata Administradore de Bens",
   description: "Fintech Academy Wallet",
 };
 

@@ -23,6 +23,15 @@ export default function Propertie() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  function formatCurrency(value: string | number) {
+    const number = Number(value);
+    if (isNaN(number)) return "";
+    return number.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Aqui você pode enviar os dados para a API ou tratar como preferir
@@ -54,7 +63,7 @@ export default function Propertie() {
             index === 0
               ? "font-semibold text-[#393B3C] border-b-[0.125rem] border-red-500"
               : "font-normal text-[#5C6164] border-b-[0.125rem] border-white"
-          } text-sm mt-auto hover:cursor-pointer pb-[0.625rem]`}
+          } text-sm mt-auto hover:cursor-default pb-[0.625rem]`}
         >
           Informações
         </h3>
@@ -63,7 +72,7 @@ export default function Propertie() {
             index === 1
               ? "font-semibold text-[#393B3C] border-b-[0.125rem] border-red-500"
               : "font-normal text-[#5C6164] border-b-[0.125rem] border-white"
-          } text-sm mt-auto hover:cursor-pointer pb-[0.625rem]`}
+          } text-sm mt-auto hover:cursor-default pb-[0.625rem]`}
         >
           Fotos
         </h3>
@@ -135,7 +144,7 @@ export default function Propertie() {
               </label>
               <input
                 type="number"
-                name="bathrooms"
+                name="garages"
                 value={form.garages}
                 onChange={handleChange}
                 className="w-full border rounded px-3 py-2 mb-1"
@@ -207,15 +216,25 @@ export default function Propertie() {
             <div className="w-full h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
               <label className="cursor-pointer text-gray-500 hover:text-gray-600">
                 <input type="file" accept="image/*" className="hidden" />
-                <div>
-                  <span className="pl-1">+</span>
-                  <span className="">Adicione a foto principal</span>
+                <div className="flex gap-1 h-full">
+                  <span className="">+</span>
+                  <span>Adicione a foto principal</span>
                 </div>
               </label>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">a</div>
+          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
+            <div className="w-full h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
+              <label className="cursor-pointer text-gray-500 hover:text-gray-600">
+                <input type="file" accept="image/*" className="hidden" />
+                <div className="flex gap-1 h-full">
+                  <span className="">+</span>
+                  <span>Adicione as outras fotos</span>
+                </div>
+              </label>
+            </div>
+          </div>
         </div>
 
         <div className="w-full flex justify-end gap-3 mt-3">

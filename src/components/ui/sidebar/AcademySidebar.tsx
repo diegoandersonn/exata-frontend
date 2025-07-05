@@ -46,30 +46,35 @@ export function AcademySidebar() {
           <div
             className={`${
               state === "collapsed" ? "hidden" : "visible"
-            } fixed mt-6 cursor-pointer w-fit flex`}
+            } fixed mt-6 cursor-pointer w-fit flex mr-[3.5rem]`}
           >
-            {/* <Image
-              id="exata-logo"
-              src="/exata-logo.svg"
-              alt="Logo da Exata administradora de bens versao em branco"
-              title="Logo da Exata"
-              width={60}
-              height={60}
-              className={`cursor-pointer invert mt-[-0.75rem]`}
-              onClick={() => push("/admin/properties")}
-            /> */}
-            <h1 className="text-white font-bold text-lg">EXATA</h1>
+            <div>
+              <Image
+                id="exata-logo"
+                src="/exata-logo.svg"
+                alt="Logo da Exata administradora de bens versao em branco"
+                title="Logo da Exata"
+                width={30}
+                height={30}
+                className={`cursor-pointer invert mt-[-0.28rem]`}
+                onClick={() => push("/admin/properties")}
+              />
+              <div className="bg-white w-[1rem] h-[0.25rem] absolute left-1 bottom-[0.33rem] z-20"></div>
+            </div>
+            <h1 className="text-white font-bold text-lg h-full self-end pb-[0.05rem] absolute left-[3.1rem] -translate-x-1/2 bottom-0 z-30 pointer-events-none">
+              XATA
+            </h1>
           </div>
           <Image
             id="exata-logo"
             src="/exata-logo.svg"
             alt="Logo da Exata administradora de bens versao em branco"
             title="Logo da Exata"
-            width={60}
-            height={60}
+            width={45}
+            height={45}
             className={`${
               state !== "collapsed" ? "hidden" : "visible"
-            } cursor-pointer invert mt-[-1rem]`}
+            } cursor-pointer invert mt-[-0.85rem] mb-[-0.5rem]`}
             onClick={() => push("/admin/properties")}
           />
         </SidebarGroup>

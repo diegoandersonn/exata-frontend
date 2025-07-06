@@ -20,11 +20,11 @@ export default function Home() {
               como ajudamos nossos clientes?
             </h4>
             <h1 className="text-3xl md:text-4xl lg:text-7xl">
-              Criamos soluções <br />
-              digitais que geram <br /> resultados
+              Oferecemos gestão <br />
+              de imóveis com <br /> proximidade real
             </h1>
           </div>
-          <button className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-48 lg:h-8 rounded-3xl border-none font-bold bg-white text-zinc-400 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300">
+          <button className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-48 lg:h-8 rounded-3xl border-none font-bold bg-white text-red-500 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300">
             Saiba mais!
           </button>
         </div>
@@ -65,7 +65,7 @@ export default function Home() {
               comunicação dos parceiros.
             </p>
           </div>
-          <button className="lg:absolute bottom-0 right-0 bg-black text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">
+          <button className="lg:absolute bottom-0 right-0 bg-red-700 text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">
             conheça nossos imóveis!
           </button>
         </div>

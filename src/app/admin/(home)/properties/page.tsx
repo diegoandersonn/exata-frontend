@@ -19,7 +19,6 @@ export default function Properties() {
     "Ações",
   ];
 
-
   useEffect(() => {
     const handleClick = () => setActiveMenu(null);
     if (activeMenu !== null) {
@@ -66,7 +65,7 @@ export default function Properties() {
           Imóveis
         </h1>
         <button
-          onClick={() => router.push("/admin/properties/propertie")}
+          onClick={() => router.push("/admin/properties/property")}
           className="w-[4.25rem] h-[2.5rem] rounded-lg text-white font-semibold text-sm bg-red-600 hover:bg-red-700"
         >
           Novo

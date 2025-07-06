@@ -3,11 +3,15 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useGetProperties from "@/hooks/use-getProperties";
+import useDeleteProperty from "@/hooks/use-deleteProperty";
+import useUpdateProperty from "@/hooks/use-updateProperty";
 
 export default function Properties() {
   const [index, setIndex] = useState<number>(0);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const { properties, isLoading, isError } = useGetProperties();
+  const deleteProperty = useDeleteProperty();
+  const updateProperty = useUpdateProperty();
   const router = useRouter();
 
   const listHeader = [
@@ -38,25 +42,9 @@ export default function Properties() {
   }
 
   // Filtra os imóveis conforme o tab selecionado
-  // const properties = properties.filter((property) =>
-  //   index === 0 ? property.ativo : !property.ativo
-  // );
-
-  // Função para inativar imóvel
-  // const handleInactivate = (idx: number) => {
-  //   setProperties((prev) =>
-  //     prev.map((item, i) => (i === idx ? { ...item, ativo: false } : item))
-  //   );
-  //   setActiveMenu(null);
-  // };
-
-  // // Função para ativar imóvel
-  // const handleActivate = (idx: number) => {
-  //   setProperties((prev) =>
-  //     prev.map((item, i) => (i === idx ? { ...item, ativo: true } : item))
-  //   );
-  //   setActiveMenu(null);
-  // };
+  const activeProperties = properties.filter((property) =>
+    index === 0 ? property.ativo : !property.ativo
+  );
 
   return (
     <main className="mt-[0.5rem]">
@@ -110,7 +98,7 @@ export default function Properties() {
             </h3>
           ))}
         </div>
-        {properties.map((property, idx) => (
+        {activeProperties.map((property, idx) => (
           <div
             key={idx}
             className="grid grid-cols-6 gap-[1.5rem] items-center border-t border-gray-100 py-3 px-2 hover:bg-gray-50 transition relative"
@@ -156,22 +144,16 @@ export default function Properties() {
                   {index === 0 ? (
                     <button
                       className="px-4 py-2 hover:bg-gray-100 text-sm text-[#393B3C] text-left"
-                      // onClick={() =>
-                      //   handleInactivate(
-                      //     properties.findIndex((p) => p === property)
-                      //   )
-                      // }
+                      onClick={() => deleteProperty.mutate(property._id)}
                     >
                       Inativar
                     </button>
                   ) : (
                     <button
                       className="px-4 py-2 hover:bg-gray-100 text-sm text-[#393B3C] text-left"
-                      // onClick={() =>
-                      //   handleActivate(
-                      //     properties.findIndex((p) => p === property)
-                      //   )
-                      // }
+                      onClick={() =>
+                        updateProperty.mutate({ ...property, ativo: true })
+                      }
                     >
                       Ativar
                     </button>

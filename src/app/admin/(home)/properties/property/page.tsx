@@ -380,7 +380,7 @@ export default function Propertie() {
               />
             </div>
           </div>
-{/* 
+          {/* 
           <div className="bg-white rounded-lg w-full h-fit flex p-6 gap-4 flex-wrap">
             
             <div className="w-1/2 min-w-[200px] flex flex-col items-center">

@@ -20,13 +20,12 @@ export const PasswordRecoveryFlow: React.FC = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
 
   const handleEmailSubmit = async (submittedEmail: string) => {
 
     try {    
-
-      const response = await fetch("http://localhost:3000/auth/request-otp", {
+      const response = await fetch("http://localhost:3000/auth/send-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,8 +33,6 @@ export const PasswordRecoveryFlow: React.FC = () => {
         body: JSON.stringify({ email: submittedEmail }),
       });
 
-      const responseData: ApiResponse = await response.json();
-     
 
       if (!response.ok) {
         if (response.status === 404) {
@@ -48,11 +45,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
           toast.error(
             "Erro interno do servidor. Por favor, tente novamente mais tarde."
           );
-          return;
         }
-
-        toast.error(responseData.message || "Erro ao processar solicitação");
-        return;
       }
 
       setEmail(submittedEmail);
@@ -60,7 +53,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
       toast.success(
         "Código enviado com sucesso! Verifique sua caixa de entrada."
       );
-    } catch {     
+    } catch {
       toast.error("Erro ao processar solicitação. Tente novamente.");
     }
   };
@@ -69,7 +62,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
    
     try {
       
-      const response = await fetch("http://localhost:3000/auth/validate-otp", {
+      const response = await fetch("http://localhost:3000/auth/verify-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +88,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
         return false;
       }
 
-      setToken(data.data.recoverPasswordToken);
+      // setToken(data.data.recoverPasswordToken);
       setCurrentStep(3);
       toast.success("Código validado com sucesso!");
       return true;
@@ -108,7 +101,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
 
   const handleResendCode = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/request-otp", {
+      const response = await fetch("http://localhost:3000/auth/send-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,15 +126,15 @@ export const PasswordRecoveryFlow: React.FC = () => {
     try {
      
       const response = await fetch(
-        "http://localhost:3000/auth/change-password",
+        "http://localhost:3000/auth/redefine-password",
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            newPassword: password,
+            email,
+            password,
           }),
         }
       );     

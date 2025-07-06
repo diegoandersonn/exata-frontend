@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -13,7 +13,34 @@ export default function Propertie() {
     garages: "",
     rent: "",
     tax: "",
+    reajusteType: "",
+    horarioVisita: "",
+    area: "",
+    descricao: "",
   });
+
+  // const [mainImageFile, setMainImageFile] = useState<File | null>(null);
+  // const [otherImages, setOtherImages] = useState<FileList | null>(null);
+  // const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
+  // const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
+
+  // useEffect(() => {
+  //   if (mainImageFile) {
+  //     setMainImagePreview(URL.createObjectURL(mainImageFile));
+  //   } else {
+  //     setMainImagePreview(null);
+  //   }
+  // }, [mainImageFile]);
+
+  // useEffect(() => {
+  //   if (otherImages && otherImages.length > 0) {
+  //     setOtherImagesPreview(
+  //       Array.from(otherImages).map((file) => URL.createObjectURL(file))
+  //     );
+  //   } else {
+  //     setOtherImagesPreview([]);
+  //   }
+  // }, [otherImages]);
 
   const router = useRouter();
 
@@ -32,9 +59,43 @@ export default function Propertie() {
     });
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.name === "mainImage" && e.target.files && e.target.files[0]) {
+  //     setMainImageFile(e.target.files[0]);
+  //   }
+  //   if (e.target.name === "otherImages" && e.target.files) {
+  //     setOtherImages(e.target.files);
+  //   }
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você pode enviar os dados para a API ou tratar como preferir
+    const data = new FormData();
+    data.append("propertyType", form.propertyType);
+    data.append("bedrooms", form.bedrooms);
+    data.append("bathrooms", form.bathrooms);
+    data.append("garages", form.garages);
+    data.append("rent", form.rent);
+    data.append("tax", form.tax);
+    data.append("reajusteType", form.reajusteType);
+    data.append("horarioVisita", form.horarioVisita);
+    data.append("area", form.area);
+    data.append("descricao", form.descricao);
+
+    // if (mainImageFile) {
+    //   data.append("mainImage", mainImageFile);
+    // }
+    // if (otherImages) {
+    //   Array.from(otherImages).forEach((file, idx) => {
+    //     data.append("otherImages", file);
+    //   });
+    // }
+
+    await fetch("http://localhost:3000/properties", {
+      method: "POST",
+      body: data,
+    });
+
     alert("Propriedade cadastrada!");
   };
 
@@ -207,34 +268,114 @@ export default function Propertie() {
               />
             </div>
           </div>
-        </div>
 
-        {/* Fotos do imóvel */}
-        <div className={`${index === 1 ? "block" : "hidden"} space-y-3`}>
-          {/* Tipo do imóvel */}
-          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
-            <div className="w-full h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
-              <label className="cursor-pointer text-gray-500 hover:text-gray-600">
-                <input type="file" accept="image/*" className="hidden" />
-                <div className="flex gap-1 h-full">
-                  <span className="">+</span>
-                  <span>Adicione a foto principal</span>
-                </div>
+          <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between gap-4 flex-wrap">
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Tipo de Reajuste
               </label>
+              <select
+                name="reajusteType"
+                value={form.reajusteType}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2 mb-1"
+                required
+              >
+                <option value="">Selecione</option>
+                <option value="anual">Anual</option>
+                <option value="semestral">Semestral</option>
+                <option value="bianual">Bianual</option>
+              </select>
+            </div>
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Horário de Visita
+              </label>
+              <input
+                type="text"
+                name="horarioVisita"
+                value={form.horarioVisita}
+                onChange={handleChange}
+                placeholder="09:00 - 18:00"
+                className="w-full border rounded px-3 py-2 mb-1"
+                required
+              />
+            </div>
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Área (m²)
+              </label>
+              <input
+                type="number"
+                name="area"
+                value={form.area}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2 mb-1"
+                min={0}
+                required
+              />
+            </div>
+            <div className="w-full mt-4">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Descrição
+              </label>
+              <textarea
+                name="descricao"
+                value={form.descricao}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2 mb-1"
+                required
+              />
             </div>
           </div>
-
-          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
-            <div className="w-full h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
-              <label className="cursor-pointer text-gray-500 hover:text-gray-600">
-                <input type="file" accept="image/*" className="hidden" />
-                <div className="flex gap-1 h-full">
-                  <span className="">+</span>
-                  <span>Adicione as outras fotos</span>
-                </div>
+{/* 
+          <div className="bg-white rounded-lg w-full h-fit flex p-6 gap-4 flex-wrap">
+            
+            <div className="w-1/2 min-w-[200px] flex flex-col items-center">
+              <label className="block text-[0.9rem] font-medium mb-2">
+                Foto principal
               </label>
+              <input
+                type="file"
+                accept="image/*"
+                name="mainImage"
+                onChange={handleFileChange}
+                required
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+              />
+              {mainImagePreview && (
+                <img
+                  src={mainImagePreview}
+                  alt="Pré-visualização da foto principal"
+                  className="mt-2 rounded max-h-40 object-contain border"
+                />
+              )}
             </div>
-          </div>
+            
+            <div className="w-1/2 min-w-[200px] flex flex-col items-center">
+              <label className="block text-[0.9rem] font-medium mb-2">
+                Outras fotos
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                name="otherImages"
+                onChange={handleFileChange}
+                multiple
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+              />
+              <div className="flex flex-wrap gap-2 mt-2">
+                {otherImagesPreview.map((src, idx) => (
+                  <img
+                    key={idx}
+                    src={src}
+                    alt={`Pré-visualização ${idx + 1}`}
+                    className="rounded max-h-24 object-contain border"
+                  />
+                ))}
+              </div>
+            </div>
+          </div> */}
         </div>
 
         <div className="w-full flex justify-end gap-3 mt-3">

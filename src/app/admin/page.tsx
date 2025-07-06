@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -55,15 +55,23 @@ export default function LoginPage() {
   async function onSubmit(values: LoginFormData) {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/admin/login", {
+      const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password
+        }),
       });
 
+      console.log(response.status);
+      console.log(response.ok)
+
       if (!response.ok) {
+        console.log(response.status)
+
         if (response.status === 403) {
           toast.error("Muitas tentativas. Tente novamente em 10 minutos");
           form.setError("root", {
@@ -82,12 +90,14 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      if (!data.data.token) {
+      console.log(data);
+
+      if (!data.token) {
         throw new Error("Token não recebido do servidor");
       }
 
-      setAuth({ token: data.data.token });
-      router.replace("/wallet");
+      setAuth({ token: data.token });
+      router.replace("/admin/properties");
     } catch {
       form.setError("root", {
         message: "Ocorreu um erro ao fazer login. Tente novamente.",

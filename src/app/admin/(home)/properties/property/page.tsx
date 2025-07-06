@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Propertie() {
+  const searchParams = useSearchParams();
+  const propertyId = searchParams.get("propertyId");
   const [index, setIndex] = useState<number>(0);
   const [form, setForm] = useState({
     mainImage: "",

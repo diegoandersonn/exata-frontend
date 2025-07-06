@@ -1,7 +1,7 @@
 import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetProperty = (propertyId: string) => {
+const useGetProperty = (propertyId: string | null) => {
   const { data, isError, isLoading } = useQuery<PropertyType>({
     queryKey: ["get-property", propertyId],
     queryFn: async () => {

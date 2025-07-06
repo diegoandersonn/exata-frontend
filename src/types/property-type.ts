@@ -17,7 +17,4 @@ export type PropertyType = {
   banheiros: number;
   vagasGaragem: number;
   others?: string;
-  createdAt: string; 
-  updatedAt: string; 
-  __v: number;
 };

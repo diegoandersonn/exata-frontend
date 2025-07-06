@@ -2,23 +2,41 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import useGetProperty from "@/hooks/use-getProperty";
+import useUpdateProperty from "@/hooks/use-updateProperty";
+import { PropertyTypeEnum } from "@/types/property-type-enum";
 
 export default function Propertie() {
   const searchParams = useSearchParams();
+  const updateProperty = useUpdateProperty();
   const propertyId = searchParams.get("propertyId");
   const [index, setIndex] = useState<number>(0);
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
   const [triedNext, setTriedNext] = useState(false);
-
+  const { property, isError, isLoading } = useGetProperty(propertyId);
   const [form, setForm] = useState({
     mainImage: "",
-    propertyType: "",
-    bedrooms: "",
-    bathrooms: "",
-    garages: "",
-    rent: "",
-    tax: "",
+    propertyType: PropertyTypeEnum.apartment,
+    bedrooms: 0,
+    bathrooms: 0,
+    garages: 0,
+    rent: 0,
+    tax: 0,
   });
+
+  useEffect(() => {
+    if (property) {
+      setForm({
+        mainImage: property.imagem,
+        propertyType: property.tipo,
+        bedrooms: property.dormitorios,
+        bathrooms: property.banheiros,
+        garages: property.vagasGaragem,
+        rent: property.aluguel,
+        tax: property.iptu,
+      });
+    }
+  }, [property]);
 
   const router = useRouter();
 
@@ -60,13 +78,40 @@ export default function Propertie() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você pode enviar os dados para a API ou tratar como preferir
+    if (property) {
+      updateProperty.mutate({
+        _id: property._id,
+        imagem: form.mainImage,
+        tipo: form.propertyType,
+        dormitorios: form.bedrooms,
+        banheiros: form.bathrooms,
+        vagasGaragem: form.garages,
+        aluguel: form.rent,
+        iptu: form.tax,
+        ativo: true,
+        nome: property.nome,
+        descricao: property.descricao,
+        prazo: property.prazo,
+        tipoReajuste: property.tipoReajuste,
+        horarioVisita: property.horarioVisita,
+        area: property.area,
+      })
+    } else {
+      
+    }
     alert("Propriedade cadastrada!");
   };
 
   useEffect(() => {
     console.log(mainImagePreview);
   }, [mainImagePreview]);
+
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
+  if (isError) {
+    return <div>Erro ao carregar o imóvel</div>;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[26rem] bg-transparent">
@@ -129,10 +174,8 @@ export default function Propertie() {
               required
             >
               <option value="">Selecione</option>
-              <option value="Apartamento">Apartamento</option>
-              <option value="Casa">Casa</option>
-              <option value="Studio">Studio</option>
-              <option value="Kitnet">Kitnet</option>
+              <option value={PropertyTypeEnum.apartment}>Apartamento</option>
+              <option value={PropertyTypeEnum.house}>Casa</option>
             </select>
           </div>
 
@@ -239,7 +282,7 @@ export default function Propertie() {
               <input
                 type="number"
                 name="rentWithTax"
-                value={String(parseFloat(form.rent) + parseFloat(form.tax))}
+                value={String(form.rent + form.tax)}
                 onChange={handleChange}
                 disabled
                 className={`${
@@ -311,13 +354,14 @@ export default function Propertie() {
           </button>
 
           <button
+            type="button"
             onClick={() => router.push("/admin/properties")}
             className="w-1/6 text-red-600 bg-transparent py-2 rounded border-2 border-transparent font-semibold hover:border-2 hover:text-red-700 hover:border-red-700 transition"
           >
             Cancelar
           </button>
           <button
-            type="button"
+            type="submit"
             onClick={index === 0 ? handleNext : handleSubmit}
             className="bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"
           >

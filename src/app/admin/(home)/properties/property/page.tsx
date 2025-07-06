@@ -1,42 +1,61 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import useGetProperty from "@/hooks/use-getProperty";
-import useUpdateProperty from "@/hooks/use-updateProperty";
-import { PropertyTypeEnum } from "@/types/property-type-enum";
+import { useRouter } from "next/navigation";
 
 export default function Propertie() {
-  const searchParams = useSearchParams();
-  const updateProperty = useUpdateProperty();
-  const propertyId = searchParams.get("propertyId");
+  // const searchParams = useSearchParams();
+  // const propertyId = searchParams.get("propertyId");
   const [index, setIndex] = useState<number>(0);
-  const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
+  const [mainImagePreview] = useState<string | null>(null);
   const [triedNext, setTriedNext] = useState(false);
-  const { property, isError, isLoading } = useGetProperty(propertyId);
+
   const [form, setForm] = useState({
     mainImage: "",
-    propertyType: PropertyTypeEnum.apartment,
-    bedrooms: 0,
-    bathrooms: 0,
-    garages: 0,
-    rent: 0,
-    tax: 0,
+    propertyType: "",
+    bedrooms: "",
+    bathrooms: "",
+    garages: "",
+    rent: "",
+    tax: "",
+    reajusteType: "",
+    horarioVisita: "",
+    area: "",
+    descricao: "",
   });
 
-  useEffect(() => {
-    if (property) {
-      setForm({
-        mainImage: property.imagem,
-        propertyType: property.tipo,
-        bedrooms: property.dormitorios,
-        bathrooms: property.banheiros,
-        garages: property.vagasGaragem,
-        rent: property.aluguel,
-        tax: property.iptu,
-      });
+  const handleNext = (e: React.MouseEvent) => {
+    if (!isStepOneValid()) {
+      setTriedNext(true);
+      e.preventDefault();
+      return;
     }
-  }, [property]);
+    setTriedNext(false);
+    setIndex(1);
+  };
+
+  // const [mainImageFile, setMainImageFile] = useState<File | null>(null);
+  // const [otherImages, setOtherImages] = useState<FileList | null>(null);
+  // const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
+  // const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
+
+  // useEffect(() => {
+  //   if (mainImageFile) {
+  //     setMainImagePreview(URL.createObjectURL(mainImageFile));
+  //   } else {
+  //     setMainImagePreview(null);
+  //   }
+  // }, [mainImageFile]);
+
+  // useEffect(() => {
+  //   if (otherImages && otherImages.length > 0) {
+  //     setOtherImagesPreview(
+  //       Array.from(otherImages).map((file) => URL.createObjectURL(file))
+  //     );
+  //   } else {
+  //     setOtherImagesPreview([]);
+  //   }
+  // }, [otherImages]);
 
   const router = useRouter();
 
@@ -57,61 +76,58 @@ export default function Propertie() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setMainImagePreview(url);
-      setForm({ ...form, mainImage: file.name });
-    }
-  };
+  // function formatCurrency(value: string | number) {
+  //   const number = Number(value);
+  //   if (isNaN(number)) return "";
+  //   return number.toLocaleString("pt-BR", {
+  //     style: "currency",
+  //     currency: "BRL",
+  //   });
+  // }
 
-  const handleNext = (e: React.MouseEvent) => {
-    if (!isStepOneValid()) {
-      setTriedNext(true);
-      e.preventDefault();
-      return;
-    }
-    setTriedNext(false);
-    setIndex(1);
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.name === "mainImage" && e.target.files && e.target.files[0]) {
+  //     setMainImageFile(e.target.files[0]);
+  //   }
+  //   if (e.target.name === "otherImages" && e.target.files) {
+  //     setOtherImages(e.target.files);
+  //   }
+  // };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (property) {
-      updateProperty.mutate({
-        _id: property._id,
-        imagem: form.mainImage,
-        tipo: form.propertyType,
-        dormitorios: form.bedrooms,
-        banheiros: form.bathrooms,
-        vagasGaragem: form.garages,
-        aluguel: form.rent,
-        iptu: form.tax,
-        ativo: true,
-        nome: property.nome,
-        descricao: property.descricao,
-        prazo: property.prazo,
-        tipoReajuste: property.tipoReajuste,
-        horarioVisita: property.horarioVisita,
-        area: property.area,
-      })
-    } else {
-      
-    }
+    const data = new FormData();
+    data.append("propertyType", form.propertyType);
+    data.append("bedrooms", form.bedrooms);
+    data.append("bathrooms", form.bathrooms);
+    data.append("garages", form.garages);
+    data.append("rent", form.rent);
+    data.append("tax", form.tax);
+    data.append("reajusteType", form.reajusteType);
+    data.append("horarioVisita", form.horarioVisita);
+    data.append("area", form.area);
+    data.append("descricao", form.descricao);
+
+    // if (mainImageFile) {
+    //   data.append("mainImage", mainImageFile);
+    // }
+    // if (otherImages) {
+    //   Array.from(otherImages).forEach((file, idx) => {
+    //     data.append("otherImages", file);
+    //   });
+    // }
+
+    await fetch("http://localhost:3000/properties", {
+      method: "POST",
+      body: data,
+    });
+
     alert("Propriedade cadastrada!");
   };
 
   useEffect(() => {
     console.log(mainImagePreview);
   }, [mainImagePreview]);
-
-  if (isLoading) {
-    return <div>Carregando...</div>;
-  }
-  if (isError) {
-    return <div>Erro ao carregar o imóvel</div>;
-  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[26rem] bg-transparent">
@@ -174,8 +190,10 @@ export default function Propertie() {
               required
             >
               <option value="">Selecione</option>
-              <option value={PropertyTypeEnum.apartment}>Apartamento</option>
-              <option value={PropertyTypeEnum.house}>Casa</option>
+              <option value="Apartamento">Apartamento</option>
+              <option value="Casa">Casa</option>
+              <option value="Studio">Studio</option>
+              <option value="Kitnet">Kitnet</option>
             </select>
           </div>
 
@@ -282,7 +300,7 @@ export default function Propertie() {
               <input
                 type="number"
                 name="rentWithTax"
-                value={String(form.rent + form.tax)}
+                value={String(parseFloat(form.rent) + parseFloat(form.tax))}
                 onChange={handleChange}
                 disabled
                 className={`${
@@ -294,53 +312,122 @@ export default function Propertie() {
               />
             </div>
           </div>
-        </div>
 
-        {/* Fotos do imóvel */}
-        <div className={`${index === 1 ? "block" : "hidden"} space-y-3`}>
-          {/* Tipo do imóvel */}
-          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
-            <div className="w-full h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
-              <label className="cursor-pointer text-gray-500 hover:text-gray-600">
-                {mainImagePreview === null && (
-                  <>
-                    <input type="file" accept="image/*" className="hidden" />
-                    <div className="flex gap-1 h-full">
-                      <span className="">+</span>
-                      <span>Adicione a foto principal</span>
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleMainImageChange}
-                    />
-                  </>
-                )}
-                {mainImagePreview && (
-                  <div className="mt-2 flex justify-center">
-                    <Image
-                      src={mainImagePreview}
-                      alt="Pré-visualização"
-                      className="max-h-32 rounded shadow"
-                    />
-                  </div>
-                )}
+          <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between gap-4 flex-wrap">
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Tipo de Reajuste
               </label>
+              <select
+                name="reajusteType"
+                value={form.reajusteType}
+                onChange={handleChange}
+                className={`${
+                  triedNext && !form.reajusteType ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                required
+              >
+                <option value="">Selecione</option>
+                <option value="anual">Anual</option>
+                <option value="semestral">Semestral</option>
+                <option value="bianual">Bianual</option>
+              </select>
+            </div>
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Horário de Visita
+              </label>
+              <input
+                type="text"
+                name="horarioVisita"
+                value={form.horarioVisita}
+                onChange={handleChange}
+                placeholder="09:00 - 18:00"
+                className={`${
+                  triedNext && !form.horarioVisita ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                required
+              />
+            </div>
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Área (m²)
+              </label>
+              <input
+                type="number"
+                name="area"
+                value={form.area}
+                onChange={handleChange}
+                className={`${
+                  triedNext && !form.area ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                min={0}
+                required
+              />
+            </div>
+            <div className="w-full mt-4">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Descrição
+              </label>
+              <textarea
+                name="descricao"
+                value={form.descricao}
+                onChange={() => handleChange}
+                className={`${
+                  triedNext && !form.descricao ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                required
+              />
             </div>
           </div>
-
-          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
-            <div className="w-full h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
-              <label className="cursor-pointer text-gray-500 hover:text-gray-600">
-                <input type="file" accept="image/*" className="hidden" />
-                <div className="flex gap-1 h-full">
-                  <span className="">+</span>
-                  <span>Adicione as outras fotos</span>
-                </div>
+{/* 
+          <div className="bg-white rounded-lg w-full h-fit flex p-6 gap-4 flex-wrap">
+            
+            <div className="w-1/2 min-w-[200px] flex flex-col items-center">
+              <label className="block text-[0.9rem] font-medium mb-2">
+                Foto principal
               </label>
+              <input
+                type="file"
+                accept="image/*"
+                name="mainImage"
+                onChange={handleFileChange}
+                required
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+              />
+              {mainImagePreview && (
+                <img
+                  src={mainImagePreview}
+                  alt="Pré-visualização da foto principal"
+                  className="mt-2 rounded max-h-40 object-contain border"
+                />
+              )}
             </div>
-          </div>
+            
+            <div className="w-1/2 min-w-[200px] flex flex-col items-center">
+              <label className="block text-[0.9rem] font-medium mb-2">
+                Outras fotos
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                name="otherImages"
+                onChange={handleFileChange}
+                multiple
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+              />
+              <div className="flex flex-wrap gap-2 mt-2">
+                {otherImagesPreview.map((src, idx) => (
+                  <img
+                    key={idx}
+                    src={src}
+                    alt={`Pré-visualização ${idx + 1}`}
+                    className="rounded max-h-24 object-contain border"
+                  />
+                ))}
+              </div>
+            </div>
+          </div> */}
         </div>
 
         <div className="w-full flex justify-end gap-3 mt-3">
@@ -354,14 +441,13 @@ export default function Propertie() {
           </button>
 
           <button
-            type="button"
             onClick={() => router.push("/admin/properties")}
             className="w-1/6 text-red-600 bg-transparent py-2 rounded border-2 border-transparent font-semibold hover:border-2 hover:text-red-700 hover:border-red-700 transition"
           >
             Cancelar
           </button>
           <button
-            type="submit"
+            type="button"
             onClick={index === 0 ? handleNext : handleSubmit}
             className="bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"
           >

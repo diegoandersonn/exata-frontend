@@ -6,7 +6,7 @@ const useGetProperty = (propertyId: string | null) => {
     queryKey: ["get-property", propertyId],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:3333/property/${propertyId}`,
+        `http://localhost:3000/property/${propertyId}`,
         {
           method: "GET",
           headers: {

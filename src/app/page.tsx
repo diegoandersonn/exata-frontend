@@ -2,14 +2,9 @@
 import Image from "next/image";
 import santosFoto from "../../public/orla-de-santos-vemelha.png";
 import Carousel from "@/components/ui/carousel";
-import { useState } from "react";
-import CarouselTypeSelector from "@/components/ui/caurosel-type-selector";
 import Header from "@/components/ui/header";
 
 export default function Home() {
-  const [carouselType, setCarouselType] = useState<
-    "super-destaque" | "comprar" | "alugar"
-  >("super-destaque");
   return (
     <div className="flex flex-col">
       <Header />
@@ -36,7 +31,6 @@ export default function Home() {
       </div>
       <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
         <h1 className="font-bold text-xl lg:text-4xl">Oportunidades</h1>
-        <CarouselTypeSelector value={carouselType} onChange={setCarouselType} />
         <Carousel />
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-8 p-10">

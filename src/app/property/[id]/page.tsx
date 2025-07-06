@@ -126,7 +126,7 @@ export default function PropertyPage() {
         <div className="xl:absolute right-[300px] -top-[70px] min-w[50px] lg:min-w-[350px] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">
           <h3 className="font-medium">Valor à vista</h3>
           <h1 className="font-bold text-lg lg:text-3xl">R$ {property.aluguel}</h1>
-          <h3 className="text-emerald-600 underline cursor-pointer">
+          <h3 className="text-red-800 underline cursor-pointer">
             Entenda este valor
           </h3>
           <div className="flex flex-col gap-4 text-zinc-500">

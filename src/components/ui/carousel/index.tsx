@@ -1,24 +1,13 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Card from "./card";
 import { useState, useEffect } from "react";
-
-type CardType = {
-  id: string;
-  image: string;
-  title: string;
-  description: string;
-  price: string;
-  code: string;
-  area: string;
-  rooms: string;
-  parkingSpaces: string;
-};
+import useGetProperties from "@/hooks/use-getProperties";
+import PropertyCard from "@/components/property-card";
 
 export default function Carousel() {
   const [maxVisible, setMaxVisible] = useState(4);
   const [position, setPosition] = useState<number[]>([0, 4]);
-  const [cards, setCards] = useState<CardType[]>([]);
+  const { properties, isLoading, isError } = useGetProperties();
 
   useEffect(() => {
     function handleResize() {
@@ -41,44 +30,20 @@ export default function Carousel() {
     setPosition(() => [0, maxVisible]);
   }, [maxVisible]);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("http://localhost:5000/imoveis", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Erro ao buscar dados dos imóveis");
-        }
-        const responseData = await response.json();
-        console.log("Dados recebidos:", responseData);
-        const formattedCards: CardType[] = responseData.map(
-          (item: CardType) => ({
-            id: item.id,
-            image: item.image,
-            title: item.title,
-            description: item.description,
-            price: item.price,
-            code: item.code,
-            area: item.area,
-            rooms: item.rooms,
-            parkingSpaces: item.parkingSpaces,
-          })
-        );
-        setCards(formattedCards);
-      } catch (error) {
-        console.error("Erro na requisição:", error);
-      }
-    }
-    fetchData();
-  }, []);
+  
+  if (!properties) {
+    return <div>Imóveis não encontrados</div>;
+  }
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
+  if (isError) {
+    return <div>Erro</div>;
+  }
 
   function switchCards(direction: "add" | "minus") {
     setPosition(([start, end]) => {
-      if (direction === "add" && end < cards.length) {
+      if (direction === "add" && end < (properties?.length ?? 0)) {
         return [start + 1, end + 1];
       } else if (direction === "minus" && start > 0) {
         return [start - 1, end - 1];
@@ -90,18 +55,18 @@ export default function Carousel() {
   return (
     <div className="flex flex-col items-center justify-between w-full p-4 transition-transform duration-500 ease-in-out">
       <div className="flex gap-4">
-        {cards.slice(position[0], position[1]).map((card) => (
-          <Card
-            key={card.id}
-            id={card.id}
-            image={card.image}
-            title={card.title}
-            description={card.description}
-            price={card.price}
-            code={card.code}
-            area={card.area}
-            rooms={card.rooms}
-            parkingSpaces={card.parkingSpaces}
+        {properties.slice(position[0], position[1]).map((property) => (
+          <PropertyCard
+            key={property._id}
+            id={property._id}
+            image={property.imagem}
+            title={property.nome}
+            description={property.descricao}
+            price={property.aluguel}
+            code={property._id}
+            area={property.area}
+            rooms={property.dormitorios}
+            parkingSpaces={property.vagasGaragem}
           />
         ))}
       </div>

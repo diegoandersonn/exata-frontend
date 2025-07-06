@@ -1,22 +1,11 @@
+import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
-
-type PropertyType = {
-  id: string;
-  image: string;
-  title: string;
-  description: string;
-  price: string;
-  code: string;
-  area: string;
-  rooms: string;
-  parkingSpaces: string;
-};
 
 const useGetProperties = () => {
   const { data, isError, isLoading } = useQuery<PropertyType[]>({
     queryKey: ["get-properties"],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:5000/imoveis`, {
+      const response = await fetch(`http://localhost:3333/property`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -28,6 +17,7 @@ const useGetProperties = () => {
       return await response.json();
     },
   });
+  console.log(data);
   return { properties: data, isLoading, isError };
 };
 export default useGetProperties;

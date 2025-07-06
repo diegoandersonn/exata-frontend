@@ -6,14 +6,14 @@ type Props = {
   image: string;
   title: string;
   description: string;
-  price: string;
+  price: number;
   code: string;
-  area: string;
-  rooms: string;
-  parkingSpaces: string;
+  area: number;
+  rooms: number;
+  parkingSpaces: number;
 };
 
-export default function Card({
+export default function PropertyCard({
   id,
   image,
   title,
@@ -24,15 +24,17 @@ export default function Card({
   rooms,
   parkingSpaces,
 }: Props) {
-    const router = useRouter();
+  const router = useRouter();
   function handleNavigation(): void {
     const url = `/property/${id}`;
     router.push(url);
   }
 
   return (
-    <div className="flex flex-col justify-between gap-2 sm:w-[180px] sm:h-[260px] md:w-[220px] md:h-[320px] lg:w-[260px] lg:h-[380px] xl:w-[320px] xl:h-[440px] rounded-lg shadow-lg border border-gray-300 hover:scale-105 transition-transform duration-300 cursor-pointer group bg-white"
-    onClick={handleNavigation}>
+    <div
+      className="flex flex-col justify-between gap-2 sm:w-[180px] sm:h-[260px] md:w-[220px] md:h-[320px] lg:w-[260px] lg:h-[380px] xl:w-[320px] xl:h-[440px] rounded-lg shadow-lg border border-gray-300 hover:scale-105 transition-transform duration-300 cursor-pointer group bg-white"
+      onClick={handleNavigation}
+    >
       <div>
         <div className="w-full h-[100px] sm:h-[120px] md:h-[160px] lg:h-[250px] relative">
           <Image
@@ -50,8 +52,12 @@ export default function Card({
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex items-center justify-between px-2">
-          <p className="text-xs md:text-sm font-bold text-red-800">R$ {price}</p>
-          <p className="text-xs md:text-sm font-bold">Código. {code}</p>
+          <p className="text-xs md:text-sm font-bold text-red-800">
+            R$ {price}
+          </p>
+          <p className="text-xs md:text-sm font-bold">
+            Código. {code.slice(0, 4)}
+          </p>
         </div>
         <div className="flex items-center justify-between px-2 py-2 md:p-4 font-bold text-[10px] md:text-xs border-t border-gray-300 text-zinc-300 group-hover:text-black">
           <p>{area} m²</p>

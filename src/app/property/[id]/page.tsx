@@ -31,8 +31,8 @@ export default function PropertyPage() {
       <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1">
         <div className="overflow-hidden col-span-1 row-span-1 lg:col-span-2 lg:row-span-2">
           <Image
-            src={property.image}
-            alt={property.title}
+            src={property.imagem}
+            alt={property.nome}
             width={0}
             height={0}
             className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -41,8 +41,8 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.image}
-            alt={property.title}
+            src={property.imagem}
+            alt={property.nome}
             width={0}
             height={0}
             className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -51,8 +51,8 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.image}
-            alt={property.title}
+            src={property.imagem}
+            alt={property.nome}
             width={0}
             height={0}
             className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -61,8 +61,8 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.image}
-            alt={property.title}
+            src={property.imagem}
+            alt={property.nome}
             width={0}
             height={0}
             className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -71,8 +71,8 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden relative">
           <Image
-            src={property.image}
-            alt={property.title}
+            src={property.imagem}
+            alt={property.nome}
             width={0}
             height={0}
             className="object-cover w-full h-full brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -87,8 +87,8 @@ export default function PropertyPage() {
         <div className="flex flex-col gap-8">
           <div className="flex items-start justify-between">
             <h1 className="font-bold text-base lg:text-2xl w-[70%]">
-              Apartamento à venda em {property.title} com {property.area} m²,{" "}
-              {property.rooms} quartos e {property.parkingSpaces} vagas
+              Apartamento à venda em {property.nome} com {property.area} m²,{" "}
+              {property.dormitorios} quartos e {property.vagasGaragem} vagas
             </h1>
             <div className="flex gap-2">
               <button className="p-1 rounded-lg hover:bg-zinc-200 transition-colors duration-300">
@@ -102,47 +102,47 @@ export default function PropertyPage() {
               </button>
             </div>
           </div>
-          <div className="flex gap-4 justify-between lg:gap-8">
+          <div className="flex gap-4 lg:gap-8">
             <div className="flex gap-1 lg:gap-3 items-center">
               <CarFront className="w-4 h-4 lg:w-6 lg:h-6" />
               <h3 className="text-xs lg:text-base font-semibold">
-                {property.parkingSpaces} vagas
+                {property.vagasGaragem} vagas
               </h3>
             </div>
             <div className="flex gap-1 lg:gap-3 items-center">
               <BedSingle className="w-4 h-4 lg:w-6 lg:h-6" />
               <h3 className="text-xs lg:text-base font-semibold">
-                {property.rooms} quartos
+                {property.dormitorios} quartos
               </h3>
             </div>
             <div className="flex gap-1 lg:gap-3 items-center">
               <Bath className="w-4 h-4 lg:w-6 lg:h-6" />
               <h3 className="text-xs lg:text-base font-semibold">
-                {property.rooms} banheiros
+                {property.banheiros} banheiros
               </h3>
             </div>
           </div>
         </div>
         <div className="xl:absolute right-[300px] -top-[70px] min-w[50px] lg:min-w-[350px] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">
           <h3 className="font-medium">Valor à vista</h3>
-          <h1 className="font-bold text-lg lg:text-3xl">R$ {property.price}</h1>
+          <h1 className="font-bold text-lg lg:text-3xl">R$ {property.aluguel}</h1>
           <h3 className="text-emerald-600 underline cursor-pointer">
             Entenda este valor
           </h3>
           <div className="flex flex-col gap-4 text-zinc-500">
-            <div className="flex justify-between items-center">
+            {/* <div className="flex justify-between items-center">
               <h2 className="text-sm lg:text-base">Parcelas a partir de</h2>
               <p className="text-sm lg:text-base text-emerald-600">
                 R$ 19.534/mês
               </p>
-            </div>
-            <div className="flex justify-between items-center">
+            </div> */}
+            {/* <div className="flex justify-between items-center">
               <h2 className="text-sm lg:text-base">Condomínio</h2>
               <p className="text-sm lg:text-base text-black">R$ 1.680/mês</p>
-            </div>
+            </div> */}
             <div className="flex justify-between items-center">
               <h2 className="text-sm lg:text-base">IPTU</h2>
-              <p className="text-sm lg:text-base text-black">R$ 3.100/ano</p>
+              <p className="text-sm lg:text-base text-black">R$ {property.iptu}/ano</p>
             </div>
           </div>
         </div>

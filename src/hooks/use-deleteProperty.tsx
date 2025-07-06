@@ -4,7 +4,7 @@ const useDeleteProperty = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (propertyId: string) => {
-      await fetch(`http://localhost:3000/property/${propertyId}`, {
+      await fetch(`http://localhost:3333/property/${propertyId}`, {
         method: "DELETE",
       });
     },

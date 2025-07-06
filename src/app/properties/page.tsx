@@ -4,7 +4,7 @@ import FilterDropdown from "@/components/ui/filter-dropdown";
 import Header from "@/components/ui/header";
 import useGetProperties from "@/hooks/use-getProperties";
 import { Plus } from "lucide-react";
-import PropertyCard from "@/components/property-card";
+import PropertyCard from "@/components/ui/property-card";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -19,7 +19,7 @@ export default function PropertiesPage() {
   if (isError) {
     return <div>Erro</div>;
   }
-
+  console.log(properties[0].imagens[0]);
   return (
     <div className="flex flex-col gap-6">
       <Header />
@@ -43,7 +43,7 @@ export default function PropertiesPage() {
             <PropertyCard
               key={property._id}
               id={property._id}
-              image={property.imagem}
+              image={property.imagens[0]}
               title={property.nome}
               description={property.descricao}
               price={property.aluguel}

@@ -11,7 +11,7 @@ const useCreateProperty = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          imagem: property.imagem,
+          imagens: property.imagens,
           tipo: property.tipo,
           dormitorios: property.dormitorios,
           banheiros: property.banheiros,

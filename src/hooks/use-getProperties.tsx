@@ -5,7 +5,7 @@ const useGetProperties = () => {
   const { data, isError, isLoading } = useQuery<PropertyType[]>({
     queryKey: ["get-properties"],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3000/property`, {
+      const response = await fetch(`http://localhost:3333/property`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

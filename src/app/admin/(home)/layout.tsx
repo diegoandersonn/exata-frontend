@@ -14,7 +14,7 @@ export default async function RootLayoutWrapper({
 
   if (token) {
     try {
-      const response = await fetch(`http://localhost:3000/user/`, {
+      const response = await fetch(`http://localhost:3333/user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

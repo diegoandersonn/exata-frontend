@@ -31,7 +31,7 @@ export default function PropertyPage() {
       <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1">
         <div className="overflow-hidden col-span-1 row-span-1 lg:col-span-2 lg:row-span-2">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -41,7 +41,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -51,7 +51,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -61,7 +61,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -71,7 +71,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden relative">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}

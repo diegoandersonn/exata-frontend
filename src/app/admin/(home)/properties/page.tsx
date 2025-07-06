@@ -46,6 +46,10 @@ export default function Properties() {
     index === 0 ? property.ativo : !property.ativo
   );
 
+  function handleEditProperty(propertyId: string) {
+    router.push(`/admin/properties/property?propertyId=${propertyId}`);
+  }
+
   return (
     <main className="mt-[0.5rem]">
       <div className="flex justify-between items-center mb-[0.75rem]">
@@ -138,7 +142,10 @@ export default function Properties() {
               </button>
               {activeMenu === idx && (
                 <div className="absolute right-4 top-[2.75rem] w-fit bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col text-left">
-                  <button className="px-4 py-2 hover:bg-gray-100 text-sm text-[#393B3C] text-left">
+                  <button
+                    className="px-4 py-2 hover:bg-gray-100 text-sm text-[#393B3C] text-left"
+                    onClick={() => handleEditProperty(property._id)}
+                  >
                     Editar
                   </button>
                   {index === 0 ? (

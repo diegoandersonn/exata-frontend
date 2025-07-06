@@ -1,10 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Propertie() {
+  const searchParams = useSearchParams();
+  const propertyId = searchParams.get("propertyId");
   const [index, setIndex] = useState<number>(0);
+  const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
+  const [triedNext, setTriedNext] = useState(false);
+
   const [form, setForm] = useState({
     mainImage: "",
     propertyType: "",
@@ -18,6 +23,16 @@ export default function Propertie() {
     area: "",
     descricao: "",
   });
+
+  const handleNext = (e: React.MouseEvent) => {
+    if (!isStepOneValid()) {
+      setTriedNext(true);
+      e.preventDefault();
+      return;
+    }
+    setTriedNext(false);
+    setIndex(1);
+  };
 
   // const [mainImageFile, setMainImageFile] = useState<File | null>(null);
   // const [otherImages, setOtherImages] = useState<FileList | null>(null);
@@ -43,6 +58,17 @@ export default function Propertie() {
   // }, [otherImages]);
 
   const router = useRouter();
+
+  const isStepOneValid = () => {
+    return (
+      form.propertyType &&
+      form.bedrooms &&
+      form.bathrooms &&
+      form.garages &&
+      form.rent &&
+      form.tax
+    );
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -99,6 +125,10 @@ export default function Propertie() {
     alert("Propriedade cadastrada!");
   };
 
+  useEffect(() => {
+    console.log(mainImagePreview);
+  }, [mainImagePreview]);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[26rem] bg-transparent">
       <div className="flex items-center gap-1 w-full h-fit">
@@ -154,7 +184,9 @@ export default function Propertie() {
               name="propertyType"
               value={form.propertyType}
               onChange={handleChange}
-              className="w-1/2 border rounded px-3 py-2 mb-1"
+              className={`${
+                triedNext && !form.propertyType ? "border-red-500" : ""
+              } w-1/2 border rounded px-3 py-2 mb-1`}
               required
             >
               <option value="">Selecione</option>
@@ -176,7 +208,9 @@ export default function Propertie() {
                 name="bedrooms"
                 value={form.bedrooms}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.bedrooms ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1`}
                 min={0}
                 required
               />
@@ -192,13 +226,15 @@ export default function Propertie() {
                 name="bathrooms"
                 value={form.bathrooms}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.bathrooms ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1`}
                 min={0}
                 required
               />
             </div>
 
-            {/* Banheiros */}
+            {/* Garagens */}
             <div className="w-[31.5%]">
               <label className="block text-[0.9rem] font-medium mb-1">
                 Garagem(ns)
@@ -208,7 +244,9 @@ export default function Propertie() {
                 name="garages"
                 value={form.garages}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.garages ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1`}
                 min={0}
                 required
               />
@@ -226,7 +264,9 @@ export default function Propertie() {
                 name="rent"
                 value={form.rent}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.rent ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1`}
                 min={0}
                 step="0.01"
                 required
@@ -243,7 +283,9 @@ export default function Propertie() {
                 name="tax"
                 value={form.tax}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.tax ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1`}
                 min={0}
                 step="0.01"
                 required
@@ -261,7 +303,9 @@ export default function Propertie() {
                 value={String(parseFloat(form.rent) + parseFloat(form.tax))}
                 onChange={handleChange}
                 disabled
-                className="w-full border rounded px-3 py-2 mb-1 text-gray-500"
+                className={`${
+                  triedNext && !form.rent && !form.tax ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
                 min={0}
                 step="0.01"
                 required
@@ -278,7 +322,9 @@ export default function Propertie() {
                 name="reajusteType"
                 value={form.reajusteType}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.reajusteType ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
                 required
               >
                 <option value="">Selecione</option>
@@ -297,7 +343,9 @@ export default function Propertie() {
                 value={form.horarioVisita}
                 onChange={handleChange}
                 placeholder="09:00 - 18:00"
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.horarioVisita ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
                 required
               />
             </div>
@@ -310,7 +358,9 @@ export default function Propertie() {
                 name="area"
                 value={form.area}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.area ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
                 min={0}
                 required
               />
@@ -323,7 +373,9 @@ export default function Propertie() {
                 name="descricao"
                 value={form.descricao}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mb-1"
+                className={`${
+                  triedNext && !form.descricao ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
                 required
               />
             </div>
@@ -395,8 +447,9 @@ export default function Propertie() {
             Cancelar
           </button>
           <button
-            onClick={() => (index === 0 ? setIndex(1) : handleSubmit)}
-            className="w-1/6 bg-red-600 text-white py-2 rounded border-2 border-transparent font-semibold hover:bg-red-700 transition"
+            type="button"
+            onClick={index === 0 ? handleNext : handleSubmit}
+            className="bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"
           >
             {index === 0 ? "Próximo" : "Salvar"}
           </button>

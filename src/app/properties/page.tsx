@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import FilterDropdown from "@/components/ui/filter-dropdown";
 import Header from "@/components/ui/header";
-import {useGetActiveProperties} from "@/hooks/use-getProperties";
+import { useGetActiveProperties } from "@/hooks/use-getProperties";
 import { Plus } from "lucide-react";
 import PropertyCard from "@/components/ui/property-card";
 import { PropertyType } from "@/types/property-type";
@@ -10,7 +10,9 @@ import { PropertyType } from "@/types/property-type";
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
   const { properties, isLoading, isError } = useGetActiveProperties();
-  const [propertiesFiltered, setPropertiesFiltered] = useState<PropertyType[]>([]);
+  const [propertiesFiltered, setPropertiesFiltered] = useState<PropertyType[]>(
+    []
+  );
 
   useEffect(() => {
     if (properties) {
@@ -28,7 +30,9 @@ export default function PropertiesPage() {
     }
 
     if (filters.quartos !== undefined) {
-      filtered = filtered.filter((p) => Number(p.dormitorios) === filters.quartos);
+      filtered = filtered.filter(
+        (p) => Number(p.dormitorios) === filters.quartos
+      );
     }
 
     setPropertiesFiltered(filtered);
@@ -44,16 +48,26 @@ export default function PropertiesPage() {
       <div className="w-screen mt-24">
         <div className="flex items-center justify-between top-0 z-10 p-6">
           <h1 className="font-bold text-2xl">
-            {propertiesFiltered.length} Imóveis à venda na Região da Baixada Santista
+            {propertiesFiltered.length} Imóveis à venda na região da Baixada
+            Santista
           </h1>
           <div className="flex flex-col items-end gap-2">
             <button
               onClick={() => setIsActive(!isActive)}
-              className="flex items-center gap-2 bg-red-800 text-white px-4 py-2 rounded-md hover:scale-110 transition-transform duration-300"
+              className="flex items-center gap-2 bg-red-800 text-white px-4 py-2 rounded-md hover:scale-110 transition-transform duration-300 mr-2"
             >
-              Mais Filtros <Plus />
+              + Filtros
+              <img
+                src="/new-filter-icon.svg"
+                alt="Filtro"
+                className="w-5 h-5 invert"
+              />
             </button>
-            <FilterDropdown isActive={isActive} setIsActive={setIsActive} onFilter={handleFilter} />
+            <FilterDropdown
+              isActive={isActive}
+              setIsActive={setIsActive}
+              onFilter={handleFilter}
+            />
           </div>
         </div>
         <div className="grid grid-cols-4 gap-12 px-10">
@@ -76,4 +90,3 @@ export default function PropertiesPage() {
     </div>
   );
 }
-

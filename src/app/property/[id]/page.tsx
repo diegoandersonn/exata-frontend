@@ -24,6 +24,13 @@ export default function PropertyPage() {
   if (isError) {
     return <div>Erro</div>;
   }
+
+  const handleSubmit = () => {
+    window.open(
+      `https://wa.me/5513974173786?text=Oi%2C%20tenho%20interesse%20no%20${property.nome}`,
+      "_blank"
+    );
+  };
   console.log("Imóvel:", property);
   return (
     <div className="flex flex-col gap-6">
@@ -121,6 +128,14 @@ export default function PropertyPage() {
                 {property.banheiros} banheiros
               </h3>
             </div>
+          </div>
+          <div className="w-full flex justify-start">
+            <button
+              onClick={() => handleSubmit()}
+              className="bg-red-600 text-white uppercase font-bold px-8 py-4 rounded-3xl shadow-lg hover:bg-red-700 hover:shadow-xl transition-all duration-300"
+            >
+              ENTRE EM CONTATO
+            </button>
           </div>
         </div>
         <div className="xl:absolute right-[300px] -top-[70px] min-w[50px] lg:min-w-[350px] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">

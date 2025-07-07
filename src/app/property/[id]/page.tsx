@@ -28,7 +28,7 @@ export default function PropertyPage() {
   return (
     <div className="flex flex-col gap-6">
       <Header />
-      <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1">
+      <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1 mt-16">
         <div className="overflow-hidden col-span-1 row-span-1 lg:col-span-2 lg:row-span-2">
           <Image
             src={property.imagens[0]}
@@ -125,24 +125,36 @@ export default function PropertyPage() {
         </div>
         <div className="xl:absolute right-[300px] -top-[70px] min-w[50px] lg:min-w-[350px] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">
           <h3 className="font-medium">Valor à vista</h3>
-          <h1 className="font-bold text-lg lg:text-3xl">R$ {property.aluguel}</h1>
+          <h1 className="font-bold text-lg lg:text-3xl">
+            R$ {property.aluguel}
+          </h1>
           <h3 className="text-red-800 underline cursor-pointer">
             Entenda este valor
           </h3>
           <div className="flex flex-col gap-4 text-zinc-500">
-            {/* <div className="flex justify-between items-center">
-              <h2 className="text-sm lg:text-base">Parcelas a partir de</h2>
-              <p className="text-sm lg:text-base text-emerald-600">
-                R$ 19.534/mês
-              </p>
-            </div> */}
-            {/* <div className="flex justify-between items-center">
-              <h2 className="text-sm lg:text-base">Condomínio</h2>
-              <p className="text-sm lg:text-base text-black">R$ 1.680/mês</p>
-            </div> */}
             <div className="flex justify-between items-center">
               <h2 className="text-sm lg:text-base">IPTU</h2>
-              <p className="text-sm lg:text-base text-black">R$ {property.iptu}/ano</p>
+              <p className="text-sm lg:text-base text-black">
+                R$ {property.iptu}/ano
+              </p>
+            </div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-sm lg:text-base">Horários de Visita</h2>
+              <p className="text-sm lg:text-base text-black">
+                {property.horarioVisita}
+              </p>
+            </div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-sm lg:text-base">Prazo do contrato</h2>
+              <p className="text-sm lg:text-base text-black">
+                {property.prazo}
+              </p>
+            </div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-sm lg:text-base">Tipo Reajuste</h2>
+              <p className="text-sm lg:text-base text-black">
+                {property.tipoReajuste}
+              </p>
             </div>
           </div>
         </div>

@@ -61,7 +61,7 @@ export default function Home() {
               comunicação dos parceiros.
             </p>
           </div>
-          <button className="lg:absolute bottom-0 right-0 bg-red-700 text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">
+          <button onClick={() => router.push("/properties")} className="lg:absolute bottom-0 right-0 bg-red-700 text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">
             conheça nossos imóveis!
           </button>
         </div>

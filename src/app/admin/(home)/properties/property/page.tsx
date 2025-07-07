@@ -7,10 +7,15 @@ export default function Propertie() {
   const searchParams = useSearchParams();
   const propertyId = searchParams.get("propertyId");
   const [index, setIndex] = useState<number>(0);
-  const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
   const [triedNext, setTriedNext] = useState(false);
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null);
+  const [otherImages, setOtherImages] = useState<FileList | null>(null);
+  const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
+  const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
 
   const [form, setForm] = useState({
+    name: "",
+    prazo: "",
     mainImage: "",
     propertyType: "",
     bedrooms: "",
@@ -24,6 +29,33 @@ export default function Propertie() {
     descricao: "",
   });
 
+  useEffect(() => {
+    if (mainImageFile) {
+      setMainImagePreview(URL.createObjectURL(mainImageFile));
+    } else {
+      setMainImagePreview(null);
+    }
+  }, [mainImageFile]);
+
+  useEffect(() => {
+    if (otherImages && otherImages.length > 0) {
+      setOtherImagesPreview(
+        Array.from(otherImages).map((file) => URL.createObjectURL(file))
+      );
+    } else {
+      setOtherImagesPreview([]);
+    }
+  }, [otherImages]);
+
+  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setMainImagePreview(url);
+      setForm({ ...form, mainImage: file.name });
+    }
+  };
+
   const handleNext = (e: React.MouseEvent) => {
     if (!isStepOneValid()) {
       setTriedNext(true);
@@ -33,29 +65,6 @@ export default function Propertie() {
     setTriedNext(false);
     setIndex(1);
   };
-
-  // const [mainImageFile, setMainImageFile] = useState<File | null>(null);
-  // const [otherImages, setOtherImages] = useState<FileList | null>(null);
-  // const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
-  // const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
-
-  // useEffect(() => {
-  //   if (mainImageFile) {
-  //     setMainImagePreview(URL.createObjectURL(mainImageFile));
-  //   } else {
-  //     setMainImagePreview(null);
-  //   }
-  // }, [mainImageFile]);
-
-  // useEffect(() => {
-  //   if (otherImages && otherImages.length > 0) {
-  //     setOtherImagesPreview(
-  //       Array.from(otherImages).map((file) => URL.createObjectURL(file))
-  //     );
-  //   } else {
-  //     setOtherImagesPreview([]);
-  //   }
-  // }, [otherImages]);
 
   const router = useRouter();
 
@@ -76,6 +85,15 @@ export default function Propertie() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "mainImage" && e.target.files && e.target.files[0]) {
+      setMainImageFile(e.target.files[0]);
+    }
+    if (e.target.name === "otherImages" && e.target.files) {
+      setOtherImages(e.target.files);
+    }
+  };
+
   function formatCurrency(value: string | number) {
     const number = Number(value);
     if (isNaN(number)) return "";
@@ -85,44 +103,36 @@ export default function Propertie() {
     });
   }
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.name === "mainImage" && e.target.files && e.target.files[0]) {
-  //     setMainImageFile(e.target.files[0]);
-  //   }
-  //   if (e.target.name === "otherImages" && e.target.files) {
-  //     setOtherImages(e.target.files);
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = new FormData();
-    data.append("propertyType", form.propertyType);
-    data.append("bedrooms", form.bedrooms);
-    data.append("bathrooms", form.bathrooms);
-    data.append("garages", form.garages);
-    data.append("rent", form.rent);
-    data.append("tax", form.tax);
-    data.append("reajusteType", form.reajusteType);
+    data.append("nome", form.name);
+    data.append("prazo", form.prazo);
+    data.append("tipo", form.propertyType);
+    data.append("banheiros", form.bedrooms);
+    data.append("dormitorios", form.bathrooms);
+    data.append("vagasGaragem", form.garages);
+    data.append("aluguel", form.rent);
+    data.append("iptu", form.tax);
+    data.append("tipoReajuste", form.reajusteType);
     data.append("horarioVisita", form.horarioVisita);
     data.append("area", form.area);
     data.append("descricao", form.descricao);
 
-    // if (mainImageFile) {
-    //   data.append("mainImage", mainImageFile);
-    // }
-    // if (otherImages) {
-    //   Array.from(otherImages).forEach((file, idx) => {
-    //     data.append("otherImages", file);
-    //   });
-    // }
+    if (mainImageFile) {
+      data.append("imagens", mainImageFile);
+    }
 
-    await fetch("http://localhost:3000/properties", {
+    if (otherImages) {
+      Array.from(otherImages).forEach((file) => {
+        data.append("imagens", file);
+      });
+    }
+
+    await fetch("http://localhost:3000/property", {
       method: "POST",
       body: data,
     });
-
-    alert("Propriedade cadastrada!");
   };
 
   useEffect(() => {
@@ -176,25 +186,60 @@ export default function Propertie() {
         {/* Informações do imóvel */}
         <div className={`${index === 0 ? "block" : "hidden"} space-y-3`}>
           {/* Tipo do imóvel */}
-          <div className="bg-white rounded-lg w-full h-fit p-6">
-            <label className="block text-[0.9rem] font-medium mb-1">
-              Tipo do imóvel
-            </label>
-            <select
-              name="propertyType"
-              value={form.propertyType}
-              onChange={handleChange}
-              className={`${
-                triedNext && !form.propertyType ? "border-red-500" : ""
-              } w-1/2 border rounded px-3 py-2 mb-1`}
-              required
-            >
-              <option value="">Selecione</option>
-              <option value="Apartamento">Apartamento</option>
-              <option value="Casa">Casa</option>
-              <option value="Studio">Studio</option>
-              <option value="Kitnet">Kitnet</option>
-            </select>
+          <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between">
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Nome
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className={`${
+                  triedNext && !form.name ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                required
+              />
+            </div>
+
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Tipo do imóvel
+              </label>
+              <select
+                name="propertyType"
+                value={form.propertyType}
+                onChange={handleChange}
+                className={`${
+                  triedNext && !form.propertyType ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1`}
+                required
+              >
+                <option value="">Selecione</option>
+                <option value="Apartamento">Apartamento</option>
+                <option value="Casa">Casa</option>
+                <option value="Studio">Studio</option>
+                <option value="Kitnet">Kitnet</option>
+              </select>
+            </div>
+
+            <div className="w-[31.5%]">
+              <label className="block text-[0.9rem] font-medium mb-1">
+                Prazo
+              </label>
+              <input
+                type="text"
+                name="prazo"
+                value={form.prazo}
+                onChange={handleChange}
+                placeholder="0 meses"
+                className={`${
+                  triedNext && !form.prazo ? "border-red-500" : ""
+                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                required
+              />
+            </div>
           </div>
 
           <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between">
@@ -342,7 +387,7 @@ export default function Propertie() {
                 name="horarioVisita"
                 value={form.horarioVisita}
                 onChange={handleChange}
-                placeholder="09:00 - 18:00"
+                placeholder="00:00 - 00:00"
                 className={`${
                   triedNext && !form.horarioVisita ? "border-red-500" : ""
                 } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
@@ -380,9 +425,11 @@ export default function Propertie() {
               />
             </div>
           </div>
-{/* 
+        </div>
+
+        <div className={`${index === 1 ? "block" : "hidden"} space-y-3`}>
           <div className="bg-white rounded-lg w-full h-fit flex p-6 gap-4 flex-wrap">
-            
+            {/* Foto principal */}
             <div className="w-1/2 min-w-[200px] flex flex-col items-center">
               <label className="block text-[0.9rem] font-medium mb-2">
                 Foto principal
@@ -403,7 +450,7 @@ export default function Propertie() {
                 />
               )}
             </div>
-            
+            {/* Outras fotos */}
             <div className="w-1/2 min-w-[200px] flex flex-col items-center">
               <label className="block text-[0.9rem] font-medium mb-2">
                 Outras fotos
@@ -427,7 +474,7 @@ export default function Propertie() {
                 ))}
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
 
         <div className="w-full flex justify-end gap-3 mt-3">

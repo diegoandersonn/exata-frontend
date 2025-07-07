@@ -17,7 +17,6 @@ export const useGetProperties = () => {
       return await response.json();
     },
   });
-  console.log(data);
   return { properties: data, isLoading, isError };
 };
 

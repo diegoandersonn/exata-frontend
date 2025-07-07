@@ -136,7 +136,6 @@ export default function Propertie() {
   };
 
   useEffect(() => {
-    console.log(mainImagePreview);
   }, [mainImagePreview]);
 
   return (

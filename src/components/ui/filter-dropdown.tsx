@@ -1,11 +1,26 @@
+// components/ui/filter-dropdown.tsx
 import { X } from "lucide-react";
+import { useState } from "react";
 
 type Props = {
   isActive: boolean;
   setIsActive: (isActive: boolean) => void;
+  onFilter: (filters: { tipo?: string; quartos?: number }) => void;
 };
 
-export default function FilterDropdown({ isActive, setIsActive }: Props) {
+export default function FilterDropdown({ isActive, setIsActive, onFilter }: Props) {
+  const [tipo, setTipo] = useState("todos");
+  const [quartos, setQuartos] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onFilter({
+      tipo: tipo === "todos" ? undefined : tipo,
+      quartos: quartos ? parseInt(quartos) : undefined,
+    });
+    setIsActive(false);
+  };
+
   return (
     <div
       data-active={isActive}
@@ -16,16 +31,20 @@ export default function FilterDropdown({ isActive, setIsActive }: Props) {
           <h2 className="text-xl font-bold">Filtros</h2>
           <X
             className="hover:scale-110 cursor-pointer"
-            onClick={() => setIsActive(!isActive)}
+            onClick={() => setIsActive(false)}
           />
         </div>
-        <form className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col">
             <span className="mb-2">Tipo de Imóvel</span>
-            <select className="border border-gray-300 rounded p-2">
-              <option value="">Todos</option>
-              <option value="casa">Casa</option>
-              <option value="apartamento">Apartamento</option>
+            <select
+              className="border border-gray-300 rounded p-2"
+              value={tipo}
+              onChange={(e) => setTipo(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              <option value="Casa">Casa</option>
+              <option value="Apartamento">Apartamento</option>
             </select>
           </label>
           <label className="flex flex-col">
@@ -33,6 +52,8 @@ export default function FilterDropdown({ isActive, setIsActive }: Props) {
             <input
               type="number"
               placeholder="0"
+              value={quartos}
+              onChange={(e) => setQuartos(e.target.value)}
               className="border border-gray-300 rounded p-2"
             />
           </label>

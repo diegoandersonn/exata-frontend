@@ -1,13 +1,13 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import useGetProperties from "@/hooks/use-getProperties";
+import {useGetActiveProperties} from "@/hooks/use-getProperties";
 import PropertyCard from "@/components/ui/property-card";
 
 export default function Carousel() {
   const [maxVisible, setMaxVisible] = useState(4);
   const [position, setPosition] = useState<number[]>([0, 4]);
-  const { properties, isLoading, isError } = useGetProperties();
+  const { properties, isLoading, isError } = useGetActiveProperties();
 
   useEffect(() => {
     function handleResize() {

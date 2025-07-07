@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import useGetProperties from "@/hooks/use-getProperties";
+import {useGetProperties} from "@/hooks/use-getProperties";
 import useDeleteProperty from "@/hooks/use-deleteProperty";
 import useUpdateProperty from "@/hooks/use-updateProperty";
 import { toast } from "react-toastify";

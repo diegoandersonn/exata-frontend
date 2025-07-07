@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PropertyTypeEnum } from "@/types/property-type-enum";
 import { toast } from "react-toastify";
+import { AdjustmentTypeEnum } from "@/types/adjustment-type-enum";
 
 export default function Propertie() {
   // const searchParams = useSearchParams();
@@ -90,6 +91,7 @@ export default function Propertie() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted:", form);
     const data = new FormData();
     data.append("nome", form.name);
     data.append("prazo", form.prazo);

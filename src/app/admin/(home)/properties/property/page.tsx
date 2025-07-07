@@ -1,17 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PropertyTypeEnum } from "@/types/property-type-enum";
 import { toast } from "react-toastify";
 import { AdjustmentTypeEnum } from "@/types/adjustment-type-enum";
+import useGetProperty from "@/hooks/use-getProperty";
 
 export default function Propertie() {
-  // const searchParams = useSearchParams();
-  // const propertyId = searchParams.get("propertyId");
+  const searchParams = useSearchParams();
+  const propertyId = searchParams.get("propertyId");
   const [index, setIndex] = useState<number>(0);
   const [triedNext, setTriedNext] = useState(false);
   const [mainImageFile, setMainImageFile] = useState<File | null>(null);
+  const { property } = useGetProperty(propertyId as string);
   const [otherImages, setOtherImages] = useState<FileList | null>(null);
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
   const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
@@ -32,6 +34,26 @@ export default function Propertie() {
     area: "",
     descricao: "",
   });
+
+  useEffect(() => {
+    if (property) {
+      setForm({
+        name: property?.nome,
+        prazo: property?.prazo,
+        mainImage: property?.imagens?.[0],
+        propertyType: property?.tipo,
+        bedrooms: String(property?.dormitorios),
+        bathrooms: String(property?.banheiros),
+        garages: String(property?.vagasGaragem),
+        rent: String(property?.aluguel),
+        tax: String(property?.iptu),
+        reajusteType: property?.tipoReajuste,
+        horarioVisita: property?.horarioVisita,
+        area: String(property?.area),
+        descricao: property?.descricao,
+      });
+    }
+  }, [property]);
 
   useEffect(() => {
     if (mainImageFile) {
@@ -89,52 +111,77 @@ export default function Propertie() {
     }
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const data = new FormData();
-  data.append("nome", form.name);
-  data.append("prazo", form.prazo);
-  data.append("tipo", form.propertyType);
-  data.append("dormitorios", form.bedrooms); // CORRETO AGORA
-  data.append("banheiros", form.bathrooms);  // CORRETO AGORA
-  data.append("vagasGaragem", form.garages);
-  data.append("aluguel", parseFloat(form.rent.replace(/\./g, "").replace(",", ".")).toString());
-  data.append("iptu", parseFloat(form.tax.replace(/\./g, "").replace(",", ".")).toString());
-  data.append("tipoReajuste", form.reajusteType);
-  data.append("horarioVisita", form.horarioVisita);
-  data.append("area", form.area);
-  data.append("descricao", form.descricao);
+    const data = new FormData();
+    data.append("nome", form.name);
+    data.append("prazo", form.prazo);
+    data.append("tipo", form.propertyType);
+    data.append("dormitorios", String(form.bedrooms));
+    data.append("banheiros", String(form.bathrooms));
+    data.append("vagasGaragem", String(form.garages));
+    data.append(
+      "aluguel",
+      parseFloat(
+        String(form.rent).replace(/\./g, "").replace(",", ".")
+      ).toString()
+    );
+    data.append(
+      "iptu",
+      parseFloat(
+        String(form.tax).replace(/\./g, "").replace(",", ".")
+      ).toString()
+    );
+    data.append("tipoReajuste", form.reajusteType);
+    data.append("horarioVisita", form.horarioVisita);
+    data.append("area", String(form.area));
+    data.append("descricao", form.descricao);
 
-  if (mainImageFile) {
-    data.append("imagens", mainImageFile);
-  }
+    if (mainImageFile) {
+      data.append("imagens", mainImageFile);
+    }
 
-  if (otherImages) {
-    Array.from(otherImages).forEach((file) => {
-      data.append("imagens", file);
-    });
-  }
+    if (otherImages) {
+      Array.from(otherImages).forEach((file) => {
+        data.append("imagens", file);
+      });
+    }
 
-  try {
-    setIsPending(true);
-    await fetch("http://localhost:3333/property", {
-      method: "POST",
-      body: data,
-    });
-    toast.success("Imóvel criado com sucesso");
-    router.push("/admin/properties");
-  } catch (error) {
-    console.error(error);
-    toast.error("Erro inesperado. Tente novamente mais tarde");
-  } finally {
-    setIsPending(false);
-  }
-};
-
+    if (property) {
+      try {
+        setIsPending(true);
+        await fetch(`http://localhost:3333/property/${property._id}`, {
+          method: "PUT",
+          body: data,
+        });
+        toast.success("Imóvel editado com sucesso");
+        router.push("/admin/properties");
+      } catch (error) {
+        console.error(error);
+        toast.error("Erro inesperado. Tente novamente mais tarde");
+      } finally {
+        setIsPending(false);
+      }
+    } else {
+      try {
+        setIsPending(true);
+        await fetch("http://localhost:3333/property", {
+          method: "POST",
+          body: data,
+        });
+        toast.success("Imóvel criado com sucesso");
+        router.push("/admin/properties");
+      } catch (error) {
+        console.error(error);
+        toast.error("Erro inesperado. Tente novamente mais tarde");
+      } finally {
+        setIsPending(false);
+      }
+    }
+  };
 
   useEffect(() => {}, [mainImagePreview]);
-
   return (
     <div className="flex flex-col items-center justify-center min-h-[26rem] bg-transparent">
       <div className="flex items-center gap-1 w-full h-fit">
@@ -147,7 +194,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           onClick={() => router.push("/admin/properties")}
         ></Image>
         <h1 className="text-[1.4rem] font-bold mb-4 text-center">
-          Cadastrar Imóvel
+          {property ? "Editar Imóvel" : "Cadastrar Imóvel"}
         </h1>
       </div>
 
@@ -187,7 +234,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="flex justify-between mt-4">
               <div className="w-[31.5%]">
                 <label className="block text-[0.9rem] font-medium mb-1">
-                  Localização do imóvel
+                  Título do imóvel
                 </label>
                 <input
                   type="text"
@@ -273,20 +320,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                   type="number"
                   name="bedrooms"
                   value={form.bedrooms}
-                  onBlur={(e) => {
-                    const raw = e.target.value.trim();
-
-                    const parsed = parseInt(raw, 10);
-
-                    if (!isNaN(parsed) && parsed >= 0) {
-                      setForm((prev) => ({
-                        ...prev,
-                        bedrooms: String(parsed),
-                      }));
-                    } else {
-                      setForm((prev) => ({ ...prev, bedrooms: "" }));
-                    }
-                  }}
                   onChange={handleChange}
                   className={`${
                     triedNext && !form.bedrooms ? "border-red-500" : ""
@@ -307,20 +340,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                   name="bathrooms"
                   value={form.bathrooms}
                   onChange={handleChange}
-                  onBlur={(e) => {
-                    const raw = e.target.value.trim();
-
-                    const parsed = parseInt(raw, 10);
-
-                    if (!isNaN(parsed) && parsed >= 0) {
-                      setForm((prev) => ({
-                        ...prev,
-                        bathrooms: String(parsed),
-                      }));
-                    } else {
-                      setForm((prev) => ({ ...prev, bathrooms: "" }));
-                    }
-                  }}
                   className={`${
                     triedNext && !form.bathrooms ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
@@ -340,17 +359,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                   name="garages"
                   value={form.garages}
                   onChange={handleChange}
-                  onBlur={(e) => {
-                    const raw = e.target.value.trim();
-
-                    const parsed = parseInt(raw, 10);
-
-                    if (!isNaN(parsed) && parsed >= 0) {
-                      setForm((prev) => ({ ...prev, garages: String(parsed) }));
-                    } else {
-                      setForm((prev) => ({ ...prev, garages: "" }));
-                    }
-                  }}
                   className={`${
                     triedNext && !form.garages ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
@@ -463,7 +471,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   type="text"
                   name="rentWithTax"
                   value={(() => {
-                    const parseCurrency = (val) => {
+                    const parseCurrency = (val: string) => {
                       if (!val) return 0;
                       const normalized = val
                         .replace(/\./g, "")
@@ -528,6 +536,72 @@ const handleSubmit = async (e: React.FormEvent) => {
                   name="horarioVisita"
                   value={form.horarioVisita}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    const val = e.target.value.trim();
+
+                    // Expressão regular para capturar horários no formato HH:MM ou HHMM
+                    const timeRegex = /(\d{1,2}):?(\d{2})?/g;
+
+                    const matches = [];
+                    let match;
+                    while ((match = timeRegex.exec(val)) !== null) {
+                      // match[1] = hora, match[2] = minuto (pode ser undefined)
+                      matches.push({
+                        hour: match[1],
+                        minute: match[2] || "00",
+                      });
+                      if (matches.length === 2) break; // só os dois primeiros horários
+                    }
+
+                    if (matches.length < 2) {
+                      // Tenta fallback antigo: extrair apenas dígitos juntos (ex: "1100 2200")
+                      const digits = val.match(/\d{3,4}/g);
+                      if (!digits || digits.length < 2) {
+                        setForm((prev) => ({ ...prev, horarioVisita: "" }));
+                        return;
+                      }
+                      matches[0] = {
+                        hour: digits[0].slice(0, 2),
+                        minute: digits[0].slice(2) || "00",
+                      };
+                      matches[1] = {
+                        hour: digits[1].slice(0, 2),
+                        minute: digits[1].slice(2) || "00",
+                      };
+                    }
+
+                    function formatTime(hm: { hour: string; minute: string }) {
+                      const h = hm.hour.padStart(2, "0");
+                      const m = hm.minute.padEnd(2, "0");
+
+                      const hourNum = parseInt(h, 10);
+                      const minNum = parseInt(m, 10);
+
+                      if (
+                        hourNum < 0 ||
+                        hourNum > 23 ||
+                        minNum < 0 ||
+                        minNum > 59
+                      ) {
+                        return null;
+                      }
+
+                      return `${h}:${m}`;
+                    }
+
+                    const start = formatTime(matches[0]);
+                    const end = formatTime(matches[1]);
+
+                    if (!start || !end) {
+                      setForm((prev) => ({ ...prev, horarioVisita: "" }));
+                      return;
+                    }
+
+                    setForm((prev) => ({
+                      ...prev,
+                      horarioVisita: `${start} - ${end}`,
+                    }));
+                  }}
                   placeholder="00:00 - 00:00"
                   className={`${
                     triedNext && !form.horarioVisita ? "border-red-500" : ""
@@ -540,25 +614,15 @@ const handleSubmit = async (e: React.FormEvent) => {
                   Área (m²)
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="area"
                   value={form.area}
                   onChange={handleChange}
-                  onBlur={(e) => {
-                    const raw = e.target.value.trim();
-
-                    const parsed = parseInt(raw, 10);
-
-                    if (!isNaN(parsed) && parsed >= 0) {
-                      setForm((prev) => ({ ...prev, area: String(parsed) }));
-                    } else {
-                      setForm((prev) => ({ ...prev, area: "" }));
-                    }
-                  }}
                   className={`${
                     triedNext && !form.area ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1 text-black`}
                   placeholder="0"
+                  min={0}
                   required
                 />
               </div>

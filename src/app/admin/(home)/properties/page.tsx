@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import useGetProperties from "@/hooks/use-getProperties";
 import useDeleteProperty from "@/hooks/use-deleteProperty";
 import useUpdateProperty from "@/hooks/use-updateProperty";
+import { toast } from "react-toastify";
 
 export default function Properties() {
   const [index, setIndex] = useState<number>(0);
@@ -13,6 +14,9 @@ export default function Properties() {
   const deleteProperty = useDeleteProperty();
   const updateProperty = useUpdateProperty();
   const router = useRouter();
+
+  const { isSuccess: isDeleteSuccess, isError: isDeleteError } = deleteProperty;
+  const { isSuccess: isUpdateSuccess, isError: isUpdateError } = updateProperty;
 
   const listHeader = [
     "Imagem principal",
@@ -31,14 +35,42 @@ export default function Properties() {
     }
   }, [activeMenu]);
 
-  if (!properties) {
-    return <div>Imóveis não encontrados</div>;
-  }
+  useEffect(() => {
+    if (isDeleteSuccess) {
+      toast.success("Propriedade inativada com sucesso");
+    }
+
+    if (isDeleteError) {
+      toast.error("Erro inesperado. Tente novamente mais tarde");
+    }
+  }, [isDeleteError, isDeleteSuccess]);
+
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      toast.success("Propriedade ativada com sucesso");
+    }
+
+    if (isUpdateError) {
+      toast.error("Erro inesperado. Tente novamente mais tarde");
+    }
+  }, [isUpdateError, isUpdateSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Erro ao carregar imóveis");
+    }
+  }, [isError]);
+
   if (isLoading) {
     return <div>Carregando...</div>;
   }
+
   if (isError) {
     return <div>Erro</div>;
+  }
+
+  if (!properties) {
+    return <div>Imóveis não encontrados</div>;
   }
 
   // Filtra os imóveis conforme o tab selecionado

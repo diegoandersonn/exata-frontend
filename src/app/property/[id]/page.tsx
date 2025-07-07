@@ -87,7 +87,7 @@ export default function PropertyPage() {
         <div className="flex flex-col gap-8">
           <div className="flex items-start justify-between">
             <h1 className="font-bold text-base lg:text-2xl w-[70%]">
-              Apartamento à venda em {property.nome} com {property.area} m²,{" "}
+              {property.tipo} à venda em {property.nome} com {property.area} m²,{" "}
               {property.dormitorios} quartos e {property.vagasGaragem} vagas
             </h1>
             <div className="flex gap-2">

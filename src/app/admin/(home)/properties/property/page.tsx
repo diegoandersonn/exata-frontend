@@ -89,51 +89,49 @@ export default function Propertie() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    console.log("TESTEEEEEEE");
-    console.log(JSON.stringify(form, null, 2));
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    e.preventDefault();
-    console.log("Form submitted:", form);
-    const data = new FormData();
-    data.append("nome", form.name);
-    data.append("prazo", form.prazo);
-    data.append("tipo", form.propertyType);
-    data.append("banheiros", form.bedrooms);
-    data.append("dormitorios", form.bathrooms);
-    data.append("vagasGaragem", form.garages);
-    data.append("aluguel", form.rent);
-    data.append("iptu", form.tax);
-    data.append("tipoReajuste", form.reajusteType);
-    data.append("horarioVisita", form.horarioVisita);
-    data.append("area", form.area);
-    data.append("descricao", form.descricao);
+  const data = new FormData();
+  data.append("nome", form.name);
+  data.append("prazo", form.prazo);
+  data.append("tipo", form.propertyType);
+  data.append("dormitorios", form.bedrooms); // CORRETO AGORA
+  data.append("banheiros", form.bathrooms);  // CORRETO AGORA
+  data.append("vagasGaragem", form.garages);
+  data.append("aluguel", parseFloat(form.rent.replace(/\./g, "").replace(",", ".")).toString());
+  data.append("iptu", parseFloat(form.tax.replace(/\./g, "").replace(",", ".")).toString());
+  data.append("tipoReajuste", form.reajusteType);
+  data.append("horarioVisita", form.horarioVisita);
+  data.append("area", form.area);
+  data.append("descricao", form.descricao);
 
-    if (mainImageFile) {
-      data.append("imagens", mainImageFile);
-    }
+  if (mainImageFile) {
+    data.append("imagens", mainImageFile);
+  }
 
-    if (otherImages) {
-      Array.from(otherImages).forEach((file) => {
-        data.append("imagens", file);
-      });
-    }
+  if (otherImages) {
+    Array.from(otherImages).forEach((file) => {
+      data.append("imagens", file);
+    });
+  }
 
-    try {
-      setIsPending(true);
-      await fetch("http://localhost:3333/property", {
-        method: "POST",
-        body: data,
-      });
-      toast.success("Imóvel criado com sucesso");
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro inesperado. Tente novamente mais tarde");
-    }
-
-    setIsPending(false);
+  try {
+    setIsPending(true);
+    await fetch("http://localhost:3333/property", {
+      method: "POST",
+      body: data,
+    });
+    toast.success("Imóvel criado com sucesso");
     router.push("/admin/properties");
-  };
+  } catch (error) {
+    console.error(error);
+    toast.error("Erro inesperado. Tente novamente mais tarde");
+  } finally {
+    setIsPending(false);
+  }
+};
+
 
   useEffect(() => {}, [mainImagePreview]);
 
@@ -341,7 +339,7 @@ export default function Propertie() {
                   value={form.rent}
                   onChange={handleChange}
                   onBlur={(e) => {
-                    let value = e.target.value.trim();
+                    const value = e.target.value.trim();
 
                     // Substitui ponto por nada e vírgula por ponto temporariamente para parseFloat
                     const normalized = value
@@ -385,7 +383,7 @@ export default function Propertie() {
                   value={form.tax}
                   onChange={handleChange}
                   onBlur={(e) => {
-                    let value = e.target.value.trim();
+                    const value = e.target.value.trim();
 
                     // Substitui milhar e decimal para permitir o parseFloat
                     const normalized = value

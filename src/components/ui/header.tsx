@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -30,7 +31,8 @@ export default function Header() {
         title="Logo da Exata"
         width={60}
         height={60}
-        className="invert"
+        className="invert cursor-pointer"
+        onClick={() => router.push("/")}
       />
       <nav className="flex gap-3 lg:gap-6 text-xs lg:text-sm font-semibold">
         <Link href="#" className="text-white hover:underline transition">

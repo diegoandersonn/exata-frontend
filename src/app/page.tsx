@@ -3,8 +3,10 @@ import Image from "next/image";
 import santosFoto from "../../public/orla-de-santos-vemelha.png";
 import Carousel from "@/components/ui/carousel";
 import Header from "@/components/ui/header";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="flex flex-col">
       <Header />
@@ -19,8 +21,8 @@ export default function Home() {
               de imóveis com <br /> proximidade real
             </h1>
           </div>
-          <button className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-48 lg:h-8 rounded-3xl border-none font-bold bg-white text-red-500 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300">
-            Saiba mais!
+          <button onClick={() => router.push("/properties")} className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-50 lg:h-8 rounded-3xl border-none font-bold bg-white text-red-500 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300">
+            Ver apartamentos
           </button>
         </div>
         <Image

@@ -56,7 +56,7 @@ export default function PropertyCard({
             R$ {price}
           </p>
           <p className="text-xs md:text-sm font-bold">
-            Código. {code.slice(0, 4)}
+            Código. {code.slice(5, 9)}
           </p>
         </div>
         <div className="flex items-center justify-between px-2 py-2 md:p-4 font-bold text-[10px] md:text-xs border-t border-gray-300 text-black">

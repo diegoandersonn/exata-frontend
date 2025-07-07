@@ -195,9 +195,10 @@ export default function Propertie() {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
+                  placeholder="Digite aqui"
                   className={`${
                     triedNext && !form.name ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
                   required
                 />
               </div>
@@ -232,10 +233,32 @@ export default function Propertie() {
                   name="prazo"
                   value={form.prazo}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    const rawValue = e.target.value.trim().toLowerCase();
+
+                    // Se já estiver no formato correto (ex: "12 meses")
+                    if (/^\d+\s*meses$/.test(rawValue)) return;
+
+                    // Tenta extrair só o número
+                    const numberOnly = rawValue.match(/\d+/)?.[0] || "";
+
+                    if (numberOnly) {
+                      setForm((prev) => ({
+                        ...prev,
+                        prazo: `${numberOnly} meses`,
+                      }));
+                    } else {
+                      // Se não tiver número válido, limpa
+                      setForm((prev) => ({
+                        ...prev,
+                        prazo: "",
+                      }));
+                    }
+                  }}
                   placeholder="0 meses"
                   className={`${
                     triedNext && !form.prazo ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
                   required
                 />
               </div>
@@ -256,6 +279,7 @@ export default function Propertie() {
                     triedNext && !form.bedrooms ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
                   min={0}
+                  placeholder="0"
                   required
                 />
               </div>
@@ -274,6 +298,7 @@ export default function Propertie() {
                     triedNext && !form.bathrooms ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
                   min={0}
+                  placeholder="0"
                   required
                 />
               </div>
@@ -292,6 +317,7 @@ export default function Propertie() {
                     triedNext && !form.garages ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
                   min={0}
+                  placeholder="0"
                   required
                 />
               </div>
@@ -309,15 +335,40 @@ export default function Propertie() {
                   Aluguel (R$)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="rent"
                   value={form.rent}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    let value = e.target.value.trim();
+
+                    // Substitui ponto por nada e vírgula por ponto temporariamente para parseFloat
+                    const normalized = value
+                      .replace(/\./g, "")
+                      .replace(",", ".");
+
+                    const parsed = parseFloat(normalized);
+
+                    if (isNaN(parsed)) {
+                      setForm((prev) => ({ ...prev, rent: "" }));
+                      return;
+                    }
+
+                    // Formata no padrão pt-BR com separador de milhar (.) e decimal (,)
+                    const formatted = parsed.toLocaleString("pt-BR", {
+                      minimumFractionDigits: value.includes(",") ? 2 : 2,
+                      maximumFractionDigits: 2,
+                    });
+
+                    setForm((prev) => ({
+                      ...prev,
+                      rent: formatted,
+                    }));
+                  }}
+                  placeholder="0,00"
                   className={`${
                     triedNext && !form.rent ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
-                  min={0}
-                  step="0.01"
                   required
                 />
               </div>
@@ -328,15 +379,39 @@ export default function Propertie() {
                   IPTU (R$)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="tax"
                   value={form.tax}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    let value = e.target.value.trim();
+
+                    // Substitui milhar e decimal para permitir o parseFloat
+                    const normalized = value
+                      .replace(/\./g, "")
+                      .replace(",", ".");
+
+                    const parsed = parseFloat(normalized);
+
+                    if (isNaN(parsed)) {
+                      setForm((prev) => ({ ...prev, tax: "" }));
+                      return;
+                    }
+
+                    const formatted = parsed.toLocaleString("pt-BR", {
+                      minimumFractionDigits: value.includes(",") ? 2 : 2,
+                      maximumFractionDigits: 2,
+                    });
+
+                    setForm((prev) => ({
+                      ...prev,
+                      tax: formatted,
+                    }));
+                  }}
+                  placeholder="0,00"
                   className={`${
                     triedNext && !form.tax ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
-                  min={0}
-                  step="0.01"
                   required
                 />
               </div>
@@ -347,16 +422,33 @@ export default function Propertie() {
                   Aluguel + IPTU (R$)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="rentWithTax"
-                  value={String(parseFloat(form.rent) + parseFloat(form.tax))}
-                  onChange={handleChange}
+                  value={(() => {
+                    const parseCurrency = (val) => {
+                      if (!val) return 0;
+                      const normalized = val
+                        .replace(/\./g, "")
+                        .replace(",", ".");
+                      const parsed = parseFloat(normalized);
+                      return isNaN(parsed) ? 0 : parsed;
+                    };
+
+                    const total =
+                      parseCurrency(form.rent) + parseCurrency(form.tax);
+
+                    return total.toLocaleString("pt-BR", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    });
+                  })()}
                   disabled
+                  placeholder="0,00"
                   className={`${
-                    triedNext && !form.rent && !form.tax ? "border-red-500" : ""
+                    triedNext && (!form.rent || !form.tax)
+                      ? "border-red-500"
+                      : ""
                   } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                  min={0}
-                  step="0.01"
                   required
                 />
               </div>
@@ -376,12 +468,14 @@ export default function Propertie() {
                   onChange={handleChange}
                   className={`${
                     triedNext && !form.reajusteType ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
                   required
                 >
                   <option value="">Selecione</option>
                   <option value={AdjustmentTypeEnum.annual}>Anual</option>
-                  <option value={AdjustmentTypeEnum.semiannual}>Semestral</option>
+                  <option value={AdjustmentTypeEnum.semiannual}>
+                    Semestral
+                  </option>
                   <option value={AdjustmentTypeEnum.biennial}>Bianual</option>
                 </select>
               </div>
@@ -397,7 +491,7 @@ export default function Propertie() {
                   placeholder="00:00 - 00:00"
                   className={`${
                     triedNext && !form.horarioVisita ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
                   required
                 />
               </div>
@@ -412,7 +506,7 @@ export default function Propertie() {
                   onChange={handleChange}
                   className={`${
                     triedNext && !form.area ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
                   min={0}
                   required
                 />
@@ -428,7 +522,7 @@ export default function Propertie() {
                   onChange={handleChange}
                   className={`${
                     triedNext && !form.descricao ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
                   required
                 />
               </div>
@@ -449,7 +543,7 @@ export default function Propertie() {
                 name="mainImage"
                 onChange={handleFileChange}
                 required
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                className="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
               />
               {mainImagePreview && (
                 <img
@@ -470,7 +564,7 @@ export default function Propertie() {
                 name="otherImages"
                 onChange={handleFileChange}
                 multiple
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                className="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
               />
               <div className="flex flex-wrap gap-2 mt-2">
                 {otherImagesPreview.map((src, idx) => (

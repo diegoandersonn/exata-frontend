@@ -647,8 +647,84 @@ export default function Propertie() {
         </div>
 
         <div className={`${index === 1 ? "block" : "hidden"} space-y-3`}>
+          {/* Foto Principal */}
+          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
+            <div
+              className={`w-full h-full flex flex-col items-center justify-center transition-all ${
+                mainImagePreview ? "" : "border-dashed border-2 border-gray-300"
+              }`}
+            >
+              <label
+                htmlFor="mainImage"
+                className="cursor-pointer text-gray-500 hover:text-gray-600 flex flex-col items-center gap-2"
+              >
+                {!mainImagePreview && <span>+ Adicione a foto principal</span>}
+                <input
+                  id="mainImage"
+                  type="file"
+                  accept="image/*"
+                  name="mainImage"
+                  onChange={handleFileChange}
+                  required
+                  className="hidden"
+                />
+              </label>
+
+              {mainImagePreview && (
+                <img
+                  src={mainImagePreview}
+                  alt="Pré-visualização da foto principal"
+                  className="mt-3 rounded max-h-36 object-contain border border-gray-300"
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Outras Fotos */}
+          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
+            <div
+              className={`w-full h-full flex flex-col items-center justify-center transition-all ${
+                otherImagesPreview.length > 0
+                  ? ""
+                  : "border-dashed border-2 border-gray-300"
+              }`}
+            >
+              <label
+                htmlFor="otherImages"
+                className="cursor-pointer text-gray-500 hover:text-gray-600 flex flex-col items-center gap-2"
+              >
+                {otherImagesPreview.length === 0 && (
+                  <span>+ Adicione as outras fotos</span>
+                )}
+                <input
+                  id="otherImages"
+                  type="file"
+                  accept="image/*"
+                  name="otherImages"
+                  multiple
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+
+              {otherImagesPreview.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3 max-h-36 overflow-auto">
+                  {otherImagesPreview.map((src, idx) => (
+                    <img
+                      key={idx}
+                      src={src}
+                      alt={`Pré-visualização ${idx + 1}`}
+                      className="rounded max-h-24 object-contain border border-gray-300"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* <div className={`hidden space-y-3`}>
           <div className="bg-white rounded-lg w-full h-fit flex p-6 gap-4 flex-wrap">
-            {/* Foto principal */}
             <div className="w-1/2 min-w-[200px] flex flex-col items-center">
               <label className="block text-[0.9rem] font-medium mb-2">
                 Foto principal
@@ -669,7 +745,6 @@ export default function Propertie() {
                 />
               )}
             </div>
-            {/* Outras fotos */}
             <div className="w-1/2 min-w-[200px] flex flex-col items-center">
               <label className="block text-[0.9rem] font-medium mb-2">
                 Outras fotos
@@ -694,7 +769,7 @@ export default function Propertie() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="w-full flex justify-end gap-3 mt-3">
           <button

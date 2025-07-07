@@ -1,31 +1,50 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterDropdown from "@/components/ui/filter-dropdown";
 import Header from "@/components/ui/header";
 import useGetProperties from "@/hooks/use-getProperties";
 import { Plus } from "lucide-react";
 import PropertyCard from "@/components/ui/property-card";
+import { PropertyType } from "@/types/property-type";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
   const { properties, isLoading, isError } = useGetProperties();
+  const [propertiesFiltered, setPropertiesFiltered] = useState<PropertyType[]>([]);
 
-  if (!properties) {
-    return <div>Imóveis não encontrados</div>;
-  }
-  if (isLoading) {
-    return <div>Carregando...</div>;
-  }
-  if (isError) {
-    return <div>Erro</div>;
-  }
+  useEffect(() => {
+    if (properties) {
+      setPropertiesFiltered(properties);
+    }
+  }, [properties]);
+
+  const handleFilter = (filters: { tipo?: string; quartos?: number }) => {
+    if (!properties) return;
+
+    let filtered = [...properties];
+
+    if (filters.tipo) {
+      filtered = filtered.filter((p) => p.tipo === filters.tipo);
+    }
+
+    if (filters.quartos !== undefined) {
+      filtered = filtered.filter((p) => Number(p.dormitorios) === filters.quartos);
+    }
+
+    setPropertiesFiltered(filtered);
+  };
+
+  if (isLoading) return <div>Carregando...</div>;
+  if (isError) return <div>Erro</div>;
+  if (!properties) return <div>Imóveis não encontrados</div>;
+
   return (
     <div className="flex flex-col gap-6">
       <Header />
       <div className="w-screen mt-24">
         <div className="flex items-center justify-between top-0 z-10 p-6">
           <h1 className="font-bold text-2xl">
-            {properties.length} Imóveis à venda na Região da Baixada Santista
+            {propertiesFiltered.length} Imóveis à venda na Região da Baixada Santista
           </h1>
           <div className="flex flex-col items-end gap-2">
             <button
@@ -34,15 +53,15 @@ export default function PropertiesPage() {
             >
               Mais Filtros <Plus />
             </button>
-            <FilterDropdown isActive={isActive} setIsActive={setIsActive} />
+            <FilterDropdown isActive={isActive} setIsActive={setIsActive} onFilter={handleFilter} />
           </div>
         </div>
         <div className="grid grid-cols-4 gap-12 px-10">
-          {properties.map((property) => (
+          {propertiesFiltered.map((property) => (
             <PropertyCard
               key={property._id}
               id={property._id}
-              image={property.imagens[0]}
+              image={property.imagens?.[0] || ""}
               title={property.nome}
               description={property.descricao}
               price={property.aluguel}
@@ -57,3 +76,4 @@ export default function PropertiesPage() {
     </div>
   );
 }
+

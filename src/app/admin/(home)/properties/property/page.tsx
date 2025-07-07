@@ -118,7 +118,7 @@ export default function Propertie() {
 
     try {
       setIsPending(true);
-      await fetch("http://localhost:3000/property", {
+      await fetch("http://localhost:3333/property", {
         method: "POST",
         body: data,
       });
@@ -133,7 +133,6 @@ export default function Propertie() {
   };
 
   useEffect(() => {
-    console.log(mainImagePreview);
   }, [mainImagePreview]);
 
   return (

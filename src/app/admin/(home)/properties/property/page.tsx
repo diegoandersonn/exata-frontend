@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PropertyTypeEnum } from "@/types/property-type-enum";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"; 
 import { AdjustmentTypeEnum } from "@/types/adjustment-type-enum";
 
 export default function Propertie() {
@@ -90,6 +90,9 @@ export default function Propertie() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('TESTEEEEEEE');
+    console.log(JSON.stringify(form, null, 2));
+    
     e.preventDefault();
     console.log("Form submitted:", form);
     const data = new FormData();
@@ -115,10 +118,10 @@ export default function Propertie() {
         data.append("imagens", file);
       });
     }
-
+    
     try {
       setIsPending(true);
-      await fetch("http://localhost:3000/property", {
+      await fetch("http://localhost:3333/property", {
         method: "POST",
         body: data,
       });
@@ -357,7 +360,6 @@ export default function Propertie() {
                   } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
                   min={0}
                   step="0.01"
-                  required
                 />
               </div>
             </div>
@@ -504,7 +506,7 @@ export default function Propertie() {
           </button>
           {!isPending && (
             <button
-              type="button"
+              type={index === 0 ? "button" : "submit"}
               onClick={index === 0 ? handleNext : handleSubmit}
               className={
                 "bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"

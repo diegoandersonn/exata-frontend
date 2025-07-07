@@ -2,13 +2,13 @@
 import { useState } from "react";
 import FilterDropdown from "@/components/ui/filter-dropdown";
 import Header from "@/components/ui/header";
-import useGetProperties from "@/hooks/use-getProperties";
+import {useGetActiveProperties} from "@/hooks/use-getProperties";
 import { Plus } from "lucide-react";
 import PropertyCard from "@/components/ui/property-card";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
-  const { properties, isLoading, isError } = useGetProperties();
+  const { properties, isLoading, isError } = useGetActiveProperties();
 
   if (!properties) {
     return <div>Imóveis não encontrados</div>;

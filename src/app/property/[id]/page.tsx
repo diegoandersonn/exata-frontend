@@ -41,7 +41,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagens[0]}
+            src={property.imagens[1]}
             alt={property.nome}
             width={0}
             height={0}
@@ -51,7 +51,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagens[0]}
+            src={property.imagens[2]}
             alt={property.nome}
             width={0}
             height={0}
@@ -61,7 +61,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagens[0]}
+            src={property.imagens[3]}
             alt={property.nome}
             width={0}
             height={0}
@@ -71,7 +71,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden relative">
           <Image
-            src={property.imagens[0]}
+            src={property.imagens[4]}
             alt={property.nome}
             width={0}
             height={0}
@@ -135,7 +135,7 @@ export default function PropertyPage() {
             <div className="flex justify-between items-center">
               <h2 className="text-sm lg:text-base">IPTU</h2>
               <p className="text-sm lg:text-base text-black">
-                R$ {property.iptu}/ano
+                R$ {property.iptu}/mês
               </p>
             </div>
             <div className="flex justify-between items-center">

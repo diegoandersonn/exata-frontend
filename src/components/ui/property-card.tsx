@@ -59,7 +59,7 @@ export default function PropertyCard({
             Código. {code.slice(0, 4)}
           </p>
         </div>
-        <div className="flex items-center justify-between px-2 py-2 md:p-4 font-bold text-[10px] md:text-xs border-t border-gray-300 text-zinc-300 group-hover:text-black">
+        <div className="flex items-center justify-between px-2 py-2 md:p-4 font-bold text-[10px] md:text-xs border-t border-gray-300 text-black">
           <p>{area} m²</p>
           <p>{rooms} quartos</p>
           <p>{parkingSpaces} vagas</p>

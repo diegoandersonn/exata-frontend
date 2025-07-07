@@ -2,14 +2,9 @@
 import Image from "next/image";
 import santosFoto from "../../public/orla-de-santos-vemelha.png";
 import Carousel from "@/components/ui/carousel";
-import { useState } from "react";
-import CarouselTypeSelector from "@/components/ui/caurosel-type-selector";
 import Header from "@/components/ui/header";
 
 export default function Home() {
-  const [carouselType, setCarouselType] = useState<
-    "super-destaque" | "comprar" | "alugar"
-  >("super-destaque");
   return (
     <div className="flex flex-col">
       <Header />
@@ -20,11 +15,11 @@ export default function Home() {
               como ajudamos nossos clientes?
             </h4>
             <h1 className="text-3xl md:text-4xl lg:text-7xl">
-              Criamos soluções <br />
-              digitais que geram <br /> resultados
+              Oferecemos gestão <br />
+              de imóveis com <br /> proximidade real
             </h1>
           </div>
-          <button className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-48 lg:h-8 rounded-3xl border-none font-bold bg-white text-zinc-400 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300">
+          <button className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-48 lg:h-8 rounded-3xl border-none font-bold bg-white text-red-500 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300">
             Saiba mais!
           </button>
         </div>
@@ -36,7 +31,6 @@ export default function Home() {
       </div>
       <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
         <h1 className="font-bold text-xl lg:text-4xl">Oportunidades</h1>
-        <CarouselTypeSelector value={carouselType} onChange={setCarouselType} />
         <Carousel />
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-8 p-10">
@@ -65,7 +59,7 @@ export default function Home() {
               comunicação dos parceiros.
             </p>
           </div>
-          <button className="lg:absolute bottom-0 right-0 bg-black text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">
+          <button className="lg:absolute bottom-0 right-0 bg-red-700 text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">
             conheça nossos imóveis!
           </button>
         </div>

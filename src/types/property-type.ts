@@ -1,8 +1,9 @@
+import { AdjustmentTypeEnum } from "./adjustment-type-enum";
 import { PropertyTypeEnum } from "./property-type-enum";
 
 export type PropertyType = {
   _id: string;
-  imagem: string;
+  imagens: string[];
   nome: string;
   descricao: string;
   tipo: PropertyTypeEnum;
@@ -10,14 +11,11 @@ export type PropertyType = {
   aluguel: number;
   iptu: number;
   prazo: string;
-  tipoReajuste: string;
+  tipoReajuste: AdjustmentTypeEnum;
   horarioVisita: string;
   area: number;
   dormitorios: number;
   banheiros: number;
   vagasGaragem: number;
   others?: string;
-  createdAt: string; 
-  updatedAt: string; 
-  __v: number;
 };

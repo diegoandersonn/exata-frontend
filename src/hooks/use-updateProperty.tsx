@@ -5,7 +5,7 @@ const useUpdateProperty = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (newProperty: PropertyType) => {
-      await fetch(`http://localhost:3000/property/${newProperty._id}`, {
+      await fetch(`http://localhost:3333/property/${newProperty._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

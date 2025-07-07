@@ -1,0 +1,35 @@
+import { PropertyType } from "@/types/property-type";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const useCreateProperty = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (property: PropertyType) => {
+      await fetch(`http://localhost:3333/property`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          imagens: property.imagens,
+          tipo: property.tipo,
+          dormitorios: property.dormitorios,
+          banheiros: property.banheiros,
+          vagasGaragem: property.vagasGaragem,
+          others: property.others,
+          ativo: true,
+          aluguel: property.aluguel,
+          iptu: property.iptu,
+          prazo: property.prazo,
+          tipoReajuste: property.tipoReajuste,
+          horarioVisita: property.horarioVisita,
+          area: property.area,
+        }),
+      });
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["get-properties"] }),
+  });
+};
+
+export default useCreateProperty;

@@ -1,12 +1,12 @@
 import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetProperty = (propertyId: string) => {
+const useGetProperty = (propertyId: string | null) => {
   const { data, isError, isLoading } = useQuery<PropertyType>({
     queryKey: ["get-property", propertyId],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:3000/property/${propertyId}`,
+        `http://localhost:3333/property/${propertyId}`,
         {
           method: "GET",
           headers: {

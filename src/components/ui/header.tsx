@@ -33,13 +33,13 @@ export default function Header() {
         className="invert"
       />
       <nav className="flex gap-3 lg:gap-6 text-xs lg:text-sm font-semibold">
-        <Link href="#" className="text-white hover:text-red-500 transition">
+        <Link href="#" className="text-white hover:underline transition">
           Quem somos
         </Link>
-        <Link href="#" className="text-white hover:text-red-500 transition">
+        <Link href="#" className="text-white hover:underline transition">
           Serviços
         </Link>
-        <Link href="#" className="text-white hover:text-red-500 transition">
+        <Link href="#" className="text-white hover:underline transition">
           Contato
         </Link>
       </nav>

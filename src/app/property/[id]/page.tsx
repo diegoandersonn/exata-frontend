@@ -31,7 +31,7 @@ export default function PropertyPage() {
       <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1">
         <div className="overflow-hidden col-span-1 row-span-1 lg:col-span-2 lg:row-span-2">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -41,7 +41,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -51,7 +51,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -61,7 +61,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -71,7 +71,7 @@ export default function PropertyPage() {
         </div>
         <div className="hidden lg:block overflow-hidden relative">
           <Image
-            src={property.imagem}
+            src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
@@ -126,7 +126,7 @@ export default function PropertyPage() {
         <div className="xl:absolute right-[300px] -top-[70px] min-w[50px] lg:min-w-[350px] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">
           <h3 className="font-medium">Valor à vista</h3>
           <h1 className="font-bold text-lg lg:text-3xl">R$ {property.aluguel}</h1>
-          <h3 className="text-emerald-600 underline cursor-pointer">
+          <h3 className="text-red-800 underline cursor-pointer">
             Entenda este valor
           </h3>
           <div className="flex flex-col gap-4 text-zinc-500">

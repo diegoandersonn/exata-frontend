@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Propertie() {
-  const searchParams = useSearchParams();
-  const propertyId = searchParams.get("propertyId");
+  // const searchParams = useSearchParams();
+  // const propertyId = searchParams.get("propertyId");
   const [index, setIndex] = useState<number>(0);
   const [triedNext, setTriedNext] = useState(false);
   const [mainImageFile, setMainImageFile] = useState<File | null>(null);
@@ -417,7 +417,7 @@ export default function Propertie() {
               <textarea
                 name="descricao"
                 value={form.descricao}
-                onChange={handleChange}
+                onChange={() => handleChange}
                 className={`${
                   triedNext && !form.descricao ? "border-red-500" : ""
                 } w-full border rounded px-3 py-2 mb-1 text-gray-500`}

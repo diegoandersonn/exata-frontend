@@ -2,7 +2,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import useGetProperties from "@/hooks/use-getProperties";
-import PropertyCard from "@/components/property-card";
+import PropertyCard from "@/components/ui/property-card";
 
 export default function Carousel() {
   const [maxVisible, setMaxVisible] = useState(4);
@@ -30,7 +30,6 @@ export default function Carousel() {
     setPosition(() => [0, maxVisible]);
   }, [maxVisible]);
 
-  
   if (!properties) {
     return <div>Imóveis não encontrados</div>;
   }
@@ -59,7 +58,7 @@ export default function Carousel() {
           <PropertyCard
             key={property._id}
             id={property._id}
-            image={property.imagem}
+            image={property.imagens[0]}
             title={property.nome}
             description={property.descricao}
             price={property.aluguel}
@@ -70,7 +69,7 @@ export default function Carousel() {
           />
         ))}
       </div>
-      <div className="flex gap-4 mt-2">
+      <div className="flex gap-4 mt-10">
         <div
           className="rounded-full p-2 shadow-xl text-zinc-400 w-10 h-10 lg:w-12 lg:h-12 flex justify-center items-center hover:scale-125 cursor-pointer hover:text-zinc-600 transition-transform duration-300"
           onClick={() => switchCards("minus")}

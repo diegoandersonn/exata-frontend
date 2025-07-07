@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PropertyTypeEnum } from "@/types/property-type-enum";
+import { AdjustmentTypeEnum } from "@/types/adjustment-type-enum";
 
 export default function Propertie() {
   // const searchParams = useSearchParams();
@@ -106,6 +107,7 @@ export default function Propertie() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted:", form);
     const data = new FormData();
     data.append("nome", form.name);
     data.append("prazo", form.prazo);
@@ -128,9 +130,9 @@ export default function Propertie() {
       Array.from(otherImages).forEach((file) => {
         data.append("imagens", file);
       });
-    }
-
-    await fetch("http://localhost:3000/property", {
+    } 
+    console.log(JSON.stringify(data, null, 2));
+    await fetch("http://localhost:3333/property", {
       method: "POST",
       body: data,
     });
@@ -372,9 +374,9 @@ export default function Propertie() {
                 required
               >
                 <option value="">Selecione</option>
-                <option value="anual">Anual</option>
-                <option value="semestral">Semestral</option>
-                <option value="bianual">Bianual</option>
+                <option value={AdjustmentTypeEnum.annual}>Anual</option>
+                <option value={AdjustmentTypeEnum.semiannual}>Semestral</option>
+                <option value={AdjustmentTypeEnum.biennial}>Bianual</option>
               </select>
             </div>
             <div className="w-[31.5%]">

@@ -380,9 +380,9 @@ export default function Propertie() {
                   required
                 >
                   <option value="">Selecione</option>
-                  <option value="anual">Anual</option>
-                  <option value="semestral">Semestral</option>
-                  <option value="bianual">Bianual</option>
+                  <option value={AdjustmentTypeEnum.annual}>Anual</option>
+                  <option value={AdjustmentTypeEnum.semiannual}>Semestral</option>
+                  <option value={AdjustmentTypeEnum.biennial}>Bianual</option>
                 </select>
               </div>
               <div className="w-[31.5%]">
@@ -421,10 +421,11 @@ export default function Propertie() {
                 <label className="block text-[0.9rem] font-medium mb-1">
                   Descrição
                 </label>
-                <textarea
+                <input
+                  type="text"
                   name="descricao"
                   value={form.descricao}
-                  onChange={() => handleChange}
+                  onChange={handleChange}
                   className={`${
                     triedNext && !form.descricao ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1 text-gray-500`}

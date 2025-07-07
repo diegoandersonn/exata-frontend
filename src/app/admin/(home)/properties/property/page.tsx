@@ -13,7 +13,7 @@ export default function Propertie() {
   const [index, setIndex] = useState<number>(0);
   const [triedNext, setTriedNext] = useState(false);
   const [mainImageFile, setMainImageFile] = useState<File | null>(null);
-  const { property, isLoading, isError } = useGetProperty(propertyId as string);
+  const { property } = useGetProperty(propertyId as string);
   const [otherImages, setOtherImages] = useState<FileList | null>(null);
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
   const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
@@ -471,7 +471,7 @@ export default function Propertie() {
                   type="text"
                   name="rentWithTax"
                   value={(() => {
-                    const parseCurrency = (val) => {
+                    const parseCurrency = (val: string) => {
                       if (!val) return 0;
                       const normalized = val
                         .replace(/\./g, "")
@@ -536,6 +536,72 @@ export default function Propertie() {
                   name="horarioVisita"
                   value={form.horarioVisita}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    const val = e.target.value.trim();
+
+                    // Expressão regular para capturar horários no formato HH:MM ou HHMM
+                    const timeRegex = /(\d{1,2}):?(\d{2})?/g;
+
+                    const matches = [];
+                    let match;
+                    while ((match = timeRegex.exec(val)) !== null) {
+                      // match[1] = hora, match[2] = minuto (pode ser undefined)
+                      matches.push({
+                        hour: match[1],
+                        minute: match[2] || "00",
+                      });
+                      if (matches.length === 2) break; // só os dois primeiros horários
+                    }
+
+                    if (matches.length < 2) {
+                      // Tenta fallback antigo: extrair apenas dígitos juntos (ex: "1100 2200")
+                      const digits = val.match(/\d{3,4}/g);
+                      if (!digits || digits.length < 2) {
+                        setForm((prev) => ({ ...prev, horarioVisita: "" }));
+                        return;
+                      }
+                      matches[0] = {
+                        hour: digits[0].slice(0, 2),
+                        minute: digits[0].slice(2) || "00",
+                      };
+                      matches[1] = {
+                        hour: digits[1].slice(0, 2),
+                        minute: digits[1].slice(2) || "00",
+                      };
+                    }
+
+                    function formatTime(hm: { hour: string; minute: string }) {
+                      const h = hm.hour.padStart(2, "0");
+                      const m = hm.minute.padEnd(2, "0");
+
+                      const hourNum = parseInt(h, 10);
+                      const minNum = parseInt(m, 10);
+
+                      if (
+                        hourNum < 0 ||
+                        hourNum > 23 ||
+                        minNum < 0 ||
+                        minNum > 59
+                      ) {
+                        return null;
+                      }
+
+                      return `${h}:${m}`;
+                    }
+
+                    const start = formatTime(matches[0]);
+                    const end = formatTime(matches[1]);
+
+                    if (!start || !end) {
+                      setForm((prev) => ({ ...prev, horarioVisita: "" }));
+                      return;
+                    }
+
+                    setForm((prev) => ({
+                      ...prev,
+                      horarioVisita: `${start} - ${end}`,
+                    }));
+                  }}
                   placeholder="00:00 - 00:00"
                   className={`${
                     triedNext && !form.horarioVisita ? "border-red-500" : ""
@@ -555,6 +621,7 @@ export default function Propertie() {
                   className={`${
                     triedNext && !form.area ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1 text-black`}
+                  placeholder="0"
                   min={0}
                   required
                 />
@@ -571,6 +638,7 @@ export default function Propertie() {
                   className={`${
                     triedNext && !form.descricao ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1 text-black`}
+                  placeholder="Digite aqui"
                   required
                 />
               </div>

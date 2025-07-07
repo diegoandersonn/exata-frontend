@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import FilterDropdown from "@/components/ui/filter-dropdown";
 import Header from "@/components/ui/header";
 import { useGetActiveProperties } from "@/hooks/use-getProperties";
-import { Plus } from "lucide-react";
 import PropertyCard from "@/components/ui/property-card";
 import { PropertyType } from "@/types/property-type";
 

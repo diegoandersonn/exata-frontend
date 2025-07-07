@@ -5,8 +5,8 @@ import { ToastContainer } from "react-toastify";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "Exata Administradore de Bens",
-  description: "Fintech Academy Wallet",
+  title: "Exata Administradora de Bens",
+  description: "Exata Administradora de Bens",
 };
 
 export default function RootLayout({

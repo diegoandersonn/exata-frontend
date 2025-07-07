@@ -189,7 +189,7 @@ export default function Propertie() {
             <div className="flex justify-between mt-4">
               <div className="w-[31.5%]">
                 <label className="block text-[0.9rem] font-medium mb-1">
-                  Título do imóvel
+                  Localização do imóvel
                 </label>
                 <input
                   type="text"
@@ -275,6 +275,20 @@ export default function Propertie() {
                   type="number"
                   name="bedrooms"
                   value={form.bedrooms}
+                  onBlur={(e) => {
+                    const raw = e.target.value.trim();
+
+                    const parsed = parseInt(raw, 10);
+
+                    if (!isNaN(parsed) && parsed >= 0) {
+                      setForm((prev) => ({
+                        ...prev,
+                        bedrooms: String(parsed),
+                      }));
+                    } else {
+                      setForm((prev) => ({ ...prev, bedrooms: "" }));
+                    }
+                  }}
                   onChange={handleChange}
                   className={`${
                     triedNext && !form.bedrooms ? "border-red-500" : ""
@@ -295,6 +309,20 @@ export default function Propertie() {
                   name="bathrooms"
                   value={form.bathrooms}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    const raw = e.target.value.trim();
+
+                    const parsed = parseInt(raw, 10);
+
+                    if (!isNaN(parsed) && parsed >= 0) {
+                      setForm((prev) => ({
+                        ...prev,
+                        bathrooms: String(parsed),
+                      }));
+                    } else {
+                      setForm((prev) => ({ ...prev, bathrooms: "" }));
+                    }
+                  }}
                   className={`${
                     triedNext && !form.bathrooms ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
@@ -314,6 +342,17 @@ export default function Propertie() {
                   name="garages"
                   value={form.garages}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    const raw = e.target.value.trim();
+
+                    const parsed = parseInt(raw, 10);
+
+                    if (!isNaN(parsed) && parsed >= 0) {
+                      setForm((prev) => ({ ...prev, garages: String(parsed) }));
+                    } else {
+                      setForm((prev) => ({ ...prev, garages: "" }));
+                    }
+                  }}
                   className={`${
                     triedNext && !form.garages ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1`}
@@ -503,14 +542,25 @@ export default function Propertie() {
                   Área (m²)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="area"
                   value={form.area}
                   onChange={handleChange}
+                  onBlur={(e) => {
+                    const raw = e.target.value.trim();
+
+                    const parsed = parseInt(raw, 10);
+
+                    if (!isNaN(parsed) && parsed >= 0) {
+                      setForm((prev) => ({ ...prev, area: String(parsed) }));
+                    } else {
+                      setForm((prev) => ({ ...prev, area: "" }));
+                    }
+                  }}
                   className={`${
                     triedNext && !form.area ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  min={0}
+                  placeholder="0"
                   required
                 />
               </div>
@@ -526,6 +576,7 @@ export default function Propertie() {
                   className={`${
                     triedNext && !form.descricao ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1 text-black`}
+                  placeholder="Digite aqui"
                   required
                 />
               </div>

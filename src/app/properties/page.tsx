@@ -19,7 +19,6 @@ export default function PropertiesPage() {
   if (isError) {
     return <div>Erro</div>;
   }
-  console.log(properties);
   return (
     <div className="flex flex-col gap-6">
       <Header />

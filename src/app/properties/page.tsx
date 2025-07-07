@@ -5,6 +5,7 @@ import Header from "@/components/ui/header";
 import { useGetActiveProperties } from "@/hooks/use-getProperties";
 import PropertyCard from "@/components/ui/property-card";
 import { PropertyType } from "@/types/property-type";
+import Footer from "@/components/ui/footer";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -86,6 +87,7 @@ export default function PropertiesPage() {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

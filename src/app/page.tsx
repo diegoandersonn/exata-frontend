@@ -4,6 +4,7 @@ import santosFoto from "../../public/orla-de-santos-vemelha.png";
 import Carousel from "@/components/ui/carousel";
 import Header from "@/components/ui/header";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/ui/footer";
 
 export default function Home() {
   const router = useRouter();
@@ -66,6 +67,7 @@ export default function Home() {
           </button>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

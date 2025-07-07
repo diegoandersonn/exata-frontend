@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/ui/footer";
 import Header from "@/components/ui/header";
 import useGetProperty from "@/hooks/use-getProperty";
 import {
@@ -174,6 +175,7 @@ export default function PropertyPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

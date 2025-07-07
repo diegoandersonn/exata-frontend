@@ -146,10 +146,10 @@ export default function Properties() {
               {property.tipo}
             </div>
             <div className="text-center font-normal text-sm text-[#393B3C]">
-              {property.banheiros}
+              {property.dormitorios}
             </div>
             <div className="text-center font-normal text-sm text-[#393B3C]">
-              {property.dormitorios}
+              {property.banheiros}
             </div>
             <div className="text-center font-normal text-sm text-[#393B3C]">
               R${" "}

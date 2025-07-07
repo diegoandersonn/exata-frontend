@@ -1,5 +1,5 @@
 export enum AdjustmentTypeEnum {
-  annual = "Annual",
-  semiannual = "Semiannual",
-  biennial = "Biennial",
+  annual = "Anual",
+  semiannual = "Semianual",
+  biennial = "Bianual",
 }

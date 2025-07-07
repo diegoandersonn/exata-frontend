@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { PropertyTypeEnum } from "@/types/property-type-enum";
 
 export default function Propertie() {
   // const searchParams = useSearchParams();
@@ -217,10 +218,8 @@ export default function Propertie() {
                 required
               >
                 <option value="">Selecione</option>
-                <option value="Apartamento">Apartamento</option>
-                <option value="Casa">Casa</option>
-                <option value="Studio">Studio</option>
-                <option value="Kitnet">Kitnet</option>
+                <option value={PropertyTypeEnum.apartment}>Apartamento</option>
+                <option value={PropertyTypeEnum.house}>Casa</option>
               </select>
             </div>
 

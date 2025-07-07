@@ -140,7 +140,13 @@ export default function Properties() {
             className="grid grid-cols-6 gap-[1.5rem] items-center border-t border-gray-100 py-3 px-2 hover:bg-gray-50 transition relative"
           >
             <div className="text-center font-normal h-14 text-sm text-[#393B3C]">
-              <span className="inline-block w-10 h-14 bg-gray-200 rounded" />
+              <Image
+                src={property.imagens[0]}
+                alt={"Imagem principal"}
+                width={40}
+                height={56}
+                className="inline-block w-20 h-14 bg-gray-200 rounded"
+              ></Image>
             </div>
             <div className="text-center font-normal text-sm text-[#393B3C]">
               {property.tipo}

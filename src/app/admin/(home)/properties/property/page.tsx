@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PropertyTypeEnum } from "@/types/property-type-enum";
+import { toast } from "react-toastify";
 
 export default function Propertie() {
   // const searchParams = useSearchParams();
@@ -13,6 +14,7 @@ export default function Propertie() {
   const [otherImages, setOtherImages] = useState<FileList | null>(null);
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
   const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -47,15 +49,6 @@ export default function Propertie() {
       setOtherImagesPreview([]);
     }
   }, [otherImages]);
-
-  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setMainImagePreview(url);
-      setForm({ ...form, mainImage: file.name });
-    }
-  };
 
   const handleNext = (e: React.MouseEvent) => {
     if (!isStepOneValid()) {
@@ -95,15 +88,6 @@ export default function Propertie() {
     }
   };
 
-  function formatCurrency(value: string | number) {
-    const number = Number(value);
-    if (isNaN(number)) return "";
-    return number.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = new FormData();
@@ -130,10 +114,20 @@ export default function Propertie() {
       });
     }
 
-    await fetch("http://localhost:3000/property", {
-      method: "POST",
-      body: data,
-    });
+    try {
+      setIsPending(true);
+      await fetch("http://localhost:3000/property", {
+        method: "POST",
+        body: data,
+      });
+      toast.success("Imóvel criado com sucesso");
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro inesperado. Tente novamente mais tarde");
+    }
+
+    setIsPending(false);
+    router.push("/admin/properties");
   };
 
   useEffect(() => {
@@ -187,241 +181,254 @@ export default function Propertie() {
         {/* Informações do imóvel */}
         <div className={`${index === 0 ? "block" : "hidden"} space-y-3`}>
           {/* Tipo do imóvel */}
-          <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between">
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Nome
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.name ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                required
-              />
+          <div className="bg-white rounded-lg w-full h-fit p-6">
+            <h2 className="text-base font-medium">Dados principais</h2>
+            <div className="flex justify-between mt-4">
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Título do imóvel
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.name ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  required
+                />
+              </div>
+
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Tipo do imóvel
+                </label>
+                <select
+                  name="propertyType"
+                  value={form.propertyType}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.propertyType ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1`}
+                  required
+                >
+                  <option value="">Selecione</option>
+                  <option value={PropertyTypeEnum.apartment}>
+                    Apartamento
+                  </option>
+                  <option value={PropertyTypeEnum.house}>Casa</option>
+                </select>
+              </div>
+
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Prazo do contrato
+                </label>
+                <input
+                  type="text"
+                  name="prazo"
+                  value={form.prazo}
+                  onChange={handleChange}
+                  placeholder="0 meses"
+                  className={`${
+                    triedNext && !form.prazo ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  required
+                />
+              </div>
             </div>
 
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Tipo do imóvel
-              </label>
-              <select
-                name="propertyType"
-                value={form.propertyType}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.propertyType ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1`}
-                required
-              >
-                <option value="">Selecione</option>
-                <option value={PropertyTypeEnum.apartment}>Apartamento</option>
-                <option value={PropertyTypeEnum.house}>Casa</option>
-              </select>
-            </div>
+            <div className="flex justify-between mt-4">
+              {/* Dormitórios */}
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Dormitório(s)
+                </label>
+                <input
+                  type="number"
+                  name="bedrooms"
+                  value={form.bedrooms}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.bedrooms ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1`}
+                  min={0}
+                  required
+                />
+              </div>
 
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Prazo
-              </label>
-              <input
-                type="text"
-                name="prazo"
-                value={form.prazo}
-                onChange={handleChange}
-                placeholder="0 meses"
-                className={`${
-                  triedNext && !form.prazo ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                required
-              />
+              {/* Banheiros */}
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Banheiro(s)
+                </label>
+                <input
+                  type="number"
+                  name="bathrooms"
+                  value={form.bathrooms}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.bathrooms ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1`}
+                  min={0}
+                  required
+                />
+              </div>
+
+              {/* Garagens */}
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Garagem(ns)
+                </label>
+                <input
+                  type="number"
+                  name="garages"
+                  value={form.garages}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.garages ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1`}
+                  min={0}
+                  required
+                />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between">
-            {/* Dormitórios */}
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Dormitório(s)
-              </label>
-              <input
-                type="number"
-                name="bedrooms"
-                value={form.bedrooms}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.bedrooms ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1`}
-                min={0}
-                required
-              />
-            </div>
+          {/* <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between"></div> */}
 
-            {/* Banheiros */}
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Banheiro(s)
-              </label>
-              <input
-                type="number"
-                name="bathrooms"
-                value={form.bathrooms}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.bathrooms ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1`}
-                min={0}
-                required
-              />
-            </div>
-
-            {/* Garagens */}
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Garagem(ns)
-              </label>
-              <input
-                type="number"
-                name="garages"
-                value={form.garages}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.garages ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1`}
-                min={0}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg w-full h-fit p-6 flex justify-between">
+          <div className="bg-white rounded-lg w-full h-fit p-6">
+            <h2 className="text-base font-medium">Valores</h2>
             {/* Aluguel */}
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Aluguel (R$)
-              </label>
-              <input
-                type="number"
-                name="rent"
-                value={form.rent}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.rent ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1`}
-                min={0}
-                step="0.01"
-                required
-              />
-            </div>
+            <div className="flex justify-between mt-4">
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Aluguel (R$)
+                </label>
+                <input
+                  type="number"
+                  name="rent"
+                  value={form.rent}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.rent ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1`}
+                  min={0}
+                  step="0.01"
+                  required
+                />
+              </div>
 
-            {/* Taxa */}
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                IPTU (R$)
-              </label>
-              <input
-                type="number"
-                name="tax"
-                value={form.tax}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.tax ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1`}
-                min={0}
-                step="0.01"
-                required
-              />
-            </div>
+              {/* Taxa */}
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  IPTU (R$)
+                </label>
+                <input
+                  type="number"
+                  name="tax"
+                  value={form.tax}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.tax ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1`}
+                  min={0}
+                  step="0.01"
+                  required
+                />
+              </div>
 
-            {/* Aluguel + IPTU */}
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Aluguel + IPTU (R$)
-              </label>
-              <input
-                type="number"
-                name="rentWithTax"
-                value={String(parseFloat(form.rent) + parseFloat(form.tax))}
-                onChange={handleChange}
-                disabled
-                className={`${
-                  triedNext && !form.rent && !form.tax ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                min={0}
-                step="0.01"
-                required
-              />
+              {/* Aluguel + IPTU */}
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Aluguel + IPTU (R$)
+                </label>
+                <input
+                  type="number"
+                  name="rentWithTax"
+                  value={String(parseFloat(form.rent) + parseFloat(form.tax))}
+                  onChange={handleChange}
+                  disabled
+                  className={`${
+                    triedNext && !form.rent && !form.tax ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  min={0}
+                  step="0.01"
+                  required
+                />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between gap-4 flex-wrap">
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Tipo de Reajuste
-              </label>
-              <select
-                name="reajusteType"
-                value={form.reajusteType}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.reajusteType ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                required
-              >
-                <option value="">Selecione</option>
-                <option value="anual">Anual</option>
-                <option value="semestral">Semestral</option>
-                <option value="bianual">Bianual</option>
-              </select>
-            </div>
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Horário de Visita
-              </label>
-              <input
-                type="text"
-                name="horarioVisita"
-                value={form.horarioVisita}
-                onChange={handleChange}
-                placeholder="00:00 - 00:00"
-                className={`${
-                  triedNext && !form.horarioVisita ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                required
-              />
-            </div>
-            <div className="w-[31.5%]">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Área (m²)
-              </label>
-              <input
-                type="number"
-                name="area"
-                value={form.area}
-                onChange={handleChange}
-                className={`${
-                  triedNext && !form.area ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                min={0}
-                required
-              />
-            </div>
-            <div className="w-full mt-4">
-              <label className="block text-[0.9rem] font-medium mb-1">
-                Descrição
-              </label>
-              <textarea
-                name="descricao"
-                value={form.descricao}
-                onChange={() => handleChange}
-                className={`${
-                  triedNext && !form.descricao ? "border-red-500" : ""
-                } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                required
-              />
+          <div className="bg-white rounded-lg w-full h-fit p-6 gap-4">
+            <h2 className="text-base font-medium mb-4">Extras</h2>
+            <div className="flex justify-between flex-wrap">
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Tipo de Reajuste
+                </label>
+                <select
+                  name="reajusteType"
+                  value={form.reajusteType}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.reajusteType ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  required
+                >
+                  <option value="">Selecione</option>
+                  <option value="anual">Anual</option>
+                  <option value="semestral">Semestral</option>
+                  <option value="bianual">Bianual</option>
+                </select>
+              </div>
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Horário de Visita
+                </label>
+                <input
+                  type="text"
+                  name="horarioVisita"
+                  value={form.horarioVisita}
+                  onChange={handleChange}
+                  placeholder="00:00 - 00:00"
+                  className={`${
+                    triedNext && !form.horarioVisita ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  required
+                />
+              </div>
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Área (m²)
+                </label>
+                <input
+                  type="number"
+                  name="area"
+                  value={form.area}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.area ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  min={0}
+                  required
+                />
+              </div>
+              <div className="w-full mt-3">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Descrição
+                </label>
+                <textarea
+                  name="descricao"
+                  value={form.descricao}
+                  onChange={() => handleChange}
+                  className={`${
+                    triedNext && !form.descricao ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                  required
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -492,13 +499,28 @@ export default function Propertie() {
           >
             Cancelar
           </button>
-          <button
-            type="button"
-            onClick={index === 0 ? handleNext : handleSubmit}
-            className="bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"
-          >
-            {index === 0 ? "Próximo" : "Salvar"}
-          </button>
+          {!isPending && (
+            <button
+              type="button"
+              onClick={index === 0 ? handleNext : handleSubmit}
+              className={
+                "bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"
+              }
+            >
+              {index === 0 ? "Próximo" : "Salvar"}
+            </button>
+          )}
+          {isPending && (
+            <button
+              type="button"
+              disabled
+              className={
+                "bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"
+              }
+            >
+              Carregando...
+            </button>
+          )}
         </div>
       </form>
     </div>

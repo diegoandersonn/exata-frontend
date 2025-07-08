@@ -1,0 +1,73 @@
+# Exata Frontend
+
+Este projeto é o frontend administrativo do sistema Exata, desenvolvido em React/Next.js para gerenciamento de imóveis.
+
+## Funcionalidades
+
+- Cadastro, edição e visualização de imóveis
+- Upload e visualização de fotos dos imóveis
+- Validação de formulários
+- Landing page da empresa
+- Listagem de imóveis moderna para o usuário final
+- Interface amigável e responsiva
+
+## Tecnologias Utilizadas
+
+- [Next.js](https://nextjs.org/)
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Toastify](https://fkhadra.github.io/react-toastify/) (notificações)
+- Outras bibliotecas auxiliares
+
+## Como rodar o projeto
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone https://github.com/seu-usuario/exata-frontend.git
+   cd exata-frontend
+   code .
+   ```
+
+2. **Instale as dependências:**
+
+   ```bash
+   cd src
+   npm install
+   ```
+
+3. **Inicie o servidor de desenvolvimento:**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Acesse no navegador:**
+   ```
+   http://localhost:3000
+   ```
+
+## Estrutura de Pastas
+
+- `src/app/admin`: Telas administrativas
+- `src/components`: Componentes reutilizáveis
+- `src/services`: Serviços de API
+- `public`: Imagens e arquivos estáticos
+
+## Scripts Disponíveis
+
+- `dev`: Inicia o ambiente de desenvolvimento
+- `build`: Gera a build de produção
+- `start`: Inicia o servidor em modo produção
+
+## Contribuição
+
+Contribuições são bem-vindas!  
+Abra uma issue ou envie um pull request.
+
+## Licença
+
+Este projeto está sob a licença MIT.
+
+---

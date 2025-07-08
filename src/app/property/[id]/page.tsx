@@ -93,12 +93,13 @@ export default function PropertyPage() {
       </div>
       <div className="relative w-screen flex flex-col xl:flex-row gap-10 px-2 lg:px-44">
         <div className="flex flex-col gap-8">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start max-w-[97%]">
             <h1 className="font-bold text-base lg:text-2xl w-[70%]">
-              {property.tipo} à venda em {property.nome} com {property.area} m²,{" "}
-              {property.dormitorios} quartos e {property.vagasGaragem} vagas
+              {property.tipo} à venda na região da Baixada Santista com{" "}
+              {property.area} m², {property.dormitorios} quarto(s) e{" "}
+              {property.vagasGaragem} vaga(s)
             </h1>
-            <div className="flex gap-2">
+            <div className="flex gap-2 ml-auto">
               <button className="p-1 rounded-lg hover:bg-zinc-200 transition-colors duration-300">
                 <Heart className="w-4 h-4 lg:w-6 lg:h-6" />
               </button>
@@ -133,7 +134,7 @@ export default function PropertyPage() {
           <div className="w-full flex justify-start">
             <button
               onClick={() => handleSubmit()}
-              className="bg-red-600 text-white uppercase font-bold px-8 py-4 rounded-3xl shadow-lg hover:bg-red-700 hover:shadow-xl transition-all duration-300"
+              className="bg-red-600 text-white uppercase font-bold px-8 py-4 rounded-3xl shadow-lg hover:bg-red-700 hover:shadow-xl transition-all duration-300 mt-4 mb-16"
             >
               ENTRE EM CONTATO
             </button>
@@ -144,9 +145,6 @@ export default function PropertyPage() {
           <h1 className="font-bold text-lg lg:text-3xl">
             R$ {property.aluguel}
           </h1>
-          <h3 className="text-red-800 underline cursor-pointer">
-            Entenda este valor
-          </h3>
           <div className="flex flex-col gap-4 text-zinc-500">
             <div className="flex justify-between items-center">
               <h2 className="text-sm lg:text-base">IPTU</h2>
@@ -175,7 +173,7 @@ export default function PropertyPage() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

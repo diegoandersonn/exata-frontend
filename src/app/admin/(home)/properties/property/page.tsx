@@ -35,6 +35,18 @@ export default function Propertie() {
     descricao: "",
   });
 
+  function formatCurrency(value: string | number): string {
+    const num =
+      typeof value === "number"
+        ? value
+        : parseFloat(String(value).replace(",", "."));
+    if (isNaN(num)) return "";
+    return num.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
   useEffect(() => {
     if (property) {
       setForm({
@@ -45,8 +57,8 @@ export default function Propertie() {
         bedrooms: String(property?.dormitorios),
         bathrooms: String(property?.banheiros),
         garages: String(property?.vagasGaragem),
-        rent: String(property?.aluguel),
-        tax: String(property?.iptu),
+        rent: String(formatCurrency(property?.aluguel)),
+        tax: String(formatCurrency(property?.iptu)),
         reajusteType: property?.tipoReajuste,
         horarioVisita: property?.horarioVisita,
         area: String(property?.area),
@@ -539,35 +551,37 @@ export default function Propertie() {
                   onBlur={(e) => {
                     const val = e.target.value.trim();
 
-                    // Expressão regular para capturar horários no formato HH:MM ou HHMM
+                    // Expressão regular para capturar até 4 horários (HHMM ou HH:MM)
                     const timeRegex = /(\d{1,2}):?(\d{2})?/g;
 
-                    const matches = [];
+                    const matches: { hour: string; minute: string }[] = [];
                     let match;
                     while ((match = timeRegex.exec(val)) !== null) {
-                      // match[1] = hora, match[2] = minuto (pode ser undefined)
                       matches.push({
                         hour: match[1],
                         minute: match[2] || "00",
                       });
-                      if (matches.length === 2) break; // só os dois primeiros horários
+                      if (matches.length === 4) break;
                     }
 
-                    if (matches.length < 2) {
-                      // Tenta fallback antigo: extrair apenas dígitos juntos (ex: "1100 2200")
+                    // Se não conseguir 2 ou 4 horários, tenta fallback com grupos de 3-4 dígitos
+                    if (matches.length !== 2 && matches.length !== 4) {
                       const digits = val.match(/\d{3,4}/g);
-                      if (!digits || digits.length < 2) {
+                      if (
+                        !digits ||
+                        (digits.length !== 2 && digits.length !== 4)
+                      ) {
                         setForm((prev) => ({ ...prev, horarioVisita: "" }));
                         return;
                       }
-                      matches[0] = {
-                        hour: digits[0].slice(0, 2),
-                        minute: digits[0].slice(2) || "00",
-                      };
-                      matches[1] = {
-                        hour: digits[1].slice(0, 2),
-                        minute: digits[1].slice(2) || "00",
-                      };
+
+                      matches.length = 0; // limpa
+                      digits.forEach((d) => {
+                        matches.push({
+                          hour: d.slice(0, 2),
+                          minute: d.slice(2) || "00",
+                        });
+                      });
                     }
 
                     function formatTime(hm: { hour: string; minute: string }) {
@@ -589,26 +603,28 @@ export default function Propertie() {
                       return `${h}:${m}`;
                     }
 
-                    const start = formatTime(matches[0]);
-                    const end = formatTime(matches[1]);
+                    const formattedTimes = matches.map(formatTime);
 
-                    if (!start || !end) {
+                    if (formattedTimes.some((t) => t === null)) {
                       setForm((prev) => ({ ...prev, horarioVisita: "" }));
                       return;
                     }
 
-                    setForm((prev) => ({
-                      ...prev,
-                      horarioVisita: `${start} - ${end}`,
-                    }));
+                    let final = `${formattedTimes[0]} - ${formattedTimes[1]}`;
+                    if (formattedTimes.length === 4) {
+                      final += ` | ${formattedTimes[2]} - ${formattedTimes[3]}`;
+                    }
+
+                    setForm((prev) => ({ ...prev, horarioVisita: final }));
                   }}
-                  placeholder="00:00 - 00:00"
+                  placeholder="00:00 - 00:00 | 00:00 - 00:00"
                   className={`${
                     triedNext && !form.horarioVisita ? "border-red-500" : ""
                   } w-full border rounded px-3 py-2 mb-1 text-black`}
                   required
                 />
               </div>
+
               <div className="w-[31.5%]">
                 <label className="block text-[0.9rem] font-medium mb-1">
                   Área (m²)

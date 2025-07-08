@@ -9,8 +9,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Exata Adm",
-  description: "Site da imobilíaria Exata",
+  title: "Exata Administradora de Bens",
+  description: "Exata Administradora de Bens",
   icons: {
     icon: "/favicon.ico",
   },

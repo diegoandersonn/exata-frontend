@@ -37,33 +37,34 @@ export default function Home() {
         <Carousel />
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-8 p-10">
-        <Image
-          id="exata-logo-v2"
-          src="/exata-logo-v2.png"
-          alt="Logo da Exata administradora de bens, um E vermelho representando a inicial da empresa, com um fundo branco."
-          title="Logo da Exata"
-          width={60}
-          height={60}
-          className="w-[400px] h-[400px] rounded-full bg-black hover:scale-110 transition-transform duration-300 hidden sm:block mx-auto select-none"
-        />
-        <div className="flex flex-col items-center sm:items-start justify-center gap-6 flex-1 relative text-center sm:text-left">
+        <div className="logo-area flex items-center justify-center sm:block mx-auto select-none">
+          <div className="rounded-full shadow-2xl shadow-red-300/60 bg-white p-3 w-fit">
+            <Image
+              src="/exata-logo-v2.png"
+              alt="Exata Imóveis"
+              width={300}
+              height={300}
+              className="w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] object-contain rounded-full"
+            />
+          </div>
+        </div>
+  <div className="flex flex-col items-center sm:items-start justify-center gap-6 flex-1 text-center sm:text-left relative min-h-[220px]">
           <h1 className="text-4xl font-bold">SOBRE NÓS!</h1>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pb-8">
             <h3 className="text-2xl font-bold">Uma exata feita para você</h3>
             <p className="text-xs">
-              A Exata, desde 2014, se destaca em Santos-SP pela excelência e
-              compromisso em oferecer produtos de impressão e comunicação visual
-              de alta qualidade a preços justos. Atendendo desde pequenas a
-              grandes empresas, a exata oferece uma ampla gama de produtos, como
-              papelaria personalizada e materiais de comunicação visual, sempre
-              com rigoroso controle de qualidade. A missão da empresa é
-              satisfazer as necessidades específicas de cada cliente, fornecendo
-              soluções personalizadas que reforçam a identidade visual e
-              comunicação dos parceiros.
+              A <span className="text-red-600 font-bold">Exata</span> é uma imobiliária e administradora de bens com sede em <span className="text-red-600 font-bold">Santos</span>, dedicada a transformar a experiência de comprar, vender ou alugar imóveis em algo simples, seguro e transparente. Com anos de atuação no mercado, nossa missão é conectar pessoas aos lugares certos, oferecendo <span className="text-red-600 font-bold">soluções personalizadas</span> e acompanhamento completo em cada etapa do processo. Valorizamos a confiança de nossos clientes e trabalhamos para que cada negociação seja tranquila e satisfatória.
+            </p>
+            <p className="text-xs">
+              Além de facilitar a venda e locação de imóveis, a Exata é referência para quem busca <span className="text-red-600 font-bold">oportunidades justas</span> e <span className="text-red-600 font-bold">preços competitivos</span>. Nosso compromisso é ajudar você a encontrar o <span className="text-red-600 font-bold">imóvel ideal</span>, seja para morar, investir ou expandir seus negócios, garantindo sempre atendimento de qualidade e suporte especializado. Aqui, cada cliente encontra atenção, dedicação e <span className="text-red-600 font-bold">soluções que realmente fazem a diferença</span>.
             </p>
           </div>
-          <button onClick={() => router.push("/properties")} className="lg:absolute bottom-0 right-0 bg-red-700 text-white p-4 font-bold uppercase text-xs hover:scale-110 transition-transform duration-300">
-            conheça nossos imóveis!
+          <button
+            onClick={() => router.push("/properties")}
+            className="mt-8 px-8 py-3 rounded-full bg-red-600 text-white font-bold uppercase text-sm shadow-lg hover:bg-red-700 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 sm:absolute sm:bottom-0 sm:right-0 sm:mt-0"
+            style={{minWidth: 220}}
+          >
+            conheça nossos imóveis
           </button>
         </div>
       </div>

@@ -140,7 +140,7 @@ export default function PropertyPage() {
             </button>
           </div>
         </div>
-        <div className="xl:absolute right-[300px] -top-[70px] min-w[50px] lg:min-w-[350px] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">
+        <div className="xl:absolute right-[14.625vw] -top-[3.646vw] min-w[2.604vw] lg:min-w-[18.229vw] flex flex-col gap-4 border border-zinc-600 p-5 rounded-xl z-10 bg-white">
           <h3 className="font-medium">Valor à vista</h3>
           <h1 className="font-bold text-lg lg:text-3xl">
             R$ {property.aluguel}

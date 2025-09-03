@@ -48,8 +48,10 @@ export default function PropertiesPage() {
       <div className="w-screen mt-24">
         <div className="flex items-center justify-between top-0 z-10 p-6">
           <h1 className="font-bold text-2xl">
-            {propertiesFiltered.length} Imóveis à venda na região da Baixada
-            Santista
+            {`${propertiesFiltered.length} ${
+              propertiesFiltered.length === 1 ? "Imóvel" : "Imóveis"
+            } à venda na região da Baixada
+            Santista`}
           </h1>
           <div className="flex flex-col items-end gap-2">
             <button
@@ -70,24 +72,35 @@ export default function PropertiesPage() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-12 px-10">
-          {propertiesFiltered.map((property) => (
-            <PropertyCard
-              key={property._id}
-              id={property._id}
-              image={property.imagens?.[0] || ""}
-              title={property.nome}
-              description={property.descricao}
-              price={property.aluguel}
-              code={property._id}
-              area={property.area}
-              rooms={property.banheiros}
-              parkingSpaces={property.vagasGaragem}
-            />
-          ))}
-        </div>
+        {propertiesFiltered.length <= 0 && (
+          <div className="grid grid-cols-4 gap-12 px-10 h-[66vh]">
+            <div className="col-span-4 flex items-center justify-center h-full">
+              <span className="text-lg text-gray-500 text-center">
+                Nenhum imóvel encontrado com o filtro selecionado.
+              </span>
+            </div>
+          </div>
+        )}
+        {propertiesFiltered.length > 0 && (
+          <div className="grid grid-cols-4 gap-12 px-10">
+            {propertiesFiltered.map((property) => (
+              <PropertyCard
+                key={property._id}
+                id={property._id}
+                image={property.imagens?.[0] || ""}
+                title={property.nome}
+                description={property.descricao}
+                price={property.aluguel}
+                code={property._id}
+                area={property.area}
+                rooms={property.banheiros}
+                parkingSpaces={property.vagasGaragem}
+              />
+            ))}
+          </div>
+        )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

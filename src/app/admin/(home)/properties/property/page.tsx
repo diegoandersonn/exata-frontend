@@ -687,7 +687,7 @@ export default function Propertie() {
               </label>
 
               {mainImagePreview && (
-                <img
+                <Image
                   src={mainImagePreview}
                   alt="Pré-visualização da foto principal"
                   className="mt-3 rounded max-h-36 object-contain border border-gray-300"
@@ -726,7 +726,7 @@ export default function Propertie() {
               {otherImagesPreview.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-3 max-h-36 overflow-auto">
                   {otherImagesPreview.map((src, idx) => (
-                    <img
+                    <Image
                       key={idx}
                       src={src}
                       alt={`Pré-visualização ${idx + 1}`}

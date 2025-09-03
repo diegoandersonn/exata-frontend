@@ -6,6 +6,7 @@ import { useGetActiveProperties } from "@/hooks/use-getProperties";
 import PropertyCard from "@/components/ui/property-card";
 import { PropertyType } from "@/types/property-type";
 import Footer from "@/components/ui/footer";
+import Image from "next/image";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -59,10 +60,12 @@ export default function PropertiesPage() {
               className="flex items-center gap-2 bg-red-800 text-white px-4 py-2 rounded-md hover:scale-110 transition-transform duration-300 mr-2"
             >
               + Filtros
-              <img
+              <Image
                 src="/new-filter-icon.svg"
                 alt="Filtro"
                 className="w-5 h-5 invert"
+                width={0}
+                height={0}
               />
             </button>
             <FilterDropdown

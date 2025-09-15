@@ -25,14 +25,13 @@ export const PasswordRecoveryFlow: React.FC = () => {
   const handleEmailSubmit = async (submittedEmail: string) => {
 
     try {    
-      const response = await fetch("http://localhost:3000/auth/send-token", {
+      const response = await fetch("http://localhost:3333/auth/send-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email: submittedEmail }),
       });
-
 
       if (!response.ok) {
         if (response.status === 404) {
@@ -62,7 +61,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
    
     try {
       
-      const response = await fetch("http://localhost:3000/auth/verify-token", {
+      const response = await fetch("http://localhost:3333/auth/verify-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,13 +76,11 @@ export const PasswordRecoveryFlow: React.FC = () => {
         return false;
       }
 
-      const data: ValidateOtpResponse = await response.json();      
-
       if (!response.ok) {
         if (response.status === 401) {
           toast.error("Código inválido. Tente novamente.");
         } else {
-          toast.error(data.message || "Erro ao validar código");
+          toast.error("Erro ao validar código");
         }
         return false;
       }
@@ -93,7 +90,6 @@ export const PasswordRecoveryFlow: React.FC = () => {
       toast.success("Código validado com sucesso!");
       return true;
     } catch {
-    
       toast.error("Erro ao verificar código. Tente novamente.");
       return false;
     }
@@ -101,7 +97,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
 
   const handleResendCode = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/send-token", {
+      const response = await fetch("http://localhost:3333/auth/send-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,11 +120,10 @@ export const PasswordRecoveryFlow: React.FC = () => {
 
   const handlePasswordSubmit = async ({ password }: { password: string }) => {
     try {
-     
       const response = await fetch(
-        "http://localhost:3000/auth/redefine-password",
+        "http://localhost:3333/auth/redefine-password",
         {
-          method: "PATCH",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -138,7 +133,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
           }),
         }
       );     
-
+      
       if (response.status === 401) {
         toast.error("Sessão expirada. Por favor, reinicie o processo.");
         setCurrentStep(1);
@@ -151,9 +146,9 @@ export const PasswordRecoveryFlow: React.FC = () => {
       }
 
       toast.success("Senha alterada com sucesso!");
-      router.push("/");
-    } catch{
-   
+
+      router.push("/admin");
+    } catch {
       toast.error("Erro ao alterar senha. Tente novamente.");
     }
   };

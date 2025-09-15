@@ -1,7 +1,10 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetProperties = () => {
+  const { token } = useAuth();
+
   const { data, isError, isLoading } = useQuery<PropertyType[]>({
     queryKey: ["get-properties"],
     queryFn: async () => {
@@ -9,6 +12,7 @@ export const useGetProperties = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`
         },
       });
       if (!response.ok) {

@@ -55,7 +55,7 @@ export default function Profile({ active, profile }: ProfileProps) {
               id="profile-username"
               className="text-[13px] text-[#1E293B] md:text-[13px] lg:text-[14px]"
             >
-              {"Olá administrador!"}
+              {"Olá " + profile.name + "!"}
             </CardTitle>
             <ProfileButtons
               content={profile.email}

@@ -7,16 +7,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { usePathname, useRouter } from 'next/navigation'
 import Profile from "./ui/profile/Profile";
 import { initialsGenerator } from "./ui/profile/initialsGenerator";
+import { useUser } from "@/contexts/UserContext";
 
 function AcademyNavbar() {
   // const { push } = useRouter()
   // const pathname = usePathname()
+  const { user: ctxUser } = useUser();
+  const u = ctxUser;
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileContainerRef = useRef<HTMLDivElement | null>(null);
-  const [profile] = useState({
+  const profile = {
     id: "user-email",
-    name: "",
-    email: "",
+    name: u?.name ?? "",
+    email: u?.email ?? "",
     items: [
       {
         id: "user-agency",
@@ -37,7 +40,7 @@ function AcademyNavbar() {
         icon: "Copy",
       },
     ],
-  });
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

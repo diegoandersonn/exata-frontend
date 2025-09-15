@@ -1,14 +1,17 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { PropertyType } from "@/types/property-type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useCreateProperty = () => {
   const queryClient = useQueryClient();
+  const { token } = useAuth();
   return useMutation({
     mutationFn: async (property: PropertyType) => {
       await fetch(`http://localhost:3333/property`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           imagens: property.imagens,

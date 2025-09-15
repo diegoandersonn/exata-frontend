@@ -5,14 +5,19 @@ import { AcademySidebar } from "@/components/ui/sidebar/AcademySidebar";
 import AcademyNavbar from "@/components/AcademyNavbar";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { IUser } from "@/types/user.type";
+import { UserProvider } from "@/contexts/UserContext";
 
 export default function RootLayout({
   children,
+  token,
+  id,
+  user,
 }: Readonly<{
   children: React.ReactNode;
   token: string;
   id: string;
-  isFirstAccess: boolean;
+  user?: IUser;
 }>) {
   const pathname = usePathname();
   const router = useRouter();
@@ -26,14 +31,16 @@ export default function RootLayout({
   }, [pathname, router]);
 
   return (
-    <>
-      <AcademyNavbar />
-      <SidebarProvider className="bg-[#F1F5F9] flex justify-center ">
-        <AcademySidebar />
-        <main className="w-full max-h-full mt-20 mb-5 [&>*]:mx-10 [&>*]:rounded-2xl">
-          {children}
-        </main>
-      </SidebarProvider>
-    </>
+    <UserProvider initialUser={user}>
+      <>
+        <AcademyNavbar />
+        <SidebarProvider className="bg-[#F1F5F9] flex justify-center ">
+          <AcademySidebar />
+          <main className="w-full max-h-full mt-20 mb-5 [&>*]:mx-10 [&>*]:rounded-2xl">
+            {children}
+          </main>
+        </SidebarProvider>
+      </>
+    </UserProvider>
   );
 }

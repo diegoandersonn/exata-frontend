@@ -28,7 +28,7 @@ export default function Properties() {
   ];
 
   useEffect(() => {
-    const handleClick = () => setActiveMenu(null);
+  const handleClick = () => setActiveMenu(null);
     if (activeMenu !== null) {
       window.addEventListener("click", handleClick);
       return () => window.removeEventListener("click", handleClick);
@@ -60,14 +60,6 @@ export default function Properties() {
       toast.error("Erro ao carregar imóveis");
     }
   }, [isError]);
-
-  if (isLoading) {
-    return <div>Carregando...</div>;
-  }
-
-  if (isError) {
-    return <div>Erro</div>;
-  }
 
   if (!properties) {
     return <div>Imóveis não encontrados</div>;

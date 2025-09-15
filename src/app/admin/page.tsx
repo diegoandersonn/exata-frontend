@@ -52,6 +52,13 @@ export default function LoginPage() {
     router.push(`/admin/forgot-password?email=${encodeURIComponent(email)}`);
   };
 
+  const onInvalid = (errors: any) => {
+    if (errors?.password) {
+      toast.error("E-mail ou senha inválidos.");
+      form.setError("root", { message: "E-mail ou senha inválidos." });
+    }
+  };
+
   async function onSubmit(values: LoginFormData) {
     setIsLoading(true);
     try {
@@ -130,7 +137,7 @@ export default function LoginPage() {
           <div className="w-[54%] min-h-full mx-auto flex items-center">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(onSubmit, onInvalid)}
                 className="min-w-96 lg:max-w-96 h-full my-auto"
               >
                 <h1

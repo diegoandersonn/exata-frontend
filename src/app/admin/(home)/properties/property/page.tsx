@@ -18,6 +18,7 @@ export default function Propertie() {
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
   const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [cepError, setCepError] = useState<boolean>(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -33,6 +34,13 @@ export default function Propertie() {
     horarioVisita: "",
     area: "",
     descricao: "",
+    cep: "",
+    street: "",
+    number: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
   });
 
   function formatCurrency(value: string | number): string {
@@ -63,6 +71,13 @@ export default function Propertie() {
         horarioVisita: property?.horarioVisita,
         area: String(property?.area),
         descricao: property?.descricao,
+        cep: property?.address.cep,
+        street: property?.address.logradouro,
+        number: String(property?.address.numero),
+        complement: property?.address.complemento,
+        neighborhood: property?.address.bairro,
+        city: property?.address.cidade,
+        state: property?.address.uf,
       });
     }
   }, [property]);
@@ -92,7 +107,7 @@ export default function Propertie() {
       return;
     }
     setTriedNext(false);
-    setIndex(1);
+    setIndex(index === 2 ? 2 : index + 1);
   };
 
   const router = useRouter();
@@ -226,6 +241,15 @@ export default function Propertie() {
         <h3
           className={`${
             index === 1
+              ? "font-semibold text-[#393B3C] border-b-[0.125rem] border-red-500"
+              : "font-normal text-[#5C6164] border-b-[0.125rem] border-white"
+          } text-sm mt-auto hover:cursor-default pb-[0.625rem]`}
+        >
+          Endereço
+        </h3>
+        <h3
+          className={`${
+            index === 2
               ? "font-semibold text-[#393B3C] border-b-[0.125rem] border-red-500"
               : "font-normal text-[#5C6164] border-b-[0.125rem] border-white"
           } text-sm mt-auto hover:cursor-default pb-[0.625rem]`}
@@ -663,6 +687,177 @@ export default function Propertie() {
         </div>
 
         <div className={`${index === 1 ? "block" : "hidden"} space-y-3`}>
+          {/* Tipo do imóvel */}
+          <div className="bg-white rounded-lg w-full h-fit p-6">
+            <div className="flex justify-between mt-4">
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  CEP
+                </label>
+                <input
+                  type="text"
+                  name="cep"
+                  value={form.cep}
+                  onChange={async (e) => {
+                    let value = e.target.value.replace(/\D/g, ""); // só números
+
+                    // limita a 8 dígitos
+                    if (value.length > 8) value = value.substring(0, 8);
+
+                    // aplica máscara 99999-999
+                    if (value.length > 5) {
+                      value = value.replace(/(\d{5})(\d{1,3})/, "$1-$2");
+                    }
+
+                    // atualiza o form
+                    setForm((prev) => ({ ...prev, cep: value }));
+
+                    // dispara busca se tiver 8 dígitos
+                    const numericCep = value.replace(/\D/g, "");
+                    if (numericCep.length === 8) {
+                      try {
+                        const response = await fetch(
+                          `https://viacep.com.br/ws/${numericCep}/json/`
+                        );
+                        const data = await response.json();
+
+                        if (data.erro) {
+                          toast.error("CEP não encontrado.");
+                          setCepError(true);
+                          return;
+                        } else {
+                          setCepError(false);
+                        }
+
+                        setForm((prev) => ({
+                          ...prev,
+                          street: data.logradouro,
+                          neighborhood: data.bairro,
+                          city: data.localidade,
+                          state: data.uf,
+                        }));
+                      } catch (error) {
+                        console.error("Erro ao buscar CEP:", error);
+                      }
+                    }
+                  }}
+                  placeholder="00000-000"
+                  maxLength={9} // 8 dígitos + o "-"
+                  className={`${
+                    (triedNext && !form.cep) || cepError ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg w-full h-fit p-6">
+            <div className="flex justify-between mt-4">
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Logradouro
+                </label>
+                <input
+                  type="text"
+                  name="street"
+                  value={form.street}
+                  onChange={handleChange}
+                  disabled
+                  className={`${
+                    triedNext && !form.street ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                />
+              </div>
+
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Número
+                </label>
+                <input
+                  type="number"
+                  name="number"
+                  value={form.number}
+                  onChange={handleChange}
+                  className={`${
+                    triedNext && !form.number ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1`}
+                  min={0}
+                  placeholder="0"
+                  required
+                />
+              </div>
+
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Complemento
+                </label>
+                <input
+                  type="text"
+                  name="complement"
+                  value={form.complement}
+                  onChange={handleChange}
+                  placeholder="Digite aqui"
+                  className={`${
+                    triedNext && !form.complement ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-black`}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-between mt-4">
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Bairro
+                </label>
+                <input
+                  type="text"
+                  name="neighborhood"
+                  value={form.neighborhood}
+                  onChange={handleChange}
+                  disabled
+                  className={`${
+                    triedNext && !form.neighborhood ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                />
+              </div>
+
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  Cidade
+                </label>
+                <input
+                  type="text"
+                  name="city"
+                  value={form.city}
+                  onChange={handleChange}
+                  disabled
+                  className={`${
+                    triedNext && !form.city ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                />
+              </div>
+
+              <div className="w-[31.5%]">
+                <label className="block text-[0.9rem] font-medium mb-1">
+                  UF
+                </label>
+                <input
+                  type="text"
+                  name="state"
+                  value={form.state}
+                  onChange={handleChange}
+                  disabled
+                  className={`${
+                    triedNext && !form.state ? "border-red-500" : ""
+                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={`${index === 2 ? "block" : "hidden"} space-y-3`}>
           {/* Foto Principal */}
           <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
             <div
@@ -789,9 +984,9 @@ export default function Propertie() {
 
         <div className="w-full flex justify-end gap-3 mt-3">
           <button
-            onClick={() => setIndex(0)}
+            onClick={() => setIndex(index === 0 ? 0 : index - 1)}
             className={`${
-              index === 1 ? "block" : "hidden"
+              index > 0 ? "block" : "hidden"
             } w-1/6 text-red-600 bg-transparent py-2 rounded border-2 border-red-600 font-semibold hover:border-2 hover:text-red-700 hover:border-red-700 transition mr-auto`}
           >
             Voltar
@@ -805,13 +1000,13 @@ export default function Propertie() {
           </button>
           {!isPending && (
             <button
-              type={index === 0 ? "button" : "submit"}
-              onClick={index === 0 ? handleNext : handleSubmit}
+              type={index < 2 ? "button" : "submit"}
+              onClick={index < 2 ? handleNext : handleSubmit}
               className={
                 "bg-red-600 hover:bg-red-700 w-1/6 text-white py-2 rounded border-2 border-transparent font-semibold transition"
               }
             >
-              {index === 0 ? "Próximo" : "Salvar"}
+              {index < 2 ? "Próximo" : "Salvar"}
             </button>
           )}
           {isPending && (

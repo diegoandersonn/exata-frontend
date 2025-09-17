@@ -3,16 +3,17 @@ import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetProperties = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { token } = useAuth();
 
   const { data, isError, isLoading } = useQuery<PropertyType[]>({
     queryKey: ["get-properties"],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3333/property`, {
+      const response = await fetch(`${API_URL}/property`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) {
@@ -40,6 +41,5 @@ export const useGetActiveProperties = () => {
       return await response.json();
     },
   });
-  console.log(data);
   return { properties: data, isLoading, isError };
 };

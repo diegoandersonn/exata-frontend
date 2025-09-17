@@ -27,4 +27,5 @@ export type PropertyType = {
     cidade: string;
     uf: string;
   };
+  favorito: boolean;
 };

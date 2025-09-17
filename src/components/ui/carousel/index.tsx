@@ -8,6 +8,10 @@ export default function Carousel() {
   const [maxVisible, setMaxVisible] = useState(4);
   const [position, setPosition] = useState<number[]>([0, 4]);
   const { properties, isLoading, isError } = useGetActiveProperties();
+  const hasFavorites = (properties?.some((p) => Boolean(p.favorito)) ?? false);
+  const displayProps = hasFavorites
+    ? (properties ?? []).filter((p) => Boolean(p.favorito))
+    : (properties ?? []);
 
   useEffect(() => {
     function handleResize() {
@@ -27,8 +31,10 @@ export default function Carousel() {
   }, []);
 
   useEffect(() => {
-    setPosition(() => [0, maxVisible]);
-  }, [maxVisible]);
+    const total = displayProps.length;
+    const end = Math.min(maxVisible, total);
+    setPosition(() => [0, end]);
+  }, [maxVisible, displayProps.length]);
 
   if (!properties) {
     return <div>Imóveis não encontrados</div>;
@@ -42,7 +48,8 @@ export default function Carousel() {
 
   function switchCards(direction: "add" | "minus") {
     setPosition(([start, end]) => {
-      if (direction === "add" && end < (properties?.length ?? 0)) {
+      const total = displayProps.length;
+      if (direction === "add" && end < total) {
         return [start + 1, end + 1];
       } else if (direction === "minus" && start > 0) {
         return [start - 1, end - 1];
@@ -54,7 +61,7 @@ export default function Carousel() {
   return (
     <div className="flex flex-col items-center justify-between w-full p-4 transition-transform duration-500 ease-in-out">
       <div className="flex gap-4">
-        {properties.slice(position[0], position[1]).map((property) => (
+        {displayProps.slice(position[0], position[1]).map((property) => (
           <PropertyCard
             key={property._id}
             id={property._id}

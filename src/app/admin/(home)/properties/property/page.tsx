@@ -167,12 +167,12 @@ export default function Propertie() {
     data.append("area", String(form.area));
     data.append("descricao", form.descricao);
 
-    data.append("address[cep]", form.cep);
-    data.append("address[logradouro]", form.street);
-    data.append("address[numero]", String(form.number));
-    data.append("address[complemento]", form.complement);
-    data.append("address[bairro]", form.neighborhood);
-    data.append("address[cidade]", form.city);
+    data.append("cep", form.cep);
+    data.append("logradouro", form.street);
+    data.append("numero", String(form.number));
+    data.append("complemento", form.complement);
+    data.append("bairro", form.neighborhood);
+    data.append("cidade", form.city);
 
     if (mainImageFile) {
       data.append("imagens", mainImageFile);

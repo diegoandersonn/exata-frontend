@@ -6,6 +6,7 @@ import { PropertyTypeEnum } from "@/types/property-type-enum";
 import { toast } from "react-toastify";
 import { AdjustmentTypeEnum } from "@/types/adjustment-type-enum";
 import useGetProperty from "@/hooks/use-getProperty";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Propertie() {
   const searchParams = useSearchParams();
@@ -19,6 +20,7 @@ export default function Propertie() {
   const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [cepError, setCepError] = useState<boolean>(false);
+  const { token } = useAuth();
 
   const [form, setForm] = useState({
     name: "",
@@ -71,13 +73,13 @@ export default function Propertie() {
         horarioVisita: property?.horarioVisita,
         area: String(property?.area),
         descricao: property?.descricao,
-        cep: property?.address?.cep,
-        street: property?.address?.logradouro,
-        number: String(property?.address?.numero),
-        complement: property?.address?.complemento,
-        neighborhood: property?.address?.bairro,
-        city: property?.address?.cidade,
-        state: property?.address?.uf,
+        cep: property?.cep,
+        street: property?.logradouro,
+        number: String(property?.numero),
+        complement: property?.complemento,
+        neighborhood: property?.bairro,
+        city: property?.cidade,
+        state: property?.uf,
       });
     }
   }, [property]);
@@ -186,6 +188,9 @@ export default function Propertie() {
       try {
         setIsPending(true);
         await fetch(`http://localhost:3333/property/${property._id}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
           method: "PUT",
           body: data,
         });
@@ -201,6 +206,10 @@ export default function Propertie() {
       try {
         setIsPending(true);
         await fetch("http://localhost:3333/property", {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
           method: "POST",
           body: data,
         });

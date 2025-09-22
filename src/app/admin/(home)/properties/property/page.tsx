@@ -71,13 +71,13 @@ export default function Propertie() {
         horarioVisita: property?.horarioVisita,
         area: String(property?.area),
         descricao: property?.descricao,
-        cep: property?.address.cep,
-        street: property?.address.logradouro,
-        number: String(property?.address.numero),
-        complement: property?.address.complemento,
-        neighborhood: property?.address.bairro,
-        city: property?.address.cidade,
-        state: property?.address.uf,
+        cep: property?.address?.cep,
+        street: property?.address?.logradouro,
+        number: String(property?.address?.numero),
+        complement: property?.address?.complemento,
+        neighborhood: property?.address?.bairro,
+        city: property?.address?.cidade,
+        state: property?.address?.uf,
       });
     }
   }, [property]);
@@ -164,6 +164,13 @@ export default function Propertie() {
     data.append("horarioVisita", form.horarioVisita);
     data.append("area", String(form.area));
     data.append("descricao", form.descricao);
+
+    data.append("address[cep]", form.cep);
+    data.append("address[logradouro]", form.street);
+    data.append("address[numero]", String(form.number));
+    data.append("address[complemento]", form.complement);
+    data.append("address[bairro]", form.neighborhood);
+    data.append("address[cidade]", form.city);
 
     if (mainImageFile) {
       data.append("imagens", mainImageFile);

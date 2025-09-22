@@ -173,6 +173,7 @@ export default function Propertie() {
     data.append("complemento", form.complement);
     data.append("bairro", form.neighborhood);
     data.append("cidade", form.city);
+    data.append("uf", form.state);
 
     if (mainImageFile) {
       data.append("imagens", mainImageFile);

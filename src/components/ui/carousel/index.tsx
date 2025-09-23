@@ -1,7 +1,7 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useGetActiveProperties } from "@/hooks/use-getProperties";
+import useGetActiveProperties from "@/hooks/use-getActiveProperties";
 import PropertyCard from "@/components/ui/property-card";
 import { useLocalization } from "@/contexts/LocalizationContext";
 

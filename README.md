@@ -24,7 +24,7 @@ Este projeto é o frontend administrativo do sistema Exata, desenvolvido em Reac
 
 1. **Clone o repositório:**
 
-   ```bash
+   ```
    git clone https://github.com/seu-usuario/exata-frontend.git
    cd exata-frontend
    code .
@@ -32,14 +32,14 @@ Este projeto é o frontend administrativo do sistema Exata, desenvolvido em Reac
 
 2. **Instale as dependências:**
 
-   ```bash
+   ```
    cd src
    npm install
    ```
 
 3. **Inicie o servidor de desenvolvimento:**
 
-   ```bash
+   ```
    npm run dev
    ```
 

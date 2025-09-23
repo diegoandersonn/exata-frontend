@@ -170,7 +170,7 @@ export default function Propertie() {
     data.append("cep", form.cep);
     data.append("logradouro", form.street);
     data.append("numero", String(form.number));
-    data.append("complemento", form.complement);
+    data.append("complemento", form.complement ?? "");
     data.append("bairro", form.neighborhood);
     data.append("cidade", form.city);
     data.append("uf", form.state);

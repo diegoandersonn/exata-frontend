@@ -72,7 +72,7 @@ export default function FilterDropdown({
             <span className="mb-2">Bairro</span>
             <select
               className="border border-gray-300 rounded p-2"
-              value={tipo}
+              value={bairro}
               onChange={(e) => setBairro(e.target.value)}
             >
               <option value="todos">Todos</option>

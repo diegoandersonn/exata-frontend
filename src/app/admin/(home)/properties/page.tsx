@@ -182,7 +182,7 @@ export default function Properties() {
                   width={40}
                   height={56}
                   className="inline-block w-20 h-14 bg-gray-200 rounded"
-                ></Image>
+                />
               </div>
               <div className="col-span-2 text-center font-normal text-sm text-[#393B3C]">
                 {property.nome}

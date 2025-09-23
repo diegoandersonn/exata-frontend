@@ -26,7 +26,6 @@ export default function PropertiesPage() {
     quartos?: number;
     bairro?: string;
   }) => {
-    console.log(filters);
     if (!properties) return;
 
     let filtered = [...properties];
@@ -41,7 +40,7 @@ export default function PropertiesPage() {
       );
     }
 
-    if (filters.bairro) {
+    if (filters.bairro !== undefined) {
       filtered = filtered.filter((p) => p.bairro === filters.bairro);
     }
 
@@ -57,8 +56,6 @@ export default function PropertiesPage() {
         )
       )
     : [];
-
-  console.log(propertiesFiltered);
 
   if (isLoading)
     return (

@@ -41,10 +41,9 @@ export default function PropertyCard({
           <Image
             src={image}
             alt={title}
-            width={0}
-            height={0}
+            width={320}
+            height={250}
             className="object-cover rounded-t-lg w-full h-full"
-            sizes="(max-width: 640px) 90vw, (max-width: 768px) 50vw, 320px"
           />
         </div>
         <div className="p-2 md:p-3">

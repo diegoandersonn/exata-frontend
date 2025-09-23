@@ -78,10 +78,9 @@ export default function PropertyPage() {
                   <Image
                     src={property.imagens[currentIndex]}
                     alt={`Imagem ${currentIndex + 1}`}
-                    width={0}
-                    height={0}
+                    width={320}
+                    height={250}
                     className="object-cover w-full h-full transition-transform duration-300 cursor-pointer"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
                   />
                 )}
               </div>
@@ -105,22 +104,20 @@ export default function PropertyPage() {
           <Image
             src={property.imagens[0]}
             alt={property.nome}
-            width={0}
-            height={0}
+            width={320}
+            height={250}
             className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
             onClick={() => openWith(0)}
           />
         </div>
-
         {property.imagens[1] && (
           <div className="hidden lg:block overflow-hidden">
             <Image
               src={property.imagens[1]}
               alt={property.nome}
-              width={0}
-              height={0}
+              width={320}
+              height={250}
               className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
               onClick={() => openWith(1)}
             />
           </div>
@@ -131,10 +128,9 @@ export default function PropertyPage() {
             <Image
               src={property.imagens[2]}
               alt={property.nome}
-              width={0}
-              height={0}
+              width={320}
+              height={250}
               className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
               onClick={() => openWith(2)}
             />
           </div>
@@ -145,10 +141,9 @@ export default function PropertyPage() {
             <Image
               src={property.imagens[3]}
               alt={property.nome}
-              width={0}
-              height={0}
+              width={320}
+              height={250}
               className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
               onClick={() => openWith(3)}
             />
           </div>
@@ -159,10 +154,9 @@ export default function PropertyPage() {
             <Image
               src={property.imagens[4]}
               alt={property.nome}
-              width={0}
-              height={0}
+              width={320}
+              height={250}
               className="object-cover w-full h-full brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
               onClick={() => openWith(4)}
             />
             <button

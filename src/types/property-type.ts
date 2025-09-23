@@ -25,5 +25,7 @@ export type PropertyType = {
   bairro: string;
   cidade: string;
   uf: string;
+  latitude?: number;
+  longitude?: number;
   favorito: boolean;
 };

@@ -5,8 +5,21 @@ import Carousel from "@/components/ui/carousel";
 import Header from "@/components/ui/header";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/ui/footer";
+import { useEffect, useState } from "react";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 export default function Home() {
+  const { setCoords } = useLocalization();
+
+  useEffect(() => {
+    const handleLocation = (position: GeolocationPosition) => {
+      const { latitude, longitude } = position.coords;
+      setCoords({ latitude, longitude });
+    };
+
+    navigator.geolocation.getCurrentPosition(handleLocation);
+  }, []);
+
   const router = useRouter();
   return (
     <div className="flex flex-col">

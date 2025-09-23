@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 export default function Properties() {
   const [index, setIndex] = useState<number>(0);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const { properties, isLoading, isError } = useGetProperties();
+  const { properties, isError } = useGetProperties();
   const deleteProperty = useDeleteProperty();
   const updateProperty = useUpdateProperty();
   const router = useRouter();
@@ -65,7 +65,6 @@ export default function Properties() {
     return <div>Imóveis não encontrados</div>;
   }
 
-  // Filtra os imóveis conforme o tab selecionado
   const activeProperties = properties.filter((property) =>
     index === 0 ? property.ativo : !property.ativo
   );

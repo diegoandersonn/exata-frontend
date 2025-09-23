@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import santosFoto from "../../public/orla-de-santos-vemelha.png";
-import Carousel from "@/components/ui/carousel";
 import Header from "@/components/ui/header";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/ui/footer";
+import PropertiesCarousel from "@/components/ui/properties-carousel";
 
 export default function Home() {
   const router = useRouter();
@@ -34,7 +34,7 @@ export default function Home() {
       </div>
       <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
         <h1 className="font-bold text-xl lg:text-4xl">Oportunidades</h1>
-        <Carousel />
+        <PropertiesCarousel />
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-8 p-10">
         <div className="logo-area flex items-center justify-center sm:block mx-auto select-none">

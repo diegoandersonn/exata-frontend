@@ -100,16 +100,14 @@ export default function PropertyPage() {
         </div>
       )}
 
-      {/* GRID PRINCIPAL */}
-      <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1 mt-16">
-        <div className="overflow-hidden col-span-1 row-span-1 lg:col-span-2 lg:row-span-2">
+      <div className="w-screen h-[50vh] grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-1 mt-20">
+        <div className="overflow-hidden  col-span-1 row-span-1 lg:col-span-2 lg:row-span-2">
           <Image
             src={property.imagens[0]}
             alt={property.nome}
             width={0}
             height={0}
             className="object-cover w-full h-full hover:brightness-50 hover:scale-105 transition-transform duration-300 cursor-pointer"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 375px"
             onClick={() => openWith(0)}
           />
         </div>
@@ -177,7 +175,6 @@ export default function PropertyPage() {
         )}
       </div>
 
-      {/* INFO / LATERAL */}
       <div className="relative w-screen flex flex-col xl:flex-row gap-10 px-2 lg:px-44">
         <div className="flex flex-col gap-8">
           <div className="flex items-start max-w-[97%]">

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import {useGetActiveProperties} from "@/hooks/use-getProperties";
 import PropertyCard from "@/components/ui/property-card";
 
-export default function Carousel() {
+export default function PropertiesCarousel() {
   const [maxVisible, setMaxVisible] = useState(4);
   const [position, setPosition] = useState<number[]>([0, 4]);
   const { properties, isLoading, isError } = useGetActiveProperties();

@@ -18,13 +18,11 @@ export type PropertyType = {
   banheiros: number;
   vagasGaragem: number;
   others?: string;
-  address: {
-    cep: string;
-    logradouro: string;
-    numero: number | string;
-    complemento: string;
-    bairro: string;
-    cidade: string;
-    uf: string;
-  };
+  bairro: string;
+  cep: string;
+  cidade: string;
+  complemento: string;
+  numero: number | string;
+  logradouro: string;
+  uf: string;
 };

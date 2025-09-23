@@ -1,19 +1,16 @@
-import { useAuth } from "@/contexts/AuthContext";
 import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetProperties = () => {
+const useGetActiveProperties = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const { token } = useAuth();
 
   const { data, isError, isLoading } = useQuery<PropertyType[]>({
     queryKey: ["get-properties"],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/property`, {
+      const response = await fetch(`${API_URL}/property/active`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) {
@@ -25,4 +22,4 @@ const useGetProperties = () => {
   return { properties: data, isLoading, isError };
 };
 
-export default useGetProperties;
+export default useGetActiveProperties;

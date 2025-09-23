@@ -1,8 +1,8 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import {useGetActiveProperties} from "@/hooks/use-getProperties";
 import PropertyCard from "@/components/ui/property-card";
+import useGetActiveProperties from "@/hooks/use-getActiveProperties";
 
 export default function Carousel() {
   const [maxVisible, setMaxVisible] = useState(4);

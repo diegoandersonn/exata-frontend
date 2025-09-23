@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import {useGetProperties} from "@/hooks/use-getProperties";
 import useDeleteProperty from "@/hooks/use-deleteProperty";
 import useUpdateProperty from "@/hooks/use-updateProperty";
 import { toast } from "react-toastify";
+import useGetProperties from "@/hooks/use-getProperties";
 
 export default function Properties() {
   const [index, setIndex] = useState<number>(0);
@@ -28,7 +28,7 @@ export default function Properties() {
   ];
 
   useEffect(() => {
-  const handleClick = () => setActiveMenu(null);
+    const handleClick = () => setActiveMenu(null);
     if (activeMenu !== null) {
       window.addEventListener("click", handleClick);
       return () => window.removeEventListener("click", handleClick);

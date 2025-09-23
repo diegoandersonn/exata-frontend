@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import FilterDropdown from "@/components/ui/filter-dropdown";
 import Header from "@/components/ui/header";
-import { useGetActiveProperties } from "@/hooks/use-getProperties";
 import PropertyCard from "@/components/ui/property-card";
 import { PropertyType } from "@/types/property-type";
 import Footer from "@/components/ui/footer";
 import Image from "next/image";
+import useGetActiveProperties from "@/hooks/use-getActiveProperties";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);

@@ -33,7 +33,7 @@ export default function Home() {
         />
       </div>
       <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
-        <h1 className="font-bold text-xl lg:text-4xl">Oportunidades</h1>
+        <h1 className="font-bold text-xl lg:text-4xl">Oportunidades 🔥</h1>
         <Carousel />
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-8 p-10">

@@ -4,7 +4,7 @@ import santosFoto from "../../public/orla-de-santos-vemelha.png";
 import Header from "@/components/ui/header";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/ui/footer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import PropertiesCarousel from "@/components/ui/properties-carousel";
 
@@ -18,7 +18,7 @@ export default function Home() {
     };
 
     navigator.geolocation.getCurrentPosition(handleLocation);
-  }, []);
+  }, [setCoords]);
 
   const router = useRouter();
   return (
@@ -35,7 +35,10 @@ export default function Home() {
               de imóveis com <br /> proximidade real
             </h1>
           </div>
-          <button onClick={() => router.push("/properties")} className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-50 lg:h-8 rounded-3xl border-none font-bold bg-white text-red-500 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300">
+          <button
+            onClick={() => router.push("/properties")}
+            className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-50 lg:h-8 rounded-3xl border-none font-bold bg-white text-red-500 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300"
+          >
             Ver apartamentos
           </button>
         </div>
@@ -61,27 +64,56 @@ export default function Home() {
             />
           </div>
         </div>
-  <div className="flex flex-col items-center sm:items-start justify-center gap-6 flex-1 text-center sm:text-left relative min-h-[220px]">
+        <div className="flex flex-col items-center sm:items-start justify-center gap-6 flex-1 text-center sm:text-left relative min-h-[220px]">
           <h1 className="text-4xl font-bold">SOBRE NÓS!</h1>
           <div className="flex flex-col gap-3 pb-8">
             <h3 className="text-2xl font-bold">Uma exata feita para você</h3>
             <p className="text-xs">
-              A <span className="text-red-600 font-bold">Exata</span> é uma imobiliária e administradora de bens com sede em <span className="text-red-600 font-bold">Santos</span>, dedicada a transformar a experiência de comprar, vender ou alugar imóveis em algo simples, seguro e transparente. Com anos de atuação no mercado, nossa missão é conectar pessoas aos lugares certos, oferecendo <span className="text-red-600 font-bold">soluções personalizadas</span> e acompanhamento completo em cada etapa do processo. Valorizamos a confiança de nossos clientes e trabalhamos para que cada negociação seja tranquila e satisfatória.
+              A <span className="text-red-600 font-bold">Exata</span> é uma
+              imobiliária e administradora de bens com sede em{" "}
+              <span className="text-red-600 font-bold">Santos</span>, dedicada a
+              transformar a experiência de comprar, vender ou alugar imóveis em
+              algo simples, seguro e transparente. Com anos de atuação no
+              mercado, nossa missão é conectar pessoas aos lugares certos,
+              oferecendo{" "}
+              <span className="text-red-600 font-bold">
+                soluções personalizadas
+              </span>{" "}
+              e acompanhamento completo em cada etapa do processo. Valorizamos a
+              confiança de nossos clientes e trabalhamos para que cada
+              negociação seja tranquila e satisfatória.
             </p>
             <p className="text-xs">
-              Além de facilitar a venda e locação de imóveis, a Exata é referência para quem busca <span className="text-red-600 font-bold">oportunidades justas</span> e <span className="text-red-600 font-bold">preços competitivos</span>. Nosso compromisso é ajudar você a encontrar o <span className="text-red-600 font-bold">imóvel ideal</span>, seja para morar, investir ou expandir seus negócios, garantindo sempre atendimento de qualidade e suporte especializado. Aqui, cada cliente encontra atenção, dedicação e <span className="text-red-600 font-bold">soluções que realmente fazem a diferença</span>.
+              Além de facilitar a venda e locação de imóveis, a Exata é
+              referência para quem busca{" "}
+              <span className="text-red-600 font-bold">
+                oportunidades justas
+              </span>{" "}
+              e{" "}
+              <span className="text-red-600 font-bold">
+                preços competitivos
+              </span>
+              . Nosso compromisso é ajudar você a encontrar o{" "}
+              <span className="text-red-600 font-bold">imóvel ideal</span>, seja
+              para morar, investir ou expandir seus negócios, garantindo sempre
+              atendimento de qualidade e suporte especializado. Aqui, cada
+              cliente encontra atenção, dedicação e{" "}
+              <span className="text-red-600 font-bold">
+                soluções que realmente fazem a diferença
+              </span>
+              .
             </p>
           </div>
           <button
             onClick={() => router.push("/properties")}
             className="mt-8 px-8 py-3 rounded-full bg-red-600 text-white font-bold uppercase text-sm shadow-lg hover:bg-red-700 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 sm:absolute sm:bottom-0 sm:right-0 sm:mt-0"
-            style={{minWidth: 220}}
+            style={{ minWidth: 220 }}
           >
             conheça nossos imóveis
           </button>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

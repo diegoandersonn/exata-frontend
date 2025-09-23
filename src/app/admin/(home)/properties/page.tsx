@@ -28,7 +28,7 @@ export default function Properties() {
 
   const listHeader = [
     "Imagem principal",
-    "Tipo do imóvel",
+    "Título do imóvel",
     "Dormitório(s)",
     "Banheiro(s)",
     "Aluguel + IPTU",
@@ -186,7 +186,7 @@ export default function Properties() {
                 ></Image>
               </div>
               <div className="col-span-2 text-center font-normal text-sm text-[#393B3C]">
-                {property.tipo}
+                {property.nome}
               </div>
               <div className="col-span-2 text-center font-normal text-sm text-[#393B3C]">
                 {property.dormitorios}

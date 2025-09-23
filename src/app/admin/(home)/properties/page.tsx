@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import useGetProperties from "@/hooks/use-getProperties";
 
 export default function Properties() {
   const [index, setIndex] = useState<number>(0);

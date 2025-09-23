@@ -21,7 +21,12 @@ export default function PropertiesPage() {
     }
   }, [properties]);
 
-  const handleFilter = (filters: { tipo?: string; quartos?: number }) => {
+  const handleFilter = (filters: {
+    tipo?: string;
+    quartos?: number;
+    bairro?: string;
+  }) => {
+    console.log(filters);
     if (!properties) return;
 
     let filtered = [...properties];
@@ -36,8 +41,24 @@ export default function PropertiesPage() {
       );
     }
 
+    if (filters.bairro) {
+      filtered = filtered.filter((p) => p.bairro === filters.bairro);
+    }
+
     setPropertiesFiltered(filtered);
   };
+
+  const bairros = properties
+    ? Array.from(
+        new Set(
+          properties
+            .filter((property) => property.bairro && property.bairro !== "")
+            .map((property) => property.bairro)
+        )
+      )
+    : [];
+
+  console.log(propertiesFiltered);
 
   if (isLoading) return <div>Carregando...</div>;
   if (isError) return <div>Erro</div>;
@@ -72,6 +93,7 @@ export default function PropertiesPage() {
               isActive={isActive}
               setIsActive={setIsActive}
               onFilter={handleFilter}
+              bairros={bairros}
             />
           </div>
         </div>

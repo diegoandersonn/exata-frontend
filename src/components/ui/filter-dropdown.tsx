@@ -5,18 +5,30 @@ import { useState } from "react";
 type Props = {
   isActive: boolean;
   setIsActive: (isActive: boolean) => void;
-  onFilter: (filters: { tipo?: string; quartos?: number }) => void;
+  onFilter: (filters: {
+    tipo?: string;
+    quartos?: number;
+    bairro?: string;
+  }) => void;
+  bairros: string[];
 };
 
-export default function FilterDropdown({ isActive, setIsActive, onFilter }: Props) {
+export default function FilterDropdown({
+  isActive,
+  setIsActive,
+  onFilter,
+  bairros,
+}: Props) {
   const [tipo, setTipo] = useState("todos");
   const [quartos, setQuartos] = useState("");
+  const [bairro, setBairro] = useState("todos");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onFilter({
       tipo: tipo === "todos" ? undefined : tipo,
       quartos: quartos ? parseInt(quartos) : undefined,
+      bairro: bairro === "todos" ? undefined : bairro,
     });
     setIsActive(false);
   };
@@ -56,6 +68,21 @@ export default function FilterDropdown({ isActive, setIsActive, onFilter }: Prop
               onChange={(e) => setQuartos(e.target.value)}
               className="border border-gray-300 rounded p-2"
             />
+          </label>
+          <label className="flex flex-col">
+            <span className="mb-2">Bairro</span>
+            <select
+              className="border border-gray-300 rounded p-2"
+              value={tipo}
+              onChange={(e) => setBairro(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              {bairros.map((bairro, index) => (
+                <option key={index} value={bairro}>
+                  {bairro}
+                </option>
+              ))}
+            </select>
           </label>
           <button
             type="submit"

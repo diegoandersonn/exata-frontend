@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -69,16 +69,11 @@ export default function LoginPage() {
         },
         body: JSON.stringify({
           email: values.email,
-          password: values.password
+          password: values.password,
         }),
       });
 
-      console.log(response.status);
-      console.log(response.ok)
-
       if (!response.ok) {
-        console.log(response.status)
-
         if (response.status === 403) {
           toast.error("Muitas tentativas. Tente novamente em 10 minutos");
           form.setError("root", {
@@ -96,8 +91,6 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
-
-      console.log(data);
 
       if (!data.token) {
         throw new Error("Token não recebido do servidor");

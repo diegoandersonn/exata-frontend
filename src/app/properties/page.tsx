@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import FilterDropdown from "@/components/ui/filter-dropdown";
 import Header from "@/components/ui/header";
-import { useGetActiveProperties } from "@/hooks/use-getProperties";
 import PropertyCard from "@/components/ui/property-card";
 import { PropertyType } from "@/types/property-type";
 import Footer from "@/components/ui/footer";
 import Image from "next/image";
+import useGetActiveProperties from "@/hooks/use-getActiveProperties";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -21,7 +21,12 @@ export default function PropertiesPage() {
     }
   }, [properties]);
 
-  const handleFilter = (filters: { tipo?: string; quartos?: number }) => {
+  const handleFilter = (filters: {
+    tipo?: string;
+    quartos?: number;
+    bairro?: string;
+  }) => {
+    console.log(filters);
     if (!properties) return;
 
     let filtered = [...properties];
@@ -36,8 +41,24 @@ export default function PropertiesPage() {
       );
     }
 
+    if (filters.bairro) {
+      filtered = filtered.filter((p) => p.bairro === filters.bairro);
+    }
+
     setPropertiesFiltered(filtered);
   };
+
+  const bairros = properties
+    ? Array.from(
+        new Set(
+          properties
+            .filter((property) => property.bairro && property.bairro !== "")
+            .map((property) => property.bairro)
+        )
+      )
+    : [];
+
+  console.log(propertiesFiltered);
 
   if (isLoading)
     return (
@@ -81,6 +102,7 @@ export default function PropertiesPage() {
               isActive={isActive}
               setIsActive={setIsActive}
               onFilter={handleFilter}
+              bairros={bairros}
             />
           </div>
         </div>

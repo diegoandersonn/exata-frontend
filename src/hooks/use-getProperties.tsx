@@ -2,17 +2,18 @@ import { useAuth } from "@/contexts/AuthContext";
 import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetProperties = () => {
+const useGetProperties = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { token } = useAuth();
 
   const { data, isError, isLoading } = useQuery<PropertyType[]>({
     queryKey: ["get-properties"],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3333/property`, {
+      const response = await fetch(`${API_URL}/property`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) {
@@ -24,21 +25,4 @@ export const useGetProperties = () => {
   return { properties: data, isLoading, isError };
 };
 
-export const useGetActiveProperties = () => {
-  const { data, isError, isLoading } = useQuery<PropertyType[]>({
-    queryKey: ["get-properties"],
-    queryFn: async () => {
-      const response = await fetch(`http://localhost:3333/property/active`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Erro ao buscar dados do imóvel");
-      }
-      return await response.json();
-    },
-  });
-  return { properties: data, isLoading, isError };
-};
+export default useGetProperties;

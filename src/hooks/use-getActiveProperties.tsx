@@ -1,13 +1,13 @@
 import { PropertyType } from "@/types/property-type";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetProperty = (propertyId: string | null) => {
+const useGetActiveProperties = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const { data, isError, isLoading } = useQuery<PropertyType>({
-    queryKey: ["get-property", propertyId],
+  const { data, isError, isLoading } = useQuery<PropertyType[]>({
+    queryKey: ["get-properties"],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/property/${propertyId}`, {
+      const response = await fetch(`${API_URL}/property/active`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -19,6 +19,7 @@ const useGetProperty = (propertyId: string | null) => {
       return await response.json();
     },
   });
-  return { property: data, isLoading, isError };
+  return { properties: data, isLoading, isError };
 };
-export default useGetProperty;
+
+export default useGetActiveProperties;

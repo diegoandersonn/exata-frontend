@@ -3,11 +3,13 @@ import { PropertyType } from "@/types/property-type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useCreateProperty = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const queryClient = useQueryClient();
   const { token } = useAuth();
+
   return useMutation({
     mutationFn: async (property: PropertyType) => {
-      await fetch(`http://localhost:3333/property`, {
+      await fetch(`${API_URL}/property`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

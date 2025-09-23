@@ -23,6 +23,11 @@ const items = [
     url: "/admin/properties",
     icon: "Home",
   },
+  {
+    title: "Configurações",
+    url: "/admin/settings",
+    icon: "Settings",
+  },
   // {
   //   title: "Investimentos",
   //   url: "/investment",

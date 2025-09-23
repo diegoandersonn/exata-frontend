@@ -3,14 +3,14 @@ import type { SVGProps } from "react";
 
 type Props = SVGProps<SVGSVGElement>;
 
-export function Investments({ color = "currentColor", ...props }: Props) {
+export function Settings({ color = "currentColor", ...props }: Props) {
   return (
     <svg
       width="16"
       height="14"
       viewBox="0 0 16 14"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns="https://www.svgrepo.com/show/522451/settings-cog.svg"
       {...props}
     >
       <path

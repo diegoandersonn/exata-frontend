@@ -47,6 +47,21 @@ export default function FilterDropdown({
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col">
+            <span className="mb-2">Bairro</span>
+            <select
+              className="border border-gray-300 rounded p-2"
+              value={bairro}
+              onChange={(e) => setBairro(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              {bairros.map((bairro, index) => (
+                <option key={index} value={bairro}>
+                  {bairro}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col">
             <span className="mb-2">Tipo de Imóvel</span>
             <select
               className="border border-gray-300 rounded p-2"
@@ -67,21 +82,6 @@ export default function FilterDropdown({
               onChange={(e) => setQuartos(e.target.value)}
               className="border border-gray-300 rounded p-2"
             />
-          </label>
-          <label className="flex flex-col">
-            <span className="mb-2">Bairro</span>
-            <select
-              className="border border-gray-300 rounded p-2"
-              value={bairro}
-              onChange={(e) => setBairro(e.target.value)}
-            >
-              <option value="todos">Todos</option>
-              {bairros.map((bairro, index) => (
-                <option key={index} value={bairro}>
-                  {bairro}
-                </option>
-              ))}
-            </select>
           </label>
           <button
             type="submit"

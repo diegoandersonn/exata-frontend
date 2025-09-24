@@ -15,20 +15,25 @@ export default function PropertiesCarousel() {
     ? (properties ?? []).filter((p) => Boolean(p.favorito))
     : properties ?? [];
 
-  const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+  const getDistance = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) => {
     const toRad = (value: number) => (value * Math.PI) / 180;
-    const R = 6371; 
+    const R = 6371;
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+        Math.cos(toRad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return Math.round(R * c); 
-  }
+    return Math.round(R * c);
+  };
 
   useEffect(() => {
     function handleResize() {
@@ -85,8 +90,14 @@ export default function PropertiesCarousel() {
               coords.longitude &&
               property.latitude &&
               property.longitude && (
-                <div className="absolute top-0 left-0 bg-green-500 text-white px-4 py-1 z-10 transform origin-top-left shadow-xl border-2 border-green-900 rounded-sm font-bold text-sm -translate-y-1 group-hover:scale-110 group-hover:-translate-y-3 group-hover:shadow-2xl transition-all duration-200">
-                  {getDistance(property.latitude, property.longitude, coords.latitude, coords.longitude)} km de você
+                <div className="absolute top-0 left-0 bg-green-500 text-white px-4 py-1 z-10 transform origin-top-left shadow-xl border-2 border-green-500 rounded-sm font-bold text-sm -translate-y-1 group-hover:scale-110 group-hover:-translate-y-3 group-hover:shadow-2xl transition-all duration-200">
+                  {getDistance(
+                    property.latitude,
+                    property.longitude,
+                    coords.latitude,
+                    coords.longitude
+                  )}{" "}
+                  km de você
                 </div>
               )}
             <PropertyCard

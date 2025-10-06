@@ -14,7 +14,7 @@ import useGetProperties from "@/hooks/use-getProperties";
 export default function Properties() {
   const [index, setIndex] = useState<number>(0);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const { properties, isError } = useGetProperties();
+  const { properties, isError, isLoading } = useGetProperties();
   const deleteProperty = useDeleteProperty();
   const updateProperty = useUpdateProperty();
   const setFavorite = useSetFavoriteProperty();

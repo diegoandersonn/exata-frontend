@@ -1,4 +1,4 @@
-export type PropertyForm1Props = {
+export type PropertyFormProps = {
   index: number;
   form: {
     name: string;

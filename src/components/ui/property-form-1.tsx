@@ -1,6 +1,6 @@
 import { PropertyTypeEnum } from "@/types/property-type-enum";
 import { AdjustmentTypeEnum } from "@/types/adjustment-type-enum";
-import { PropertyForm1Props } from "@/types/property-form-1";
+import { PropertyFormProps } from "@/types/property-form";
 
 export default function PropertyForm1({
   index,
@@ -8,7 +8,7 @@ export default function PropertyForm1({
   setForm,
   triedNext,
   handleChange,
-}: PropertyForm1Props) {
+}: PropertyFormProps) {
   return (
     <div className={`${index === 0 ? "block" : "hidden"} space-y-3`}>
       {/* Tipo do imóvel */}
@@ -70,13 +70,13 @@ export default function PropertyForm1({
                 const numberOnly = rawValue.match(/\d+/)?.[0] || "";
 
                 if (numberOnly) {
-                  setForm((prev: PropertyForm1Props["form"]) => ({
+                  setForm((prev: PropertyFormProps["form"]) => ({
                     ...prev,
                     prazo: `${numberOnly} meses`,
                   }));
                 } else {
                   // Se não tiver número válido, limpa
-                  setForm((prev: PropertyForm1Props["form"]) => ({
+                  setForm((prev: PropertyFormProps["form"]) => ({
                     ...prev,
                     prazo: "",
                   }));
@@ -175,7 +175,7 @@ export default function PropertyForm1({
                 const parsed = parseFloat(normalized);
 
                 if (isNaN(parsed)) {
-                  setForm((prev: PropertyForm1Props["form"]) => ({
+                  setForm((prev: PropertyFormProps["form"]) => ({
                     ...prev,
                     rent: "",
                   }));
@@ -188,7 +188,7 @@ export default function PropertyForm1({
                   maximumFractionDigits: 2,
                 });
 
-                setForm((prev: PropertyForm1Props["form"]) => ({
+                setForm((prev: PropertyFormProps["form"]) => ({
                   ...prev,
                   rent: formatted,
                 }));
@@ -220,7 +220,7 @@ export default function PropertyForm1({
                 const parsed = parseFloat(normalized);
 
                 if (isNaN(parsed)) {
-                  setForm((prev: PropertyForm1Props["form"]) => ({
+                  setForm((prev: PropertyFormProps["form"]) => ({
                     ...prev,
                     tax: "",
                   }));
@@ -232,7 +232,7 @@ export default function PropertyForm1({
                   maximumFractionDigits: 2,
                 });
 
-                setForm((prev: PropertyForm1Props["form"]) => ({
+                setForm((prev: PropertyFormProps["form"]) => ({
                   ...prev,
                   tax: formatted,
                 }));
@@ -333,7 +333,7 @@ export default function PropertyForm1({
                 if (matches.length !== 2 && matches.length !== 4) {
                   const digits = val.match(/\d{3,4}/g);
                   if (!digits || (digits.length !== 2 && digits.length !== 4)) {
-                    setForm((prev: PropertyForm1Props["form"]) => ({
+                    setForm((prev: PropertyFormProps["form"]) => ({
                       ...prev,
                       horarioVisita: "",
                     }));
@@ -371,7 +371,7 @@ export default function PropertyForm1({
                 const formattedTimes = matches.map(formatTime);
 
                 if (formattedTimes.some((t) => t === null)) {
-                  setForm((prev: PropertyForm1Props["form"]) => ({
+                  setForm((prev: PropertyFormProps["form"]) => ({
                     ...prev,
                     horarioVisita: "",
                   }));
@@ -383,7 +383,7 @@ export default function PropertyForm1({
                   final += ` | ${formattedTimes[2]} - ${formattedTimes[3]}`;
                 }
 
-                setForm((prev: PropertyForm1Props["form"]) => ({
+                setForm((prev: PropertyFormProps["form"]) => ({
                   ...prev,
                   horarioVisita: final,
                 }));

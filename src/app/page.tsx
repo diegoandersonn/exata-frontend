@@ -60,7 +60,7 @@ export default function Home() {
               alt="Exata Imóveis"
               width={300}
               height={300}
-              className="w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] object-contain rounded-full"
+              className="w-[10.417vw] h-[10.417vw] sm:w-[15.625vw] sm:h-[15.625vw] object-contain rounded-full"
             />
           </div>
         </div>

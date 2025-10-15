@@ -15,6 +15,7 @@ import Link from "./Link";
 import { IconType } from "./icons";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { url } from "inspector";
 
 // Menu items.
 const items = [
@@ -28,6 +29,11 @@ const items = [
     url: "/admin/settings",
     icon: "Settings",
   },
+  {
+    title: "Avaliações",
+    url: "/admin/avaliations",
+    icon: "Avaliations",
+  }
   // {
   //   title: "Investimentos",
   //   url: "/investment",

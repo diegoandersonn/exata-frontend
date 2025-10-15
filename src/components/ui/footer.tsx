@@ -5,55 +5,67 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-red-800 text-white py-10 px-6 mt-10">
+    <footer className="bg-red-800 text-white p-4 mt-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mt-6">
         {/* Logo e Descrição */}
         <div className="flex flex-col gap-4">
-          <h2 className="text-2xl font-bold">Exata Administradora</h2>
-          <p className="text-sm text-zinc-200">
+          <h2 className="sm:text-xs md:text-sm xl:text-lg font-bold">
+            Exata Administradora
+          </h2>
+          <p className="text-xs xl:text-lg text-zinc-200">
             Atuamos com excelência em Santos-SP desde 2014, oferecendo gestão de
             imóveis com proximidade real.
           </p>
         </div>
 
         {/* Navegação */}
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-semibold">Navegação</h3>
-          <Link href="/properties" className="text-sm hover:underline">
+        <div className="hidden sm:flex flex-col gap-3">
+          <h3 className="sm:text-xs md:text-sm xl:text-lg font-semibold">
+            Navegação
+          </h3>
+          <Link
+            href="/properties"
+            className="text-xs xl:text-lg hover:underline"
+          >
             Ver Imóveis
           </Link>
-          <Link href="/contato" className="text-sm hover:underline">
+          <Link href="/contato" className="text-xs xl:text-lg hover:underline">
             Entre em Contato
           </Link>
           <a
             href="https://wa.me/5513974173786?text=Oi%2C%20tenho%20interesse!"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm hover:underline"
+            className="text-xs xl:text-lg hover:underline"
           >
             WhatsApp
           </a>
         </div>
 
         {/* Contato */}
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-semibold">Contato</h3>
-          <div className="flex items-center gap-2 text-sm">
-            <MapPin size={16} /> Santos - SP
+        <div className="flex items-start justify-between md:flex-col gap-3">
+          <h3 className="hidden sm:flex md:text-sm xl:text-lg font-semibold">
+            Contato
+          </h3>
+          <div className="flex items-center gap-2 text-xs xl:text-lg flex-col md:flex-row">
+            <MapPin size={24} />
+            <p className="hidden sm:flex">Santos - SP</p>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Phone size={16} /> (13) 97417-3786
+          <div className="flex items-center gap-2 text-xs xl:text-lg flex-col md:flex-row">
+            <Phone size={24} />
+            <p className="hidden sm:flex">(13) 97417-3786</p>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Mail size={16} /> contato@exataadm.com.br
+          <div className="flex items-center gap-2 text-xs xl:text-lg flex-col md:flex-row">
+            <Mail size={24} />
+            <p className="hidden sm:flex">contato@exataadm.com.br</p>
           </div>
-          <div className="flex gap-3 mt-2">
-            <a href="#" className="hover:text-zinc-300">
-              <Instagram size={18} />
-            </a>
-            <a href="#" className="hover:text-zinc-300">
-              <Facebook size={18} />
-            </a>
+          <div className="flex items-center gap-2 text-xs xl:text-lg flex-col md:flex-row">
+            <Instagram size={24} />
+            <p className="hidden sm:flex">@exataadm</p>
+          </div>
+          <div className="flex items-center gap-2 text-xs xl:text-lg flex-col md:flex-row">
+            <Facebook size={24} />
+            <p className="hidden sm:flex">@exataadm</p>
           </div>
         </div>
       </div>

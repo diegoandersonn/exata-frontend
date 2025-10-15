@@ -33,7 +33,7 @@ export default function PropertyCard({
 
   return (
     <div
-      className="flex flex-col justify-between gap-2 w-full max-w-[280px] mx-auto sm:max-w-none sm:w-[180px] sm:h-[260px] md:w-[220px] md:h-[320px] lg:w-[260px] lg:h-[380px] xl:w-[320px] xl:h-[440px] rounded-lg shadow-lg border border-gray-300 hover:scale-105 transition-transform duration-300 cursor-pointer group bg-white"
+      className="flex flex-col justify-between gap-2 w-full max-w-[280px] mx-auto sm:max-w-none sm:w-[160px] sm:h-[260px] md:w-[200px] md:h-[320px] lg:w-[260px] lg:h-[380px] xl:w-[300px] xl:h-[440px] rounded-lg shadow-lg border border-gray-300 hover:scale-105 transition-transform duration-300 cursor-pointer group bg-white"
       onClick={handleNavigation}
     >
       <div className="flex-1">

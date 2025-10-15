@@ -59,10 +59,14 @@ export default function PropertiesPage() {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center h-screen">Carregando...</div>
+      <div className="flex items-center justify-center h-screen">
+        Carregando...
+      </div>
     );
   if (isError)
-    return <div className="flex items-center justify-center h-screen">Erro</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">Erro</div>
+    );
   if (!properties)
     return (
       <div className="flex items-center justify-center h-screen">

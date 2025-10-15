@@ -7,15 +7,21 @@ import Footer from "@/components/ui/footer";
 import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import PropertiesCarousel from "@/components/ui/properties-carousel";
+import NPS from "@/components/ui/nps";
+import Feedbacks from "@/components/ui/feedback";
+import useGetActiveAvaliations from "@/hooks/use-getActiveAvalations";
 
 export default function Home() {
   const { setCoords } = useLocalization();
-
+  const { avaliations, isLoading } = useGetActiveAvaliations();
+  
   useEffect(() => {
     const handleLocation = (position: GeolocationPosition) => {
       const { latitude, longitude } = position.coords;
       setCoords({ latitude, longitude });
     };
+
+
 
     navigator.geolocation.getCurrentPosition(handleLocation);
   }, [setCoords]);
@@ -65,7 +71,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col items-center sm:items-start justify-center gap-6 flex-1 text-center sm:text-left relative min-h-[220px]">
-          <h1 className="text-4xl font-bold">SOBRE NÓS!</h1>
+          <h1 className="text-4xl font-bold">Sobre nós!</h1>
           <div className="flex flex-col gap-3 pb-8">
             <h3 className="text-2xl font-bold">Uma exata feita para você</h3>
             <p className="text-xs">
@@ -113,6 +119,17 @@ export default function Home() {
           </button>
         </div>
       </div>
+      <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
+        {isLoading ? (
+          <div>Carregando feedbacks...</div>
+        ) : (
+          <Feedbacks feedbackList={avaliations || []} />
+        )}
+      </div>
+      <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
+        <NPS />
+      </div>
+      
       <Footer />
     </div>
   );

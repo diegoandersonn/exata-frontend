@@ -42,6 +42,12 @@ export default function Header() {
           Serviços
         </Link>
         <Link href="#" className="text-white hover:underline transition">
+          Feedbacks
+        </Link>
+        <Link href="#" className="text-white hover:underline transition">
+          Nos avalie
+        </Link>
+        <Link href="#" className="text-white hover:underline transition">
           Contato
         </Link>
       </nav>

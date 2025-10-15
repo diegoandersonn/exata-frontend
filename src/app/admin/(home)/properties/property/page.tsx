@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PropertyTypeEnum } from "@/types/property-type-enum";
 import { toast } from "react-toastify";
-import { AdjustmentTypeEnum } from "@/types/adjustment-type-enum";
 import useGetProperty from "@/hooks/use-getProperty";
 import { useAuth } from "@/contexts/AuthContext";
+import PropertyForm1 from "@/components/ui/property-form-1";
+import { formatCurrency } from "@/utils/formatCurrency";
+import PropertyForm2 from "@/components/ui/property-form-2";
+import PropertyForm3 from "@/components/ui/property-form-3";
 
 export default function Propertie() {
   const searchParams = useSearchParams();
@@ -19,7 +21,6 @@ export default function Propertie() {
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
   const [otherImagesPreview, setOtherImagesPreview] = useState<string[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [cepError, setCepError] = useState<boolean>(false);
   const { token } = useAuth();
 
   const [form, setForm] = useState({
@@ -45,18 +46,6 @@ export default function Propertie() {
     state: "",
   });
 
-  function formatCurrency(value: string | number): string {
-    const num =
-      typeof value === "number"
-        ? value
-        : parseFloat(String(value).replace(",", "."));
-    if (isNaN(num)) return "";
-    return num.toLocaleString("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
   useEffect(() => {
     if (property) {
       setForm({
@@ -81,6 +70,12 @@ export default function Propertie() {
         city: property?.cidade,
         state: property?.uf,
       });
+
+      if (property?.imagens && property.imagens.length > 0) {
+        setMainImagePreview(property.imagens[0]);
+        setOtherImagesPreview(property.imagens.slice(1));
+        console.log(property.imagens.slice(1));
+      }
     }
   }, [property]);
 
@@ -226,8 +221,10 @@ export default function Propertie() {
   };
 
   useEffect(() => {}, [mainImagePreview]);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[26rem] bg-transparent">
+      {/* Header */}
       <div className="flex items-center gap-1 w-full h-fit">
         <Image
           src="/arrow-left-2-svgrepo-com.svg"
@@ -236,7 +233,7 @@ export default function Propertie() {
           height={28}
           className="mb-4 hover:cursor-pointer"
           onClick={() => router.push("/admin/properties")}
-        ></Image>
+        />
         <h1 className="text-[1.4rem] font-bold mb-4 text-center">
           {property ? "Editar Imóvel" : "Cadastrar Imóvel"}
         </h1>
@@ -280,725 +277,32 @@ export default function Propertie() {
         className="bg-transparent w-full mb-[-1rem]"
       >
         {/* Informações do imóvel */}
-        <div className={`${index === 0 ? "block" : "hidden"} space-y-3`}>
-          {/* Tipo do imóvel */}
-          <div className="bg-white rounded-lg w-full h-fit p-6">
-            <h2 className="text-base font-medium">Dados principais</h2>
-            <div className="flex justify-between mt-4">
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Título do imóvel
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Digite aqui"
-                  className={`${
-                    triedNext && !form.name ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  required
-                />
-              </div>
+        <PropertyForm1
+          index={index}
+          form={form}
+          setForm={setForm}
+          triedNext={triedNext}
+          handleChange={handleChange}
+        />
 
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Tipo do imóvel
-                </label>
-                <select
-                  name="propertyType"
-                  value={form.propertyType}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.propertyType ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1`}
-                  required
-                >
-                  <option value="">Selecione</option>
-                  <option value={PropertyTypeEnum.apartment}>
-                    Apartamento
-                  </option>
-                  <option value={PropertyTypeEnum.house}>Casa</option>
-                </select>
-              </div>
+        {/* Endereço do imóvel */}
+        <PropertyForm2
+          index={index}
+          form={form}
+          setForm={setForm}
+          triedNext={triedNext}
+          handleChange={handleChange}
+        />
 
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Prazo do contrato
-                </label>
-                <input
-                  type="text"
-                  name="prazo"
-                  value={form.prazo}
-                  onChange={handleChange}
-                  onBlur={(e) => {
-                    const rawValue = e.target.value.trim().toLowerCase();
+        {/* Fotos do imóvel */}
+        <PropertyForm3
+          index={index}
+          mainImagePreview={mainImagePreview}
+          handleFileChange={handleFileChange}
+          otherImagesPreview={otherImagesPreview}
+        />
 
-                    // Se já estiver no formato correto (ex: "12 meses")
-                    if (/^\d+\s*meses$/.test(rawValue)) return;
-
-                    // Tenta extrair só o número
-                    const numberOnly = rawValue.match(/\d+/)?.[0] || "";
-
-                    if (numberOnly) {
-                      setForm((prev) => ({
-                        ...prev,
-                        prazo: `${numberOnly} meses`,
-                      }));
-                    } else {
-                      // Se não tiver número válido, limpa
-                      setForm((prev) => ({
-                        ...prev,
-                        prazo: "",
-                      }));
-                    }
-                  }}
-                  placeholder="0 meses"
-                  className={`${
-                    triedNext && !form.prazo ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-between mt-4">
-              {/* Dormitórios */}
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Dormitório(s)
-                </label>
-                <input
-                  type="number"
-                  name="bedrooms"
-                  value={form.bedrooms}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.bedrooms ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1`}
-                  min={0}
-                  placeholder="0"
-                  required
-                />
-              </div>
-
-              {/* Banheiros */}
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Banheiro(s)
-                </label>
-                <input
-                  type="number"
-                  name="bathrooms"
-                  value={form.bathrooms}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.bathrooms ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1`}
-                  min={0}
-                  placeholder="0"
-                  required
-                />
-              </div>
-
-              {/* Garagens */}
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Garagem(ns)
-                </label>
-                <input
-                  type="number"
-                  name="garages"
-                  value={form.garages}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.garages ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1`}
-                  min={0}
-                  placeholder="0"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* <div className="bg-white rounded-lg w-full h-fit flex p-6 justify-between"></div> */}
-
-          <div className="bg-white rounded-lg w-full h-fit p-6">
-            <h2 className="text-base font-medium">Valores</h2>
-            {/* Aluguel */}
-            <div className="flex justify-between mt-4">
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Aluguel (R$)
-                </label>
-                <input
-                  type="text"
-                  name="rent"
-                  value={form.rent}
-                  onChange={handleChange}
-                  onBlur={(e) => {
-                    const value = e.target.value.trim();
-
-                    // Substitui ponto por nada e vírgula por ponto temporariamente para parseFloat
-                    const normalized = value
-                      .replace(/\./g, "")
-                      .replace(",", ".");
-
-                    const parsed = parseFloat(normalized);
-
-                    if (isNaN(parsed)) {
-                      setForm((prev) => ({ ...prev, rent: "" }));
-                      return;
-                    }
-
-                    // Formata no padrão pt-BR com separador de milhar (.) e decimal (,)
-                    const formatted = parsed.toLocaleString("pt-BR", {
-                      minimumFractionDigits: value.includes(",") ? 2 : 2,
-                      maximumFractionDigits: 2,
-                    });
-
-                    setForm((prev) => ({
-                      ...prev,
-                      rent: formatted,
-                    }));
-                  }}
-                  placeholder="0,00"
-                  className={`${
-                    triedNext && !form.rent ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1`}
-                  required
-                />
-              </div>
-
-              {/* Taxa */}
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  IPTU (R$)
-                </label>
-                <input
-                  type="text"
-                  name="tax"
-                  value={form.tax}
-                  onChange={handleChange}
-                  onBlur={(e) => {
-                    const value = e.target.value.trim();
-
-                    // Substitui milhar e decimal para permitir o parseFloat
-                    const normalized = value
-                      .replace(/\./g, "")
-                      .replace(",", ".");
-
-                    const parsed = parseFloat(normalized);
-
-                    if (isNaN(parsed)) {
-                      setForm((prev) => ({ ...prev, tax: "" }));
-                      return;
-                    }
-
-                    const formatted = parsed.toLocaleString("pt-BR", {
-                      minimumFractionDigits: value.includes(",") ? 2 : 2,
-                      maximumFractionDigits: 2,
-                    });
-
-                    setForm((prev) => ({
-                      ...prev,
-                      tax: formatted,
-                    }));
-                  }}
-                  placeholder="0,00"
-                  className={`${
-                    triedNext && !form.tax ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1`}
-                  required
-                />
-              </div>
-
-              {/* Aluguel + IPTU */}
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Aluguel + IPTU (R$)
-                </label>
-                <input
-                  type="text"
-                  name="rentWithTax"
-                  value={(() => {
-                    const parseCurrency = (val: string) => {
-                      if (!val) return 0;
-                      const normalized = val
-                        .replace(/\./g, "")
-                        .replace(",", ".");
-                      const parsed = parseFloat(normalized);
-                      return isNaN(parsed) ? 0 : parsed;
-                    };
-
-                    const total =
-                      parseCurrency(form.rent) + parseCurrency(form.tax);
-
-                    return total.toLocaleString("pt-BR", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    });
-                  })()}
-                  disabled
-                  placeholder="0,00"
-                  className={`${
-                    triedNext && (!form.rent || !form.tax)
-                      ? "border-red-500"
-                      : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                  required
-                  min={0}
-                  step="0.01"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg w-full h-fit p-6 gap-4">
-            <h2 className="text-base font-medium mb-4">Extras</h2>
-            <div className="flex justify-between flex-wrap">
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Tipo de Reajuste
-                </label>
-                <select
-                  name="reajusteType"
-                  value={form.reajusteType}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.reajusteType ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  required
-                >
-                  <option value="">Selecione</option>
-                  <option value={AdjustmentTypeEnum.annual}>Anual</option>
-                  <option value={AdjustmentTypeEnum.semiannual}>
-                    Semestral
-                  </option>
-                  <option value={AdjustmentTypeEnum.biennial}>Bianual</option>
-                </select>
-              </div>
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Horário de Visita
-                </label>
-                <input
-                  type="text"
-                  name="horarioVisita"
-                  value={form.horarioVisita}
-                  onChange={handleChange}
-                  onBlur={(e) => {
-                    const val = e.target.value.trim();
-
-                    // Expressão regular para capturar até 4 horários (HHMM ou HH:MM)
-                    const timeRegex = /(\d{1,2}):?(\d{2})?/g;
-
-                    const matches: { hour: string; minute: string }[] = [];
-                    let match;
-                    while ((match = timeRegex.exec(val)) !== null) {
-                      matches.push({
-                        hour: match[1],
-                        minute: match[2] || "00",
-                      });
-                      if (matches.length === 4) break;
-                    }
-
-                    // Se não conseguir 2 ou 4 horários, tenta fallback com grupos de 3-4 dígitos
-                    if (matches.length !== 2 && matches.length !== 4) {
-                      const digits = val.match(/\d{3,4}/g);
-                      if (
-                        !digits ||
-                        (digits.length !== 2 && digits.length !== 4)
-                      ) {
-                        setForm((prev) => ({ ...prev, horarioVisita: "" }));
-                        return;
-                      }
-
-                      matches.length = 0; // limpa
-                      digits.forEach((d) => {
-                        matches.push({
-                          hour: d.slice(0, 2),
-                          minute: d.slice(2) || "00",
-                        });
-                      });
-                    }
-
-                    function formatTime(hm: { hour: string; minute: string }) {
-                      const h = hm.hour.padStart(2, "0");
-                      const m = hm.minute.padEnd(2, "0");
-
-                      const hourNum = parseInt(h, 10);
-                      const minNum = parseInt(m, 10);
-
-                      if (
-                        hourNum < 0 ||
-                        hourNum > 23 ||
-                        minNum < 0 ||
-                        minNum > 59
-                      ) {
-                        return null;
-                      }
-
-                      return `${h}:${m}`;
-                    }
-
-                    const formattedTimes = matches.map(formatTime);
-
-                    if (formattedTimes.some((t) => t === null)) {
-                      setForm((prev) => ({ ...prev, horarioVisita: "" }));
-                      return;
-                    }
-
-                    let final = `${formattedTimes[0]} - ${formattedTimes[1]}`;
-                    if (formattedTimes.length === 4) {
-                      final += ` | ${formattedTimes[2]} - ${formattedTimes[3]}`;
-                    }
-
-                    setForm((prev) => ({ ...prev, horarioVisita: final }));
-                  }}
-                  placeholder="00:00 - 00:00 | 00:00 - 00:00"
-                  className={`${
-                    triedNext && !form.horarioVisita ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  required
-                />
-              </div>
-
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Área (m²)
-                </label>
-                <input
-                  type="number"
-                  name="area"
-                  value={form.area}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.area ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  placeholder="0"
-                  min={0}
-                  required
-                />
-              </div>
-              <div className="w-full mt-3">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Descrição
-                </label>
-                <input
-                  type="text"
-                  name="descricao"
-                  value={form.descricao}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.descricao ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  placeholder="Digite aqui"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={`${index === 1 ? "block" : "hidden"} space-y-3`}>
-          {/* Tipo do imóvel */}
-          <div className="bg-white rounded-lg w-full h-fit p-6">
-            <div className="flex justify-between mt-4">
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  CEP
-                </label>
-                <input
-                  type="text"
-                  name="cep"
-                  value={form.cep}
-                  onChange={async (e) => {
-                    let value = e.target.value.replace(/\D/g, ""); // só números
-
-                    // limita a 8 dígitos
-                    if (value.length > 8) value = value.substring(0, 8);
-
-                    // aplica máscara 99999-999
-                    if (value.length > 5) {
-                      value = value.replace(/(\d{5})(\d{1,3})/, "$1-$2");
-                    }
-
-                    // atualiza o form
-                    setForm((prev) => ({ ...prev, cep: value }));
-
-                    // dispara busca se tiver 8 dígitos
-                    const numericCep = value.replace(/\D/g, "");
-                    if (numericCep.length === 8) {
-                      try {
-                        const response = await fetch(
-                          `https://viacep.com.br/ws/${numericCep}/json/`
-                        );
-                        const data = await response.json();
-
-                        if (data.erro) {
-                          toast.error("CEP não encontrado.");
-                          setCepError(true);
-                          return;
-                        } else {
-                          setCepError(false);
-                        }
-
-                        setForm((prev) => ({
-                          ...prev,
-                          street: data.logradouro,
-                          neighborhood: data.bairro,
-                          city: data.localidade,
-                          state: data.uf,
-                        }));
-                      } catch (error) {
-                        console.error("Erro ao buscar CEP:", error);
-                      }
-                    }
-                  }}
-                  placeholder="00000-000"
-                  maxLength={9} // 8 dígitos + o "-"
-                  className={`${
-                    (triedNext && !form.cep) || cepError ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg w-full h-fit p-6">
-            <div className="flex justify-between mt-4">
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Logradouro
-                </label>
-                <input
-                  type="text"
-                  name="street"
-                  value={form.street}
-                  onChange={handleChange}
-                  disabled
-                  className={`${
-                    triedNext && !form.street ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                />
-              </div>
-
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Número
-                </label>
-                <input
-                  type="number"
-                  name="number"
-                  value={form.number}
-                  onChange={handleChange}
-                  className={`${
-                    triedNext && !form.number ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1`}
-                  min={0}
-                  placeholder="0"
-                  required
-                />
-              </div>
-
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Complemento
-                </label>
-                <input
-                  type="text"
-                  name="complement"
-                  value={form.complement}
-                  onChange={handleChange}
-                  placeholder="Digite aqui"
-                  className={`${
-                    triedNext && !form.complement ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-black`}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-between mt-4">
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Bairro
-                </label>
-                <input
-                  type="text"
-                  name="neighborhood"
-                  value={form.neighborhood}
-                  onChange={handleChange}
-                  disabled
-                  className={`${
-                    triedNext && !form.neighborhood ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                />
-              </div>
-
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  Cidade
-                </label>
-                <input
-                  type="text"
-                  name="city"
-                  value={form.city}
-                  onChange={handleChange}
-                  disabled
-                  className={`${
-                    triedNext && !form.city ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                />
-              </div>
-
-              <div className="w-[31.5%]">
-                <label className="block text-[0.9rem] font-medium mb-1">
-                  UF
-                </label>
-                <input
-                  type="text"
-                  name="state"
-                  value={form.state}
-                  onChange={handleChange}
-                  disabled
-                  className={`${
-                    triedNext && !form.state ? "border-red-500" : ""
-                  } w-full border rounded px-3 py-2 mb-1 text-gray-500`}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={`${index === 2 ? "block" : "hidden"} space-y-3`}>
-          {/* Foto Principal */}
-          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
-            <div
-              className={`w-full h-full flex flex-col items-center justify-center transition-all ${
-                mainImagePreview ? "" : "border-dashed border-2 border-gray-300"
-              }`}
-            >
-              <label
-                htmlFor="mainImage"
-                className="cursor-pointer text-gray-500 hover:text-gray-600 flex flex-col items-center gap-2"
-              >
-                {!mainImagePreview && <span>+ Adicione a foto principal</span>}
-                <input
-                  id="mainImage"
-                  type="file"
-                  accept="image/*"
-                  name="mainImage"
-                  onChange={handleFileChange}
-                  required
-                  className="hidden"
-                />
-              </label>
-
-              {mainImagePreview && (
-                <Image
-                  src={mainImagePreview}
-                  alt="Pré-visualização da foto principal"
-                  className="mt-3 rounded max-h-36 object-contain border border-gray-300"
-                />
-              )}
-            </div>
-          </div>
-
-          {/* Outras Fotos */}
-          <div className="bg-white rounded-lg w-full h-[11.5rem] p-6">
-            <div
-              className={`w-full h-full flex flex-col items-center justify-center transition-all ${
-                otherImagesPreview.length > 0
-                  ? ""
-                  : "border-dashed border-2 border-gray-300"
-              }`}
-            >
-              <label
-                htmlFor="otherImages"
-                className="cursor-pointer text-gray-500 hover:text-gray-600 flex flex-col items-center gap-2"
-              >
-                {otherImagesPreview.length === 0 && (
-                  <span>+ Adicione as outras fotos</span>
-                )}
-                <input
-                  id="otherImages"
-                  type="file"
-                  accept="image/*"
-                  name="otherImages"
-                  multiple
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
-
-              {otherImagesPreview.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3 max-h-36 overflow-auto">
-                  {otherImagesPreview.map((src, idx) => (
-                    <Image
-                      key={idx}
-                      src={src}
-                      alt={`Pré-visualização ${idx + 1}`}
-                      className="rounded max-h-24 object-contain border border-gray-300"
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* <div className={`hidden space-y-3`}>
-          <div className="bg-white rounded-lg w-full h-fit flex p-6 gap-4 flex-wrap">
-            <div className="w-1/2 min-w-[200px] flex flex-col items-center">
-              <label className="block text-[0.9rem] font-medium mb-2">
-                Foto principal
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                name="mainImage"
-                onChange={handleFileChange}
-                required
-                className="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
-              />
-              {mainImagePreview && (
-                <img
-                  src={mainImagePreview}
-                  alt="Pré-visualização da foto principal"
-                  className="mt-2 rounded max-h-40 object-contain border"
-                />
-              )}
-            </div>
-            <div className="w-1/2 min-w-[200px] flex flex-col items-center">
-              <label className="block text-[0.9rem] font-medium mb-2">
-                Outras fotos
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                name="otherImages"
-                onChange={handleFileChange}
-                multiple
-                className="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
-              />
-              <div className="flex flex-wrap gap-2 mt-2">
-                {otherImagesPreview.map((src, idx) => (
-                  <img
-                    key={idx}
-                    src={src}
-                    alt={`Pré-visualização ${idx + 1}`}
-                    className="rounded max-h-24 object-contain border"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div> */}
-
+        {/* Footer */}
         <div className="w-full flex justify-end gap-3 mt-3">
           <button
             onClick={() => setIndex(index === 0 ? 0 : index - 1)}

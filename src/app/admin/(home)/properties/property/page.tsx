@@ -87,16 +87,6 @@ export default function Propertie() {
     }
   }, [mainImageFile]);
 
-  useEffect(() => {
-    if (otherImages && otherImages.length > 0) {
-      setOtherImagesPreview(
-        Array.from(otherImages).map((file) => URL.createObjectURL(file))
-      );
-    } else {
-      setOtherImagesPreview([]);
-    }
-  }, [otherImages]);
-
   const handleNext = (e: React.MouseEvent) => {
     if (!isStepOneValid()) {
       setTriedNext(true);
@@ -130,8 +120,25 @@ export default function Propertie() {
     if (e.target.name === "mainImage" && e.target.files && e.target.files[0]) {
       setMainImageFile(e.target.files[0]);
     }
+
     if (e.target.name === "otherImages" && e.target.files) {
-      setOtherImages(e.target.files);
+      const filesArray = Array.from(e.target.files);
+
+      // adiciona previews novos ao final
+      setOtherImagesPreview((prev) => [
+        ...prev,
+        ...filesArray.map((file) => URL.createObjectURL(file)),
+      ]);
+
+      // também atualiza o FileList sem sobrescrever
+      setOtherImages((prev) => {
+        const prevFiles = prev ? Array.from(prev) : [];
+        const dataTransfer = new DataTransfer();
+        [...prevFiles, ...filesArray].forEach((file) =>
+          dataTransfer.items.add(file)
+        );
+        return dataTransfer.files;
+      });
     }
   };
 
@@ -300,6 +307,8 @@ export default function Propertie() {
           mainImagePreview={mainImagePreview}
           handleFileChange={handleFileChange}
           otherImagesPreview={otherImagesPreview}
+          setOtherImagesPreview={setOtherImagesPreview}
+          setMainImagePreview={setMainImagePreview}
         />
 
         {/* Footer */}

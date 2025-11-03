@@ -9,13 +9,24 @@ export default function Settings() {
   const [instagram, setInstagram] = useState<string>("");
   const [whatsapp, setWhatsapp] = useState<string>("");
   const [showAddress, setShowAddress] = useState<boolean>(true);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("Settings component mounted");
   }, []);
 
-  const handleSave = () => {
-    toast.success("Configuração salva com sucesso!");
+  const handleSave = async () => {
+    if (isSaving) return;
+    setIsSaving(true);
+    try {
+      // substituir por chamada real à API se necessário
+      await new Promise((res) => setTimeout(res, 800));
+      toast.success("Configuração salva com sucesso!");
+    } catch {
+      toast.error("Erro ao salvar. Tente novamente.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -89,7 +100,9 @@ export default function Settings() {
       </div>
 
       <div className="mb-6 flex items-center justify-between">
-        <span className="text-sm font-medium">Mostrar endereço dos imóveis</span>
+        <span className="text-sm font-medium">
+          Mostrar endereço dos imóveis
+        </span>
         <button
           type="button"
           onClick={() => setShowAddress((prev) => !prev)}
@@ -110,9 +123,10 @@ export default function Settings() {
 
       <button
         onClick={handleSave}
-        className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition"
+        className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition disabled:opacity-60"
+        disabled={isSaving}
       >
-        Salvar
+        {isSaving ? "Carregando..." : "Salvar"}
       </button>
     </div>
   );

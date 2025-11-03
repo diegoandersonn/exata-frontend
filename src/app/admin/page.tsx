@@ -1,17 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitErrorHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faEyeSlash,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Form, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Header } from "@/components/auth/Header";
 import { useRouter } from "next/navigation";
@@ -52,7 +48,7 @@ export default function LoginPage() {
     router.push(`/admin/forgot-password?email=${encodeURIComponent(email)}`);
   };
 
-  const onInvalid = (errors: any) => {
+  const onInvalid: SubmitErrorHandler<LoginFormData> = (errors) => {
     if (errors?.password) {
       toast.error("E-mail ou senha inválidos.");
       form.setError("root", { message: "E-mail ou senha inválidos." });
@@ -60,6 +56,7 @@ export default function LoginPage() {
   };
 
   async function onSubmit(values: LoginFormData) {
+    if (isLoading) return;
     setIsLoading(true);
     try {
       const response = await fetch("http://localhost:3333/auth/login", {
@@ -79,12 +76,14 @@ export default function LoginPage() {
           form.setError("root", {
             message: "Muitas tentativas. Tente novamente em 10 minutos",
           });
+          setIsLoading(false);
           return;
         } else if (response.status === 401) {
           toast.error("E-mail ou senha inválidos.");
           form.setError("root", {
             message: "E-mail ou senha inválidos.",
           });
+          setIsLoading(false);
           return;
         }
         throw new Error(`Erro ao fazer login: ${response.status}`);
@@ -93,16 +92,20 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (!data.token) {
+        setIsLoading(false);
         throw new Error("Token não recebido do servidor");
       }
 
       setAuth({ token: data.token });
-      router.replace("/admin/properties");
-    } catch {
+      // aguarda a navegação antes de resetar o estado (se possível)
+      await router.replace("/admin/properties");
+      // não alterar isLoading aqui: mantemos o estado enquanto o usuário é redirecionado
+      return;
+    } catch (err) {
+      console.error(err);
       form.setError("root", {
         message: "Ocorreu um erro ao fazer login. Tente novamente.",
       });
-    } finally {
       setIsLoading(false);
     }
   }
@@ -217,20 +220,13 @@ export default function LoginPage() {
                   id="enter-btn"
                   type="submit"
                   disabled={!form.formState.isReady || isLoading}
-                  className={`w-full h-[2.5rem] text-[#FFFFFF] ${
+                  className={`w-full h-[2.5rem] text-[#FFFFFF] mb-[0.75rem] hover:cursor-pointer rounded-[0.375rem] ${
                     !form.formState.isReady || isLoading
                       ? "bg-[#213f57]"
                       : "bg-[#C80018] hover:bg-[] border-[#C80018]"
-                  } mb-[0.75rem] hover:cursor-pointer rounded-[0.375rem]`}
+                  }`}
                 >
-                  {isLoading ? (
-                    <FontAwesomeIcon
-                      icon={faSpinner}
-                      className="h-4 w-4 animate-spin"
-                    />
-                  ) : (
-                    "Entrar"
-                  )}
+                  {isLoading ? <span>Carregando...</span> : "Entrar"}
                 </Button>
               </form>
             </Form>

@@ -1,6 +1,7 @@
 "use client";
 
 import useGetAvaliations from "@/hooks/use-getAvaliations";
+import FullScreenLoaderPortal from "@/components/ui/full-screen-loader-portal";
 import FeedbackCard from "@/components/ui/feedback/card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +27,8 @@ export default function Avaliations() {
   }, [avaliations]);
 
   if (isLoading) {
-    return <div>Carregando avaliações...</div>;
+    // usa o loader em portal para cobrir toda a tela (não ser filho do container local)
+    return <FullScreenLoaderPortal open={true} />;
   }
 
   if (isError) {
@@ -36,12 +38,14 @@ export default function Avaliations() {
   return (
     <div className="p-6">
       <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Avaliações</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+          Avaliações
+        </h1>
         <p className="text-gray-600">Gerencie as avaliações dos usuários</p>
       </div>
       {avaliations && avaliations.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {avaliations.map((avaliation, index) => {
+          {avaliations.map((avaliation) => {
             const isActive = Boolean(
               activeState[avaliation._id] ?? avaliation.ativa
             );
@@ -52,18 +56,29 @@ export default function Avaliations() {
               }));
               try {
                 favorite.mutate({ id: avaliation._id, ativa: !isActive });
-                toast.success(`Avaliação ${isActive ? "desativada" : "ativada"} com sucesso!`);
+                toast.success(
+                  `Avaliação ${
+                    isActive ? "desativada" : "ativada"
+                  } com sucesso!`
+                );
               } catch (error) {
-                toast.error("Erro ao atualizar avaliação. Tente novamente mais tarde.");
-                // toast
-            }
+                toast.error(
+                  "Erro ao atualizar avaliação. Tente novamente mais tarde."
+                );
+                console.error("Erro ao atualizar avaliação:", error);
+              }
             };
             return (
               <div key={avaliation._id} className="relative">
-                <FeedbackCard feedback={avaliation.comentario} rating={avaliation.avaliacao} />
+                <FeedbackCard
+                  feedback={avaliation.comentario}
+                  rating={avaliation.avaliacao}
+                />
                 <button
                   type="button"
-                  aria-label={isActive ? "Desativar avaliação" : "Ativar avaliação"}
+                  aria-label={
+                    isActive ? "Desativar avaliação" : "Ativar avaliação"
+                  }
                   onClick={onToggleActive}
                   className="absolute top-2 right-2 inline-flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 bg-white/80"
                 >

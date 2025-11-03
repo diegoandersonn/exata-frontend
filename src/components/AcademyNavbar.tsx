@@ -60,7 +60,6 @@ function AcademyNavbar() {
   return (
     <nav className="w-full bg-red-800 fixed z-10 h-16 flex justify-end pr-10">
       <div className="navbar-group flex items-center gap-4">
-        \
         <div
           ref={profileContainerRef}
           className="navbar-group flex items-center gap-4 relative"

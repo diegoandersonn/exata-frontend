@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 type Props = {
   id: string;
@@ -25,10 +27,16 @@ export default function PropertyCard({
   parkingSpaces,
 }: Props) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleNavigation(): void {
+    if (isLoading) return;
+    setIsLoading(true);
     const url = `/property/${id}`;
-    router.push(url);
+    // pequeno delay para garantir que o overlay apareça antes da navegação
+    setTimeout(() => {
+      router.push(url);
+    }, 80);
   }
 
   return (
@@ -45,9 +53,16 @@ export default function PropertyCard({
             height={250}
             className="object-cover rounded-t-lg w-full h-full"
           />
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-t-lg z-10">
+              <div className="flex items-center justify-center rounded-full p-2">
+                <LoadingSpinner size={36} className="w-9 h-9" />
+              </div>
+            </div>
+          )}
         </div>
         <div className="p-2 md:p-3">
-          <h4 className="font-bold text-sm sm:text-xs md:text-sm lg:text-base xl:text-lg line-clamp-1">
+          <h4 className="font-bold text-sm sm:te\xxt-xs md:text-sm lg:text-base xl:text-lg line-clamp-1">
             {title}
           </h4>
           <p className="text-xs sm:text-[10px] md:text-xs lg:text-sm text-gray-600 line-clamp-2 mt-1">

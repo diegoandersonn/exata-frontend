@@ -9,6 +9,7 @@ import PropertyForm1 from "@/components/ui/property-form-1";
 import { formatCurrency } from "@/utils/formatCurrency";
 import PropertyForm2 from "@/components/ui/property-form-2";
 import PropertyForm3 from "@/components/ui/property-form-3";
+import FullScreenLoader from "@/components/ui/full-screen-loader";
 
 export default function Propertie() {
   const searchParams = useSearchParams();
@@ -230,7 +231,10 @@ export default function Propertie() {
   useEffect(() => {}, [mainImagePreview]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[26rem] bg-transparent">
+    <div className="relative flex flex-col items-center justify-center min-h-[26rem] bg-transparent">
+      {/* overlay loader — filho deste container (respeita navbar/sidebar) */}
+      <FullScreenLoader open={isPending} />
+
       {/* Header */}
       <div className="flex items-center gap-1 w-full h-fit">
         <Image
@@ -246,6 +250,7 @@ export default function Propertie() {
         </h1>
       </div>
 
+      {/* resto do conteúdo (form, tabs, etc.) */}
       <div
         id="active-or-inactive"
         className="flex h-[3.75rem] w-full mt-[-0.25rem] bg-white px-[1.5rem] gap-[1.5rem] mb-[1rem] rounded-lg"

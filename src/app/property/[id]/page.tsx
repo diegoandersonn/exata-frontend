@@ -58,43 +58,35 @@ export default function PropertyPage() {
       <Header />
       {isOpen && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-lg max-w-4xl w-[92vw]">
-            <div className="flex items-center justify-between mb-3">
-              <h1 className="font-bold text-xl">Fotos</h1>
-              <button className="text-red-600" onClick={() => setIsOpen(false)}>
-                <X size={28} />
-              </button>
+          <div className="flex items-center gap-3">
+            <button
+              className="rounded-full p-2 shadow text-zinc-600 hover:bg-zinc-100"
+              onClick={goPrev}
+              aria-label="Anterior"
+            >
+              <ChevronLeft />
+            </button>
+            <div className="relative w-full h-[60vh]">
+              {property.imagens[currentIndex] && (
+                <Image
+                  src={property.imagens[currentIndex]}
+                  alt={`Imagem ${currentIndex + 1}`}
+                  width={320}
+                  height={250}
+                  className="object-cover w-full h-full transition-transform duration-300 cursor-pointer"
+                />
+              )}
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                className="rounded-full p-2 shadow text-zinc-600 hover:bg-zinc-100"
-                onClick={goPrev}
-                aria-label="Anterior"
-              >
-                <ChevronLeft />
-              </button>
-              <div className="relative w-full h-[60vh]">
-                {property.imagens[currentIndex] && (
-                  <Image
-                    src={property.imagens[currentIndex]}
-                    alt={`Imagem ${currentIndex + 1}`}
-                    width={320}
-                    height={250}
-                    className="object-cover w-full h-full transition-transform duration-300 cursor-pointer"
-                  />
-                )}
-              </div>
-              <button
-                className="rounded-full p-2 shadow text-zinc-600 hover:bg-zinc-100"
-                onClick={goNext}
-                aria-label="Próxima"
-              >
-                <ChevronRight />
-              </button>
-            </div>
-            <div className="mt-2 text-center text-sm text-zinc-500">
-              {totalImages > 0 ? `${currentIndex + 1} / ${totalImages}` : null}
-            </div>
+            <button
+              className="rounded-full p-2 shadow text-zinc-600 hover:bg-zinc-100"
+              onClick={goNext}
+              aria-label="Próxima"
+            >
+              <ChevronRight />
+            </button>
+          </div>
+          <div className="mt-2 text-center text-sm text-zinc-500">
+            {totalImages > 0 ? `${currentIndex + 1} / ${totalImages}` : null}
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ type UpdateHomePayload = {
   endereco: string;
   instagram: string;
   telefone: string;
+  email: string;
 };
 
 const useUpdateHome = () => {
@@ -25,6 +26,9 @@ const useUpdateHome = () => {
           body: JSON.stringify(data),
         }
       );
+
+      console.log("Response:", res);
+
       if (!res.ok) {
         throw new Error("Falha ao atualizar configurações");
       }

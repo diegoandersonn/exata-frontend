@@ -4,4 +4,5 @@ export type HomeType = {
     endereco: string;
     instagram: string;
     whatsapp: string;
+    email: string;
 }

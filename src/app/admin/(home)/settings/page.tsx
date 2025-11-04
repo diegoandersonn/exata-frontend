@@ -1,7 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { MapPin, Instagram, Phone, Eye, EyeOff } from "lucide-react";
+import { MapPin, Hash, Phone, Eye, EyeOff } from "lucide-react";
+import useGetHome from "@/hooks/use-getHome";
+import useUpdateHome from "@/hooks/use-updateHome";
 
 export default function Settings() {
   const [distance, setDistance] = useState<number>(20);
@@ -9,19 +11,38 @@ export default function Settings() {
   const [instagram, setInstagram] = useState<string>("");
   const [whatsapp, setWhatsapp] = useState<string>("");
   const [showAddress, setShowAddress] = useState<boolean>(true);
+
+  const { home } = useGetHome();
+  const updateHome = useUpdateHome();
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("Settings component mounted");
-  }, []);
+    console.log(home);
+
+    if (home && home[0]) {
+      setDistance(Number(home[0].distancia) || 20);
+      setAddress(home[0].endereco || "");
+      setInstagram(home[0].instagram || "");
+      setWhatsapp(home[0].whatsapp || "");
+    }
+  }, [home]);
 
   const handleSave = async () => {
     if (isSaving) return;
     setIsSaving(true);
     try {
-      // substituir por chamada real à API se necessário
-      await new Promise((res) => setTimeout(res, 800));
-      toast.success("Configuração salva com sucesso!");
+      updateHome.mutate(
+      {
+        distancia: distance,
+        endereco: address,
+        instagram,
+        telefone: whatsapp,
+      },
+      {
+        onSuccess: () => toast.success("Configurações salvas com sucesso!"),
+        onError: () => toast.error("Erro ao salvar configurações."),
+      }
+    );
     } catch {
       toast.error("Erro ao salvar. Tente novamente.");
     } finally {
@@ -68,7 +89,7 @@ export default function Settings() {
       <div className="mb-4">
         <label htmlFor="instagram" className="block text-sm font-medium mb-2">
           <div className="flex items-center gap-2">
-            <Instagram className="w-4 h-4 text-pink-500" />
+            <Hash className="w-4 h-4 text-pink-500" />
             Instagram
           </div>
         </label>

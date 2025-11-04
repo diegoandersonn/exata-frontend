@@ -4,7 +4,7 @@ import santosFoto from "../../public/orla-de-santos-vemelha.png";
 import Header from "@/components/ui/header";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/ui/footer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import PropertiesCarousel from "@/components/ui/properties-carousel";
 import NPS from "@/components/ui/nps";
@@ -14,19 +14,30 @@ import useGetActiveAvaliations from "@/hooks/use-getActiveAvalations";
 export default function Home() {
   const { setCoords } = useLocalization();
   const { avaliations, isLoading } = useGetActiveAvaliations();
-  
+
+  // novo estado para travar o botão antes do router.push
+  const [isNavLoading, setIsNavLoading] = useState(false);
+
   useEffect(() => {
     const handleLocation = (position: GeolocationPosition) => {
       const { latitude, longitude } = position.coords;
       setCoords({ latitude, longitude });
     };
 
-
-
     navigator.geolocation.getCurrentPosition(handleLocation);
   }, [setCoords]);
 
   const router = useRouter();
+
+  const handleNavigateToProperties = () => {
+    if (isNavLoading) return;
+    setIsNavLoading(true);
+    // aguarda um pequeno intervalo para o DOM repintar e mostrar o estilo "travado"
+    setTimeout(() => {
+      router.push("/properties");
+    }, 150);
+  };
+
   return (
     <div className="flex flex-col">
       <Header />
@@ -42,10 +53,14 @@ export default function Home() {
             </h1>
           </div>
           <button
-            onClick={() => router.push("/properties")}
-            className="p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-50 lg:h-8 rounded-3xl border-none font-bold bg-white text-red-500 flex items-center justify-center hover:bg-red-800 hover:text-white hover:scale-110 transition-transform duration-300"
+            onClick={handleNavigateToProperties}
+            className={`p-4 w-18 h-6 text-xs md:p-6 md:w-30 md:h-8 md:text-lg lg:p-8 lg:w-50 lg:h-8 rounded-3xl border-none font-bold flex items-center justify-center transition-transform duration-300 ${
+              isNavLoading
+                ? "bg-red-800 text-white scale-110 cursor-wait"
+                : "bg-white text-red-500 hover:bg-red-800 hover:text-white hover:scale-110"
+            }`}
           >
-            Ver apartamentos
+            {isNavLoading ? "Caregando..." : "Ver apartamentos"}
           </button>
         </div>
         <Image
@@ -129,7 +144,7 @@ export default function Home() {
       <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
         <NPS />
       </div>
-      
+
       <Footer />
     </div>
   );

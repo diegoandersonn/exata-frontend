@@ -57,10 +57,15 @@ export default function PropertyPage() {
     <div className="flex flex-col gap-6">
       <Header />
       {isOpen && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center flex-col z-50">
+          <X
+            className="absolute right-2 top-2 text-zinc-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
+            size={40}
+            onClick={() => setIsOpen(false)}
+          />
           <div className="flex items-center gap-3">
             <button
-              className="rounded-full p-2 shadow text-zinc-600 hover:bg-zinc-100"
+              className="rounded-full p-2 shadow text-zinc-600 bg-zinc-100"
               onClick={goPrev}
               aria-label="Anterior"
             >
@@ -73,19 +78,19 @@ export default function PropertyPage() {
                   alt={`Imagem ${currentIndex + 1}`}
                   width={320}
                   height={250}
-                  className="object-cover w-full h-full transition-transform duration-300 cursor-pointer"
+                  className="object-cover w-[1000px] h-[600px] transition-transform duration-300 cursor-pointer"
                 />
               )}
             </div>
             <button
-              className="rounded-full p-2 shadow text-zinc-600 hover:bg-zinc-100"
+              className="rounded-full p-2 shadow text-zinc-600 bg-zinc-100"
               onClick={goNext}
               aria-label="Próxima"
             >
               <ChevronRight />
             </button>
           </div>
-          <div className="mt-2 text-center text-sm text-zinc-500">
+          <div className="mt-2 text-center text-sm text-zinc-100">
             {totalImages > 0 ? `${currentIndex + 1} / ${totalImages}` : null}
           </div>
         </div>

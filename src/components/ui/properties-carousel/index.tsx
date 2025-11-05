@@ -100,17 +100,7 @@ export default function PropertiesCarousel() {
                   km de você
                 </div>
               )}
-            <PropertyCard
-              id={property._id}
-              image={property.imagens[0]}
-              title={property.nome}
-              description={property.descricao}
-              price={property.aluguel}
-              code={property._id}
-              area={property.area}
-              rooms={property.dormitorios}
-              parkingSpaces={property.vagasGaragem}
-            />
+            <PropertyCard property={property} />
           </div>
         ))}
       </div>

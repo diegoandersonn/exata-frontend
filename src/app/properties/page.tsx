@@ -121,18 +121,7 @@ export default function PropertiesPage() {
         {propertiesFiltered.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 p-4 sm:p-6 lg:p-10">
             {propertiesFiltered.map((property) => (
-              <PropertyCard
-                key={property._id}
-                id={property._id}
-                image={property.imagens?.[0] || ""}
-                title={property.nome}
-                description={property.descricao}
-                price={property.aluguel}
-                code={property._id}
-                area={property.area}
-                rooms={property.dormitorios}
-                parkingSpaces={property.vagasGaragem}
-              />
+              <PropertyCard key={property._id} property={property} />
             ))}
           </div>
         )}

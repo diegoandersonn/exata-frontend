@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { MapPin, Hash, Phone, Eye, EyeOff, Mail } from "lucide-react";
 import useGetHome from "@/hooks/use-getHome";
 import useUpdateHome from "@/hooks/use-updateHome";
+import FullScreenLoaderPortal from "@/components/ui/full-screen-loader-portal";
 
 export default function Settings() {
   const [distance, setDistance] = useState<number>(20);
@@ -13,7 +14,7 @@ export default function Settings() {
   const [email, setEmail] = useState<string>("");
   const [showAddress, setShowAddress] = useState<boolean>(true);
 
-  const { home } = useGetHome();
+  const { home, isLoading } = useGetHome();
   const updateHome = useUpdateHome();
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -32,18 +33,18 @@ export default function Settings() {
     setIsSaving(true);
     try {
       updateHome.mutate(
-      {
-        distancia: distance,
-        endereco: address,
-        instagram,
-        telefone: whatsapp,
-        email: email,
-      },
-      {
-        onSuccess: () => toast.success("Configurações salvas com sucesso!"),
-        onError: () => toast.error("Erro ao salvar configurações."),
-      }
-    );
+        {
+          distancia: distance,
+          endereco: address,
+          instagram,
+          telefone: whatsapp,
+          email: email,
+        },
+        {
+          onSuccess: () => toast.success("Configurações salvas com sucesso!"),
+          onError: () => toast.error("Erro ao salvar configurações."),
+        }
+      );
     } catch {
       toast.error("Erro ao salvar. Tente novamente.");
     } finally {
@@ -51,18 +52,28 @@ export default function Settings() {
     }
   };
 
+  if (isLoading) {
+    return <FullScreenLoaderPortal open={true} />;
+  }
+
   return (
     <div className=" w-full flex flex-col items-center justify-center">
       <header className="mb-6 mt-4 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Configurações</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+          Configurações
+        </h1>
       </header>
 
       <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8 space-y-4">
         {/* Distância */}
         <section>
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">Recomendações</h2>
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">
+            Recomendações
+          </h2>
           <div className="grid grid-cols-1 gap-4">
-            <label htmlFor="distance" className="text-sm text-gray-600">Distfância máxima para indicação (km)</label>
+            <label htmlFor="distance" className="text-sm text-gray-600">
+              Distfância máxima para indicação (km)
+            </label>
             <div className="relative">
               <input
                 id="distance"
@@ -74,16 +85,22 @@ export default function Settings() {
                 max={100}
               />
             </div>
-            <p className="text-xs text-gray-400">Usamos este raio para priorizar imóveis próximos.</p>
+            <p className="text-xs text-gray-400">
+              Usamos este raio para priorizar imóveis próximos.
+            </p>
           </div>
         </section>
 
         {/* Contato e Endereço */}
         <section>
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">Contato e endereço</h2>
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">
+            Contato e endereço
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="md:col-span-2">
-              <label htmlFor="address" className="text-sm text-gray-600">Endereço</label>
+              <label htmlFor="address" className="text-sm text-gray-600">
+                Endereço
+              </label>
               <div className="relative mt-1">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-red-500" />
                 <input
@@ -98,7 +115,9 @@ export default function Settings() {
             </div>
 
             <div>
-              <label htmlFor="instagram" className="text-sm text-gray-600">Instagram</label>
+              <label htmlFor="instagram" className="text-sm text-gray-600">
+                Instagram
+              </label>
               <div className="relative mt-1">
                 <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-500" />
                 <input
@@ -113,7 +132,9 @@ export default function Settings() {
             </div>
 
             <div>
-              <label htmlFor="whatsapp" className="text-sm text-gray-600">WhatsApp</label>
+              <label htmlFor="whatsapp" className="text-sm text-gray-600">
+                WhatsApp
+              </label>
               <div className="relative mt-1">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600" />
                 <input
@@ -129,7 +150,9 @@ export default function Settings() {
             </div>
 
             <div className="md:col-span-2">
-              <label htmlFor="email" className="text-sm text-gray-600">E-mail</label>
+              <label htmlFor="email" className="text-sm text-gray-600">
+                E-mail
+              </label>
               <div className="relative mt-1">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-600" />
                 <input
@@ -147,20 +170,30 @@ export default function Settings() {
 
         {/* Preferências */}
         <section>
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">Preferências</h2>
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">
+            Preferências
+          </h2>
           <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl p-4">
             <div>
-              <p className="text-sm font-medium text-gray-700">Mostrar endereço dos imóveis</p>
-              <p className="text-xs text-gray-500">Controla a exibição do endereço completo nas listagens.</p>
+              <p className="text-sm font-medium text-gray-700">
+                Mostrar endereço dos imóveis
+              </p>
+              <p className="text-xs text-gray-500">
+                Controla a exibição do endereço completo nas listagens.
+              </p>
             </div>
             <button
               type="button"
               aria-pressed={showAddress}
               onClick={() => setShowAddress((prev) => !prev)}
-              className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${showAddress ? "bg-green-500" : "bg-gray-300"}`}
+              className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
+                showAddress ? "bg-green-500" : "bg-gray-300"
+              }`}
             >
               <span
-                className={`inline-block h-6 w-6 transform rounded-full bg-white shadow transition ${showAddress ? "translate-x-6" : "translate-x-1"}`}
+                className={`inline-block h-6 w-6 transform rounded-full bg-white shadow transition ${
+                  showAddress ? "translate-x-6" : "translate-x-1"
+                }`}
               />
               {showAddress ? (
                 <Eye className="absolute right-1 w-3 h-3 text-white" />

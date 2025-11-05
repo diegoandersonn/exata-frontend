@@ -14,7 +14,7 @@ export default function FullScreenLoader({ open, size = 80 }: Props) {
   return createPortal(
     <div
       aria-hidden={!open}
-      className="fixed inset-0 z-[9] bg-white flex items-center justify-center"
+      className="fixed inset-0 z-[9] bg-[#F1F5F9] flex items-center justify-center"
     >
       <div className="flex items-center justify-center">
         <LoadingSpinner size={size} className="w-[5rem] h-[5rem]" />

@@ -17,6 +17,8 @@ export default function Home() {
 
   // novo estado para travar o botão antes do router.push
   const [isNavLoading, setIsNavLoading] = useState(false);
+  // estado para o botão "conheça nossos imóveis"
+  const [isNavLoadingSection, setIsNavLoadingSection] = useState(false);
 
   useEffect(() => {
     const handleLocation = (position: GeolocationPosition) => {
@@ -33,6 +35,15 @@ export default function Home() {
     if (isNavLoading) return;
     setIsNavLoading(true);
     // aguarda um pequeno intervalo para o DOM repintar e mostrar o estilo "travado"
+    setTimeout(() => {
+      router.push("/properties");
+    }, 150);
+  };
+
+  const handleNavigateToPropertiesSection = () => {
+    if (isNavLoadingSection) return;
+    setIsNavLoadingSection(true);
+    // atraso curto para garantir que o estilo travado seja renderizado
     setTimeout(() => {
       router.push("/properties");
     }, 150);
@@ -73,7 +84,10 @@ export default function Home() {
         <h1 className="font-bold text-xl lg:text-4xl">Oportunidades</h1>
         <PropertiesCarousel />
       </div>
-  <div id="sobre-nos" className="flex flex-col sm:flex-row justify-between gap-8 p-10 scroll-mt-24">
+      <div
+        id="sobre-nos"
+        className="flex flex-col sm:flex-row justify-between gap-8 p-10 scroll-mt-24"
+      >
         <div className="logo-area flex items-center justify-center sm:block mx-auto select-none">
           <div className="rounded-full shadow-2xl shadow-red-300/60 bg-white p-3 w-fit">
             <Image
@@ -89,7 +103,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold">Sobre nós!</h1>
           <div className="flex flex-col gap-3 pb-8">
             <h3 className="text-2xl font-bold">Uma exata feita para você</h3>
-            <p className="text-xs">
+            <p className="text-sm">
               A <span className="text-red-600 font-bold">Exata</span> é uma
               imobiliária e administradora de bens com sede em{" "}
               <span className="text-red-600 font-bold">Santos</span>, dedicada a
@@ -104,7 +118,7 @@ export default function Home() {
               confiança de nossos clientes e trabalhamos para que cada
               negociação seja tranquila e satisfatória.
             </p>
-            <p className="text-xs">
+            <p className="text-sm">
               Além de facilitar a venda e locação de imóveis, a Exata é
               referência para quem busca{" "}
               <span className="text-red-600 font-bold">
@@ -126,22 +140,32 @@ export default function Home() {
             </p>
           </div>
           <button
-            onClick={() => router.push("/properties")}
-            className="mt-8 px-8 py-3 rounded-full bg-red-600 text-white font-bold uppercase text-sm shadow-lg hover:bg-red-700 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 sm:absolute sm:bottom-0 sm:right-0 sm:mt-0"
+            onClick={handleNavigateToPropertiesSection}
+            className={`mt-8 px-8 py-3 rounded-full text-white font-bold uppercase text-sm shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 sm:absolute sm:bottom-0 sm:right-0 sm:mt-0 ${
+              isNavLoadingSection
+                ? "bg-red-800 text-white scale-105 cursor-wait"
+                : "bg-red-600 hover:bg-red-700 hover:scale-105"
+            }`}
             style={{ minWidth: 220 }}
           >
-            conheça nossos imóveis
+            {isNavLoadingSection ? "Carregando..." : "conheça nossos imóveis"}
           </button>
         </div>
       </div>
-  <div id="feedbacks" className="w-full h-full flex flex-col items-center mt-12 gap-8 scroll-mt-24">
+      <div
+        id="feedbacks"
+        className="w-full h-full flex flex-col items-center mt-12 gap-8 scroll-mt-24"
+      >
         {isLoading ? (
           <div>Carregando feedbacks...</div>
         ) : (
           <Feedbacks feedbackList={avaliations || []} />
         )}
       </div>
-      <div id="nps" className="w-full h-full flex flex-col items-center mt-12 gap-8 scroll-mt-24">
+      <div
+        id="nps"
+        className="w-full h-full flex flex-col items-center mt-12 gap-8 scroll-mt-24"
+      >
         <NPS />
       </div>
 

@@ -10,8 +10,6 @@ import { UserProvider } from "@/contexts/UserContext";
 
 export default function RootLayout({
   children,
-  token,
-  id,
   user,
 }: Readonly<{
   children: React.ReactNode;

@@ -27,7 +27,6 @@ export default function Avaliations() {
   }, [avaliations]);
 
   if (isLoading) {
-    // usa o loader em portal para cobrir toda a tela (não ser filho do container local)
     return <FullScreenLoaderPortal open={true} />;
   }
 

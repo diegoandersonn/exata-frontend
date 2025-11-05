@@ -14,7 +14,7 @@ export default function FullScreenLoaderPortal({
   useEffect(() => setMounted(true), []);
   if (!mounted || !open) return null;
   return createPortal(
-    <div className="fixed inset-0 z-[9] bg-white flex items-center justify-center">
+    <div className="fixed inset-0 z-[9] bg-[#F1F5F9] flex items-center justify-center">
       <LoadingSpinner size={size} className="w-[5rem] h-[5rem]" />
     </div>,
     document.body

@@ -10,10 +10,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import useGetProperties from "@/hooks/use-getProperties";
+import FullScreenLoaderPortal from "@/components/ui/full-screen-loader-portal";
 
 export default function Properties() {
   const [index, setIndex] = useState<number>(0);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
+  // estado para travar botão "Novo" e mostrar 'Carregando...'
+  const [isNavLoading, setIsNavLoading] = useState(false);
   const { properties, isError, isLoading } = useGetProperties();
   const deleteProperty = useDeleteProperty();
   const updateProperty = useUpdateProperty();
@@ -83,7 +86,9 @@ export default function Properties() {
   }, [properties]);
 
   if (!properties) {
-    if (isLoading) return <div>Carregando...</div>;
+    if (isLoading) {
+      return <FullScreenLoaderPortal open={true} />;
+    }
     return <div>Imóveis não encontrados</div>;
   }
 
@@ -102,10 +107,22 @@ export default function Properties() {
           Imóveis
         </h1>
         <button
-          onClick={() => router.push("/admin/properties/property")}
-          className="w-[4.25rem] h-[2.5rem] rounded-lg text-white font-semibold text-sm bg-red-600 hover:bg-red-700"
+          onClick={() => {
+            if (isNavLoading) return;
+            setIsNavLoading(true);
+            // pequeno delay para aplicar estilo travado antes da navegação
+            setTimeout(() => {
+              router.push("/admin/properties/property");
+            }, 150);
+          }}
+          disabled={isNavLoading}
+          className={`h-[2.5rem] rounded-lg text-white font-semibold text-sm flex items-center justify-center transition-all duration-150 ${
+            isNavLoading
+              ? "w-[7.5rem] bg-red-800 text-white cursor-wait scale-100"
+              : "w-[4.25rem] bg-red-600 hover:bg-red-700 hover:scale-105"
+          }`}
         >
-          Novo
+          {isNavLoading ? "Carregando..." : "Novo"}
         </button>
       </div>
 

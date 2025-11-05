@@ -1,11 +1,11 @@
 "use client";
 
-import { Mail, MapPin, Phone, Instagram, Facebook } from "lucide-react";
+import { Mail, MapPin, Phone, Hash } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-red-800 text-white p-4 mt-10">
+    <footer id="contato" className="bg-red-800 text-white p-4 mt-10 scroll-mt-24">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mt-6">
         {/* Logo e Descrição */}
         <div className="flex flex-col gap-4">
@@ -60,11 +60,7 @@ export default function Footer() {
             <p className="hidden sm:flex">contato@exataadm.com.br</p>
           </div>
           <div className="flex items-center gap-2 text-xs xl:text-lg flex-col md:flex-row">
-            <Instagram size={24} />
-            <p className="hidden sm:flex">@exataadm</p>
-          </div>
-          <div className="flex items-center gap-2 text-xs xl:text-lg flex-col md:flex-row">
-            <Facebook size={24} />
+            <Hash size={24} />
             <p className="hidden sm:flex">@exataadm</p>
           </div>
         </div>

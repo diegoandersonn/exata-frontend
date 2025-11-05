@@ -62,7 +62,7 @@ export default function Settings() {
         <section>
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Recomendações</h2>
           <div className="grid grid-cols-1 gap-4">
-            <label htmlFor="distance" className="text-sm text-gray-600">Distância máxima para indicação (km)</label>
+            <label htmlFor="distance" className="text-sm text-gray-600">Distfância máxima para indicação (km)</label>
             <div className="relative">
               <input
                 id="distance"

@@ -73,7 +73,7 @@ export default function Home() {
         <h1 className="font-bold text-xl lg:text-4xl">Oportunidades</h1>
         <PropertiesCarousel />
       </div>
-      <div className="flex flex-col sm:flex-row justify-between gap-8 p-10">
+  <div id="sobre-nos" className="flex flex-col sm:flex-row justify-between gap-8 p-10 scroll-mt-24">
         <div className="logo-area flex items-center justify-center sm:block mx-auto select-none">
           <div className="rounded-full shadow-2xl shadow-red-300/60 bg-white p-3 w-fit">
             <Image
@@ -134,14 +134,14 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
+  <div id="feedbacks" className="w-full h-full flex flex-col items-center mt-12 gap-8 scroll-mt-24">
         {isLoading ? (
           <div>Carregando feedbacks...</div>
         ) : (
           <Feedbacks feedbackList={avaliations || []} />
         )}
       </div>
-      <div className="w-full h-full flex flex-col items-center mt-12 gap-8">
+      <div id="nps" className="w-full h-full flex flex-col items-center mt-12 gap-8 scroll-mt-24">
         <NPS />
       </div>
 

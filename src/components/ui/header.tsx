@@ -18,6 +18,22 @@ export default function Header() {
   const forceBackground =
     pathname.includes("/property") || pathname.includes("/properties");
   const showBackground = scrolled || forceBackground;
+
+  const makeSectionHandler = (sectionId: string) =>
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      router.push(`/#${sectionId}`);
+    };
+
+  const handleGoToContato = makeSectionHandler("contato");
+  const handleGoToNps = makeSectionHandler("nps");
+  const handleGoToFeedbacks = makeSectionHandler("feedbacks");
+  const handleGoToSobreNos = makeSectionHandler("sobre-nos");
   return (
     <header
       className={`fixed top-0 w-full z-50 px-6 py-1 lg:px-10 lg:py-2 flex justify-between items-center transition-all duration-300 ${
@@ -35,21 +51,11 @@ export default function Header() {
         onClick={() => router.push("/")}
       />
       <nav className="flex gap-3 lg:gap-6 text-xs lg:text-sm font-semibold">
-        <Link href="#" className="text-white hover:underline transition">
-          Quem somos
-        </Link>
-        <Link href="#" className="text-white hover:underline transition">
-          Serviços
-        </Link>
-        <Link href="#" className="text-white hover:underline transition">
-          Feedbacks
-        </Link>
-        <Link href="#" className="text-white hover:underline transition">
-          Nos avalie
-        </Link>
-        <Link href="#" className="text-white hover:underline transition">
-          Contato
-        </Link>
+        <Link href="#sobre-nos" onClick={handleGoToSobreNos} className="text-white hover:underline transition">Quem somos</Link>
+        <Link href="/properties" className="text-white hover:underline transition">Apartamentos</Link>
+        <Link href="#feedbacks" onClick={handleGoToFeedbacks} className="text-white hover:underline transition">Feedbacks</Link>
+        <Link href="#nps" onClick={handleGoToNps} className="text-white hover:underline transition">Nos avalie</Link>
+        <Link href="#contato" onClick={handleGoToContato} className="text-white hover:underline transition">Contato</Link>
       </nav>
     </header>
   );

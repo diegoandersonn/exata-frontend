@@ -7,6 +7,7 @@ import { PropertyType } from "@/types/property-type";
 import Footer from "@/components/ui/footer";
 import Image from "next/image";
 import useGetActiveProperties from "@/hooks/use-getActiveProperties";
+import FullScreenLoaderPortal from "@/components/ui/full-screen-loader-portal";
 
 export default function PropertiesPage() {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -57,12 +58,9 @@ export default function PropertiesPage() {
       )
     : [];
 
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Carregando...
-      </div>
-    );
+  if (isLoading) {
+    return <FullScreenLoaderPortal open={true} />;
+  }
   if (isError)
     return (
       <div className="flex items-center justify-center h-screen">Erro</div>

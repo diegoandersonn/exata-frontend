@@ -1,5 +1,6 @@
 "use client";
 import Footer from "@/components/ui/footer";
+import FullScreenLoaderPortal from "@/components/ui/full-screen-loader-portal";
 import Header from "@/components/ui/header";
 import useGetProperty from "@/hooks/use-getProperty";
 import {
@@ -42,7 +43,9 @@ export default function PropertyPage() {
     setCurrentIndex((i) => (i - 1 + totalImages) % totalImages);
   }
 
-  if (isLoading) return <div>Carregando...</div>;
+  if (isLoading) {
+    return <FullScreenLoaderPortal open={true} />;
+  }
   if (isError) return <div>Erro</div>;
   if (!property) return <div>Imóvel não encontrado</div>;
 
@@ -57,7 +60,13 @@ export default function PropertyPage() {
     <div className="flex flex-col gap-6">
       <Header />
       {isOpen && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center flex-col z-50">
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center flex-col z-50"
+          onClick={(e) => {
+            // fecha somente quando o clique for no overlay (fora dos filhos, incluindo setas e imagem)
+            if (e.currentTarget === e.target) setIsOpen(false);
+          }}
+        >
           <X
             className="absolute right-2 top-2 text-zinc-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
             size={40}

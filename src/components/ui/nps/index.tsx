@@ -18,6 +18,7 @@ export default function NPS() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [comment, setComment] = useState("");
   const { mutateAsync } = useSendNPS();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const current = useMemo(
     () => MOODS.find((m) => m.value === score) ?? MOODS[2],
@@ -25,15 +26,18 @@ export default function NPS() {
   );
 
   async function save() {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
       await mutateAsync({ score: score!, comment });
+      toast.success("Avaliação enviada com sucesso!");
+      setHasSubmitted(true);
     } catch (error) {
       toast.error("Erro ao enviar avaliação. Tente novamente mais tarde.");
-      return;
+    } finally {
+      // desbloqueia o botão apenas depois do toast ser disparado
+      setIsSubmitting(false);
     }
-
-    toast.success("Avaliação enviada com sucesso!");
-    setHasSubmitted(true);
   }
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -108,10 +112,14 @@ export default function NPS() {
               />
               <button
                 type="submit"
-                disabled={!score}
-                className="mt-5 w-full rounded-xl py-3 text-sm font-semibold text-white shadow disabled:opacity-60 bg-red-600"
+                disabled={!score || isSubmitting}
+                className={`mt-5 w-full rounded-xl py-3 text-sm font-semibold text-white shadow disabled:opacity-60 transition ${
+                  isSubmitting
+                    ? "bg-red-800 cursor-wait"
+                    : "bg-red-600 hover:bg-red-700"
+                }`}
               >
-                Enviar avaliação
+                {isSubmitting ? "Carregando..." : "Enviar avaliação"}
               </button>
             </form>
           </>

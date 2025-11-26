@@ -3,7 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   //temporario luciano-marmita
   images: {
-    domains: ["media.istockphoto.com", "exata-bucket.s3.amazonaws.com", "luciano-marmita.s3.amazonaws.com"], // Adicione o domínio aqui
+    remotePatterns: [
+      { protocol: "https", hostname: "media.istockphoto.com" },
+      { protocol: "https", hostname: "exata-bucket.s3.amazonaws.com" },
+      { protocol: "https", hostname: "luciano-marmita.s3.amazonaws.com" },
+    ],
   },
   webpack(config) {
     config.module.rules.push({

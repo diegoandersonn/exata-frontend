@@ -241,7 +241,7 @@ export default function Properties() {
                   className="w-[2.25rem] h-[2.25rem] bg-transparent flex items-center justify-center rounded-lg"
                 >
                   <Image
-                    src="/three-dots.svg"
+                    src="/three-dots.svg" 
                     alt="Ver detalhes"
                     width={20}
                     height={20}

@@ -177,6 +177,7 @@ export default function Propertie() {
     data.append("bairro", form.neighborhood);
     data.append("cidade", form.city);
     data.append("uf", form.state);
+    data.append("criadoPor", "Admin");
 
     if (mainImageFile) {
       data.append("imagens", mainImageFile);
@@ -209,14 +210,15 @@ export default function Propertie() {
     } else {
       try {
         setIsPending(true);
-        await fetch("http://localhost:3333/property", {
+        let response = await fetch("http://localhost:3333/property", {
           headers: {
-            "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
           method: "POST",
           body: data,
         });
+        console.log('TESTE!!!!!');
+        console.log(response);
         toast.success("Imóvel criado com sucesso");
         router.push("/admin/properties");
       } catch (error) {

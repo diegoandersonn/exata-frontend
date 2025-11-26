@@ -179,13 +179,36 @@ export default function Propertie() {
     data.append("uf", form.state);
     data.append("criadoPor", "Admin");
 
-    if (mainImageFile) {
-      data.append("imagens", mainImageFile);
+    // Se estamos editando, envia as imagens que devem ser mantidas
+    if (property) {
+      // Filtra as imagens que ainda existem (removidas as que não estão em otherImagesPreview)
+      const imagensParaManter = property.imagens.filter((imgUrl) =>
+        otherImagesPreview.includes(imgUrl)
+      );
+      
+      // Envia como JSON string para o backend saber quais manter
+      data.append("imagensExistentes", JSON.stringify(imagensParaManter));
+
+      // Se a mainImage ainda é a mesma (URL), mantém-a como principal
+      if (mainImagePreview && mainImagePreview.includes('s3.amazonaws.com')) {
+        data.append("imagemPrincipalExistente", mainImagePreview);
+      }
     }
 
+    // Envia a nova imagem principal (se houver - arquivo novo)
+    if (mainImageFile) {
+      data.append("imagens", mainImageFile);
+      // Marca que essa é a imagem principal
+      data.append("imagemPrincipal", "true");
+    }
+
+    // Envia apenas os novos arquivos de imagens adicionais
     if (otherImages) {
       Array.from(otherImages).forEach((file) => {
-        data.append("imagens", file);
+        // Filtra para enviar apenas File objects (não strings/URLs)
+        if (file instanceof File) {
+          data.append("imagens", file);
+        }
       });
     }
 
@@ -217,7 +240,6 @@ export default function Propertie() {
           method: "POST",
           body: data,
         });
-        console.log('TESTE!!!!!');
         console.log(response);
         toast.success("Imóvel criado com sucesso");
         router.push("/admin/properties");

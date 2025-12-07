@@ -43,7 +43,6 @@ export function FormForgotPasswordStepThree({ onSubmit }: StepThreeProps) {
       setIsSubmitting(true);
       await onSubmit({ password: data.password });
     } catch (error) {
-      console.error("Erro ao atualizar senha:", error);
     } finally {
       setIsSubmitting(false);
     }

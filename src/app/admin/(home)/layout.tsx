@@ -29,7 +29,6 @@ export default async function RootLayoutWrapper({
       id = data.id;
       user = data as IUser;
     } catch (error) {
-      console.error("Erro na requisição:", error);
     }
   }
 

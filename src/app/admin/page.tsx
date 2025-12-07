@@ -102,7 +102,6 @@ export default function LoginPage() {
       // não alterar isLoading aqui: mantemos o estado enquanto o usuário é redirecionado
       return;
     } catch (err) {
-      console.error(err);
       form.setError("root", {
         message: "Ocorreu um erro ao fazer login. Tente novamente.",
       });

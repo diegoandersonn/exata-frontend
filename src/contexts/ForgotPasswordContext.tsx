@@ -49,7 +49,6 @@ export function ForgotPasswordProvider({ children }: { children: React.ReactNode
       toast.success('Código enviado para seu email!');
 
     } catch (error) {
-      console.error('Erro:', error);
       toast.error('Erro ao processar solicitação. Tente novamente.');
     }
   };
@@ -80,7 +79,6 @@ export function ForgotPasswordProvider({ children }: { children: React.ReactNode
      
 
     } catch (error) {
-      console.error('Erro:', error);
       toast.error('Erro ao verificar código. Tente novamente.');
     }
   };

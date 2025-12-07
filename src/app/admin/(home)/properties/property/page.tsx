@@ -75,7 +75,6 @@ export default function Propertie() {
       if (property?.imagens && property.imagens.length > 0) {
         setMainImagePreview(property.imagens[0]);
         setOtherImagesPreview(property.imagens.slice(1));
-        console.log(property.imagens.slice(1));
       }
     }
   }, [property]);
@@ -225,7 +224,6 @@ export default function Propertie() {
         toast.success("Imóvel editado com sucesso");
         router.push("/admin/properties");
       } catch (error) {
-        console.error(error);
         toast.error("Erro inesperado. Tente novamente mais tarde");
       } finally {
         setIsPending(false);
@@ -240,11 +238,9 @@ export default function Propertie() {
           method: "POST",
           body: data,
         });
-        console.log(response);
         toast.success("Imóvel criado com sucesso");
         router.push("/admin/properties");
       } catch (error) {
-        console.error(error);
         toast.error("Erro inesperado. Tente novamente mais tarde");
       } finally {
         setIsPending(false);

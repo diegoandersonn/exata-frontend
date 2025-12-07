@@ -64,7 +64,6 @@ export default function Avaliations() {
                 toast.error(
                   "Erro ao atualizar avaliação. Tente novamente mais tarde."
                 );
-                console.error("Erro ao atualizar avaliação:", error);
               }
             };
             return (

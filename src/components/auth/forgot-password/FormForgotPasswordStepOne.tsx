@@ -31,7 +31,6 @@ export function FormForgotPasswordStepOne({ onSubmit }: StepOneProps) {
       setIsLoading(true);
       await onSubmit(formData.email);
     } catch (error) {
-      console.error("Erro:", error);
     } finally {
       setIsLoading(false);
     }

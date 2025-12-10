@@ -3,6 +3,7 @@
 import { Header } from "@/components/auth/Header";
 import Image from "next/image";
 import { PasswordRecoveryFlow } from "@/components/auth/forgot-password/PasswordRecoveryFlow";
+import { Suspense } from "react";
 
 export default function ForgotMyPassword() {
   return (
@@ -25,7 +26,9 @@ export default function ForgotMyPassword() {
         </aside>
         <section className="flex-1">
           <div className="w-[54%] min-h-full mx-auto flex items-center">
-            <PasswordRecoveryFlow />
+            <Suspense fallback={<div>Carregando...</div>}>
+              <PasswordRecoveryFlow />
+            </Suspense>
           </div>
         </section>
       </main>

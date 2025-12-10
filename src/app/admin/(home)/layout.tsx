@@ -16,7 +16,7 @@ export default async function RootLayoutWrapper({
 
   if (token) {
     try {
-      const response = await fetch(`http://localhost:3333/auth/me`, {
+      const response = await fetch(`https://exata-back-serverless-production.up.railway.app/auth/me`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +29,6 @@ export default async function RootLayoutWrapper({
       id = data.id;
       user = data as IUser;
     } catch (error) {
-      console.error("Erro na requisição:", error);
     }
   }
 

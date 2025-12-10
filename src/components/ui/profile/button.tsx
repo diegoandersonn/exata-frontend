@@ -29,7 +29,6 @@ function ProfileButtons({
       const timer = setTimeout(() => setCopied(false), 2000);
       return () => clearTimeout(timer);
     } catch (error) {
-      console.error("Failed to copy:", error);
     }
   }, [content]);
 

@@ -10,7 +10,7 @@ const useSetFavoriteNps = () => {
   return useMutation({
     mutationFn: async ({ id, ativa }: SetFavoritePayload) => {
       const res = await fetch(
-        `http://localhost:3333/avaliation/${id}`,
+        `https://exata-back-serverless-production.up.railway.app/avaliation/${id}`,
         {
           method: "PUT",
           headers: {

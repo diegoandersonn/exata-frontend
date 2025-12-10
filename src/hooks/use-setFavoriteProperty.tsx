@@ -10,7 +10,7 @@ const useSetFavoriteProperty = () => {
   return useMutation({
     mutationFn: async ({ propertyId, favorito }: SetFavoritePayload) => {
       const res = await fetch(
-        `http://localhost:3333/property/${propertyId}/favorite`,
+        `https://exata-back-serverless-production.up.railway.app/property/${propertyId}/favorite`,
         {
           method: "PUT",
           headers: {

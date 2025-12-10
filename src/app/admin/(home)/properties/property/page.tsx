@@ -75,7 +75,6 @@ export default function Propertie() {
       if (property?.imagens && property.imagens.length > 0) {
         setMainImagePreview(property.imagens[0]);
         setOtherImagesPreview(property.imagens.slice(1));
-        console.log(property.imagens.slice(1));
       }
     }
   }, [property]);
@@ -215,7 +214,7 @@ export default function Propertie() {
     if (property) {
       try {
         setIsPending(true);
-        await fetch(`http://localhost:3333/property/${property._id}`, {
+        await fetch(`https://exata-back-serverless-production.up.railway.app/property/${property._id}`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
@@ -225,7 +224,6 @@ export default function Propertie() {
         toast.success("Imóvel editado com sucesso");
         router.push("/admin/properties");
       } catch (error) {
-        console.error(error);
         toast.error("Erro inesperado. Tente novamente mais tarde");
       } finally {
         setIsPending(false);
@@ -233,18 +231,16 @@ export default function Propertie() {
     } else {
       try {
         setIsPending(true);
-        let response = await fetch("http://localhost:3333/property", {
+        let response = await fetch("https://exata-back-serverless-production.up.railway.app/property", {
           headers: {
             authorization: `Bearer ${token}`,
           },
           method: "POST",
           body: data,
         });
-        console.log(response);
         toast.success("Imóvel criado com sucesso");
         router.push("/admin/properties");
       } catch (error) {
-        console.error(error);
         toast.error("Erro inesperado. Tente novamente mais tarde");
       } finally {
         setIsPending(false);

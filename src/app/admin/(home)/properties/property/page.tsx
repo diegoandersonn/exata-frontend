@@ -214,7 +214,7 @@ export default function Propertie() {
     if (property) {
       try {
         setIsPending(true);
-        await fetch(`http://exata-backend.us-east-2.elasticbeanstalk.com/property/${property._id}`, {
+        await fetch(`https://exata-back-serverless-production.up.railway.app/property/${property._id}`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
@@ -231,7 +231,7 @@ export default function Propertie() {
     } else {
       try {
         setIsPending(true);
-        let response = await fetch("http://exata-backend.us-east-2.elasticbeanstalk.com/property", {
+        let response = await fetch("https://exata-back-serverless-production.up.railway.app/property", {
           headers: {
             authorization: `Bearer ${token}`,
           },

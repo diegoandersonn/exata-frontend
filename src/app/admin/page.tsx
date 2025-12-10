@@ -59,7 +59,7 @@ export default function LoginPage() {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      const response = await fetch("http://exata-backend.us-east-2.elasticbeanstalk.com/auth/login", {
+      const response = await fetch("https://exata-back-serverless-production.up.railway.app/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

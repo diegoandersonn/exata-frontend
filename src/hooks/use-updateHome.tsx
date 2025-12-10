@@ -16,7 +16,7 @@ const useUpdateHome = () => {
   return useMutation({
     mutationFn: async (data: UpdateHomePayload) => {
       const res = await fetch(
-        `http://exata-backend.us-east-2.elasticbeanstalk.com/home/68f01dff51081853e2c49df7`,
+        `https://exata-back-serverless-production.up.railway.app/home/68f01dff51081853e2c49df7`,
         {
           method: "PUT",
           headers: {

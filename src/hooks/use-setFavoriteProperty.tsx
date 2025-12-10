@@ -10,7 +10,7 @@ const useSetFavoriteProperty = () => {
   return useMutation({
     mutationFn: async ({ propertyId, favorito }: SetFavoritePayload) => {
       const res = await fetch(
-        `http://exata-backend.us-east-2.elasticbeanstalk.com/property/${propertyId}/favorite`,
+        `https://exata-back-serverless-production.up.railway.app/property/${propertyId}/favorite`,
         {
           method: "PUT",
           headers: {

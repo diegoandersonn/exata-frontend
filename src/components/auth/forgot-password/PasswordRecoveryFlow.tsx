@@ -25,7 +25,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
   const handleEmailSubmit = async (submittedEmail: string) => {
 
     try {    
-      const response = await fetch("http://exata-backend.us-east-2.elasticbeanstalk.com/auth/send-token", {
+      const response = await fetch("https://exata-back-serverless-production.up.railway.app/auth/send-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
    
     try {
       
-      const response = await fetch("http://exata-backend.us-east-2.elasticbeanstalk.com/auth/verify-token", {
+      const response = await fetch("https://exata-back-serverless-production.up.railway.app/auth/verify-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
 
   const handleResendCode = async () => {
     try {
-      const response = await fetch("http://exata-backend.us-east-2.elasticbeanstalk.com/auth/send-token", {
+      const response = await fetch("https://exata-back-serverless-production.up.railway.app/auth/send-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -121,7 +121,7 @@ export const PasswordRecoveryFlow: React.FC = () => {
   const handlePasswordSubmit = async ({ password }: { password: string }) => {
     try {
       const response = await fetch(
-        "http://exata-backend.us-east-2.elasticbeanstalk.com/auth/redefine-password",
+        "https://exata-back-serverless-production.up.railway.app/auth/redefine-password",
         {
           method: "POST",
           headers: {

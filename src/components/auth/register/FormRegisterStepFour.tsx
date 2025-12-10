@@ -60,7 +60,6 @@ export function FormRegisterStepFour() {
       router.push("/");
       toast.success("Usuário cadastrado com sucesso!");
     } catch (error) {
-      console.error("Erro completo:", error);
       toast.error("Erro ao cadastrar usuário");
     } finally {
       setIsLoading(false);

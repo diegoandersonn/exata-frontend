@@ -16,7 +16,7 @@ const useUpdateHome = () => {
   return useMutation({
     mutationFn: async (data: UpdateHomePayload) => {
       const res = await fetch(
-        `http://localhost:3333/home/68f01dff51081853e2c49df7`,
+        `http://exata-backend.us-east-2.elasticbeanstalk.com/home/68f01dff51081853e2c49df7`,
         {
           method: "PUT",
           headers: {
@@ -26,8 +26,6 @@ const useUpdateHome = () => {
           body: JSON.stringify(data),
         }
       );
-
-      console.log("Response:", res);
 
       if (!res.ok) {
         throw new Error("Falha ao atualizar configurações");

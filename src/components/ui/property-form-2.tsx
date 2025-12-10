@@ -61,7 +61,6 @@ export default function PropertyForm2({
                       state: data.uf,
                     }));
                   } catch (error) {
-                    console.error("Erro ao buscar CEP:", error);
                   }
                 }
               }}

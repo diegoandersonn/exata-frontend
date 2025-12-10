@@ -59,7 +59,7 @@ export default function LoginPage() {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3333/auth/login", {
+      const response = await fetch("http://exata-backend.us-east-2.elasticbeanstalk.com/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,7 +102,6 @@ export default function LoginPage() {
       // não alterar isLoading aqui: mantemos o estado enquanto o usuário é redirecionado
       return;
     } catch (err) {
-      console.error(err);
       form.setError("root", {
         message: "Ocorreu um erro ao fazer login. Tente novamente.",
       });

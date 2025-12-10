@@ -19,7 +19,6 @@ function Link({ title, url, icon, collapsed }: LinkProps) {
   const { push } = useRouter();
 
   if (!Icon) {
-    console.error(`Icon "${icon}" not found in SidebarIcons`);
     return null;
   }
 

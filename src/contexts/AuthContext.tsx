@@ -26,7 +26,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const setAuth = (auth: { token: string }) => {
     if (!auth?.token) {
-      console.error("Token inválido");
       return;
     }
 

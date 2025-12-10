@@ -10,7 +10,7 @@ const useSetFavoriteNps = () => {
   return useMutation({
     mutationFn: async ({ id, ativa }: SetFavoritePayload) => {
       const res = await fetch(
-        `http://localhost:3333/avaliation/${id}`,
+        `http://exata-backend.us-east-2.elasticbeanstalk.com/avaliation/${id}`,
         {
           method: "PUT",
           headers: {

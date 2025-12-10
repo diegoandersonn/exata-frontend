@@ -214,7 +214,7 @@ export default function Propertie() {
     if (property) {
       try {
         setIsPending(true);
-        await fetch(`http://localhost:3333/property/${property._id}`, {
+        await fetch(`http://exata-backend.us-east-2.elasticbeanstalk.com/property/${property._id}`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
@@ -231,7 +231,7 @@ export default function Propertie() {
     } else {
       try {
         setIsPending(true);
-        let response = await fetch("http://localhost:3333/property", {
+        let response = await fetch("http://exata-backend.us-east-2.elasticbeanstalk.com/property", {
           headers: {
             authorization: `Bearer ${token}`,
           },

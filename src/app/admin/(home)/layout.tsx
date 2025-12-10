@@ -16,7 +16,7 @@ export default async function RootLayoutWrapper({
 
   if (token) {
     try {
-      const response = await fetch(`http://localhost:3333/auth/me`, {
+      const response = await fetch(`http://exata-backend.us-east-2.elasticbeanstalk.com/auth/me`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
